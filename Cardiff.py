@@ -1,7 +1,9 @@
-import os, sys
+import os, sys, json
 
 class Cardiff():
     def __init__(self):
+        self.settings = {}
+        self.settings_path = ""
         self.commands = {
             "init": self.cmd_init,
             "diff": self.cmd_diff,
@@ -10,6 +12,11 @@ class Cardiff():
             "checkout": self.cmd_checkout,
             "log": self.cmd_log
         }
+
+    def load_settings(self, settings_path):
+        self.settings_path = settings_path
+        with open(self.settings_path) as settings_file:
+            self.settings = json.load(settings_file)
 
     def cmd_init(self, init_path):
         if len(init_path) > 0:
@@ -65,4 +72,6 @@ class Cardiff():
 
 if __name__ == "__main__":
     cardiff = Cardiff()
+    settings_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "settings.json")
+    cardiff.load_settings(settings_path)
     cardiff.commands[sys.argv[1]](sys.argv[2:])
