@@ -1,0 +1,68 @@
+import os, sys
+
+class Cardiff():
+    def __init__(self):
+        self.commands = {
+            "init": self.cmd_init,
+            "diff": self.cmd_diff,
+            "merge": self.cmd_merge,
+            "commit": self.cmd_commit,
+            "checkout": self.cmd_checkout,
+            "log": self.cmd_log
+        }
+
+    def cmd_init(self, init_path):
+        if len(init_path) > 0:
+            init_path = init_path[0]
+            if os.path.isdir(init_path):
+                print init_path + " is exist."
+            else:
+                os.mkdir(init_path)
+                # TODO: initialize repository
+                print "[Initialized Repository]:"
+                print init_path
+        else:
+            print "You need to provide a path for repository initialing."
+
+    def cmd_diff(self, file_ver):
+        file_path = file_ver[0]
+        if len(file_ver) > 2:
+            ver_1 = file_ver[1]
+            ver_2 = file_ver[2]
+        else:
+            ver_1 = "HEAD"
+            ver_2 = file_ver[1]
+        # TODO: compare file between versions, create diff
+        print "diff " + file_path + " " + ver_1 + " " + ver_2
+
+    def cmd_merge(self, file_ver):
+        file_path = file_ver[0]
+        if len(file_ver) > 2:
+            ver_1 = file_ver[1]
+            ver_2 = file_ver[2]
+        else:
+            ver_1 = "HEAD"
+            ver_2 = file_ver[1]
+        # TODO: merge file between versions and save as new version
+        print "merge " + file_path + " " + ver_1 + " " + ver_2
+
+    def cmd_commit(self, commit):
+        file_path = commit[0]
+        commit_message = commit[1]
+        # TODO: commit file snapshot to repository
+        print "[New Commit]:"
+        print file_path + " - " + commit_message
+
+    def cmd_checkout(self, file_ver):
+        file_path = file_ver[0]
+        ver = file_ver[1]
+        # TODO: rollback file to specified version
+        print "checkout " + file_path + " from " + ver
+
+    def cmd_log(self, log_filter):
+        print "[Commit History]:"
+        # TODO: get the commit log
+
+if __name__ == "__main__":
+    cardiff = Cardiff()
+    cardiff.commands[sys.argv[1]](sys.argv[2:])
