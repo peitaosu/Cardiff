@@ -1,8 +1,8 @@
 {
-    "repo": "", 
-    "vcs": "", 
-    "user.name": "", 
-    "user.email": "",
+    "repo": "<your_repo_if_have", 
+    "vcs": "git", 
+    "user.name": "<your_name>", 
+    "user.email": "<your_email>",
     "information": {
         "contributor": "Tony Su", 
         "version": "0.0.1"

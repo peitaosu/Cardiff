@@ -1,9 +1,11 @@
 import os, sys, json
+from init import init_vcs
 
 class Cardiff():
     def __init__(self):
         self.settings = {}
         self.settings_path = ""
+        self.vcs = None
         self.commands = {
             "init": self.cmd_init,
             "diff": self.cmd_diff,
@@ -18,6 +20,9 @@ class Cardiff():
         with open(self.settings_path) as settings_file:
             self.settings = json.load(settings_file)
 
+    def setup_vcs(self):
+        self.vcs = init_vcs(self.settings["vcs"])
+
     def cmd_init(self, init_path):
         if len(init_path) > 0:
             init_path = init_path[0]
@@ -25,7 +30,12 @@ class Cardiff():
                 print init_path + " is exist."
             else:
                 os.mkdir(init_path)
-                # TODO: initialize repository
+                user_name = self.settings["user.name"]
+                user_email = self.settings["user.email"]
+                self.vcs.init(init_path, user_name, user_email)
+                self.settings["repo"] = init_path
+                with open(self.settings_path, "w") as settings_file:
+                    json.dump(self.settings, settings_file, indent=4)
                 print "[Initialized Repository]:"
                 print init_path
         else:
@@ -56,7 +66,8 @@ class Cardiff():
     def cmd_commit(self, commit):
         file_path = commit[0]
         commit_message = commit[1]
-        # TODO: commit file snapshot to repository
+        self.vcs.set_repo(self.settings["repo"])
+        self.vcs.commit(file_path, commit_message)
         print "[New Commit]:"
         print file_path + " - " + commit_message
 
@@ -67,11 +78,20 @@ class Cardiff():
         print "checkout " + file_path + " from " + ver
 
     def cmd_log(self, log_filter):
+        self.vcs.set_repo(self.settings["repo"])
+        logs = self.vcs.log()
         print "[Commit History]:"
-        # TODO: get the commit log
+        if len(log_filter) > 0:
+            for log in logs:
+                if log_filter[0] in log[1] or log_filter[0] in log[4]:
+                    print log[1] + " - " + log[4]
+        else:
+            for log in logs:
+                print log[1] + " - " + log[4]
 
 if __name__ == "__main__":
     cardiff = Cardiff()
     settings_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "settings.json")
     cardiff.load_settings(settings_path)
+    cardiff.setup_vcs()
     cardiff.commands[sys.argv[1]](sys.argv[2:])
