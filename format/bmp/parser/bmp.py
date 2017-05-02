@@ -24,7 +24,6 @@ class BMP():
         }
         self.FORMAT_COLOR_TABLE = {}
         self.FORMAT_PIXEL_DATA = {}
-        self.data = []
     
     def load_bmp_from_file(self, file_path):
         with open(file_path, "rb") as bmp_file:
