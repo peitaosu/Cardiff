@@ -6,7 +6,11 @@ def diff(file_before, file_after):
         with open(file_after) as f_after: 
             diff_obj = differ.compare(f_before.read().splitlines(1), f_after.read().splitlines(1))
             result = list(diff_obj)
-            sys.stdout.writelines(result)
+            length = len(result)
+            for i in range(length):
+                if not result[i].endswith("\n"):
+                    result[i] += "\n"
+            print ''.join(result)
 
 if __name__ == "__main__":
     file_before = sys.argv[1]
