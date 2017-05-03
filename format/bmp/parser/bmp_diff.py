@@ -3,6 +3,7 @@ import sys
 class BMP_DIFF():
     def __init__(self):
         self.attributes = ["bfSize", "biSize", "biWidth", "biHeight", "biBitCount", "biCompression", "biSizeImage", "biXPelsPerMeter", "biYPelsPerMeter", "biClrUsed", "biClrImportant"]
+        self.description = ["The size of the file in bytes", "Header Size", "Image width in pixels", "Image height in pixels", "Bits per pixel", "Compression typ", "Image Size", "Preferred resolution in pixels per meter", "Preferred resolution in pixels per meter", "Number Color Map entries that are actually used", "Number of significant colors"]
 
     def diff_spec(self, field, bmp_before, bmp_after):
         setattr(self, field,[])
