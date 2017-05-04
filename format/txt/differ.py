@@ -10,9 +10,16 @@ def diff(file_before, file_after):
             for i in range(length):
                 if not result[i].endswith("\n"):
                     result[i] += "\n"
-            print ''.join(result)
+            return result
+
+def make_diff(file_before, file_after, file_output_name):
+    txt_diff = diff(file_before, file_after)
+    with open(file_output_name+".diff.txt", "w") as diff_file:
+        for line in txt_diff:
+            diff_file.write(line)
 
 if __name__ == "__main__":
     file_before = sys.argv[1]
     file_after = sys.argv[2]
-    diff(file_before, file_after)
+    file_output_name = sys.argv[3]
+    make_diff(file_before, file_after, file_output_name)
