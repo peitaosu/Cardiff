@@ -41,3 +41,4 @@ class BMP_DIFF():
     def diff(self, bmp_before, bmp_after):
         for attr in self.attributes:
             self.diff_spec(attr, bmp_before, bmp_after)
+        self.pixel_diff = self.diff_pixel(bmp_before, bmp_after)

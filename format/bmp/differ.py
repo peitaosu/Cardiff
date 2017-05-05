@@ -9,6 +9,7 @@ def diff(file_before, file_after):
     bmp_after.load_bmp_from_file(file_after)
     bmp_diff = BMP_DIFF()
     bmp_diff.diff(bmp_before, bmp_after)
+    bmp_diff.diff_pixel(bmp_before, bmp_after)
     return bmp_diff
 
 def make_diff(file_before, file_after, file_output_name):
@@ -20,6 +21,7 @@ def make_diff(file_before, file_after, file_output_name):
         diff_content[attr]["after"] = getattr(bmp_diff, attr)[1]
         if diff_content[attr]["before"] != diff_content[attr]["after"]:
             diff_content[attr]["diff"] = True
+    diff_content["pixel"] = bmp_diff.pixel_diff
     with open(file_output_name + ".diff.json", "w") as diff_file:
         json.dump(diff_content, diff_file, indent=4)
     # TODO: save *.diff.bmp file
