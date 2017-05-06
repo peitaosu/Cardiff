@@ -1,5 +1,5 @@
 import os, sys, json
-from init import init_vcs
+from init import *
 
 cardiff_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -25,6 +25,8 @@ class Cardiff():
 
     def setup_vcs(self):
         self.vcs = init_vcs(self.settings["vcs"])
+        self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
+        init_vcs_db(self.vcs_db_path)
 
     def cmd_init(self, init_path):
         if len(init_path) > 0:
@@ -33,6 +35,8 @@ class Cardiff():
                 print init_path + " is exist."
             else:
                 os.mkdir(init_path)
+                os.mkdir(os.path.join(self.vcs_db_path, os.path.basename(init_path)))
+                init_vcs_log(self.vcs_db_path, os.path.basename(init_path))
                 user_name = self.settings["user.name"]
                 user_email = self.settings["user.email"]
                 self.vcs.init(init_path, user_name, user_email)
@@ -70,7 +74,18 @@ class Cardiff():
         file_path = commit[0]
         commit_message = commit[1]
         self.vcs.set_repo(self.settings["repo"])
-        self.vcs.commit(file_path, commit_message)
+        self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]), "log.json")
+        log_content = self.vcs.commit(file_path, commit_message)
+        with open(self.vcs_db_log) as log_file:
+            logs = json.load(log_file)
+        log_flag = "#" + str(int(logs["HEAD"][1:]) + 1)
+        log = {}
+        log["hash"] = log_content[0]
+        log["message"] = log_content[4]
+        logs[log_flag] = log
+        logs["HEAD"] = log_flag
+        with open(self.vcs_db_log, "w") as log_file:
+            json.dump(logs, log_file, indent=4)
         print "[New Commit]:"
         print file_path + " - " + commit_message
 

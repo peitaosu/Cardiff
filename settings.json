@@ -1,5 +1,5 @@
 {
-    "repo": "<your_repo_if_have", 
+    "repo": "<your_repo_if_have>", 
     "vcs": "git", 
     "user.name": "<your_name>", 
     "user.email": "<your_email>",

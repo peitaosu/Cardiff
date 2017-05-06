@@ -18,6 +18,7 @@ class VCS():
     def commit(self, file_path, message):
         self.repo.index.add([file_path])
         self.repo.index.commit(message)
+        return self.log()[-1]
 
     def checkout(self, file_path, version):
         git = self.repo.git
