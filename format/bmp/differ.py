@@ -39,6 +39,7 @@ def make_diff(file_before, file_after, file_output_name):
             diff_bmp_out_data = diff_bmp_out_data + chr(0) + chr(0) + chr(0)
     with open(file_output_name + ".diff.bmp", "wb") as diff_file:
         diff_file.write(diff_bmp_out_data)
+    return file_output_name + ".diff.bmp"
 
 
 if __name__ == "__main__":
