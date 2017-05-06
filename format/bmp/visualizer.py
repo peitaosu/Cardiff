@@ -5,6 +5,9 @@ from parser.bmp_diff import *
 
 
 def visualize(file_diff, file_output_name = None):
+    for attr in file_diff.attributes:
+        if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
+            return
     bmp_data = []
     bmp_data += chr(66) + chr(77)
     bmp_data += int_to_bytes(file_diff.bfSize[0], 4)
