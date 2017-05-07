@@ -16,7 +16,8 @@ class Cardiff():
             "merge": self.cmd_merge,
             "commit": self.cmd_commit,
             "checkout": self.cmd_checkout,
-            "log": self.cmd_log
+            "log": self.cmd_log,
+            "help": self.cmd_help
         }
 
     def load_settings(self, settings_path = None):
@@ -24,6 +25,9 @@ class Cardiff():
             self.settings_path = settings_path
         with open(self.settings_path) as settings_file:
             self.settings = json.load(settings_file)
+        for key in ["user.name", "user.email"]:
+            if self.settings[key].startswith("<") and self.settings[key].endswith(">"):
+                print "Please set the " + key + " in settings file."
 
     def setup_vcs(self):
         self.vcs = init_vcs(self.settings["vcs"])
@@ -120,6 +124,23 @@ class Cardiff():
                     if key != "HEAD" and value["hash"] == log[1]:
                         print key + " - " + log[1] + " - " + log[4]
                         break
+
+    def cmd_help(self, command):
+        commands = {
+            "init": "init <repo_path>",
+            "diff": "diff <file> <version_1> [<version_2>]",
+            "merge": "merge <file> <version_1> [<version_2>]",
+            "commit": "commit <file> <message>",
+            "checkout": "checkout <file> <version>",
+            "log": "log [filter]",
+            "help": "help [command]"
+        }
+        print "Usage:"
+        if len(command) == 1:
+            print "  Cardiff.py " + commands[command[0]]
+        else:
+            for key, value in commands.iteritems():
+                print "  Cardiff.py " + value
 
 if __name__ == "__main__":
     cardiff = Cardiff()
