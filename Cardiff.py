@@ -28,6 +28,12 @@ class Cardiff():
         self.vcs = init_vcs(self.settings["vcs"])
         self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
         init_vcs_db(self.vcs_db_path)
+        if self.settings["repo"] is not "":
+            self.vcs.set_repo(self.settings["repo"])
+            self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]), "log.json")
+            with open(self.vcs_db_log) as log_file:
+                self.vcs_logs = json.load(log_file)
+
 
     def cmd_init(self, init_path):
         if len(init_path) > 0:
@@ -50,14 +56,13 @@ class Cardiff():
             print "You need to provide a path for repository initialing."
 
     def cmd_diff(self, file_ver):
-        self.vcs.set_repo(self.settings["repo"])
         file_path = file_ver[0]
         if len(file_ver) > 2:
-            ver_1 = file_ver[1]
-            ver_2 = file_ver[2]
+            ver_1 = self.vcs_logs["#" + file_ver[1]]["hash"]
+            ver_2 = self.vcs_logs["#" + file_ver[2]]["hash"]
         else:
-            ver_1 = "HEAD"
-            ver_2 = file_ver[1]
+            ver_1 = self.vcs_logs[self.vcs_logs["HEAD"]]["hash"]
+            ver_2 = self.vcs_logs["#" + file_ver[1]]["hash"]
         file_ext = os.path.splitext(file_path)[1]
         new_file_1 = str(time.time()) + file_ext
         self.vcs.checkout_as_new(file_path, ver_1, new_file_1)
@@ -70,51 +75,50 @@ class Cardiff():
     def cmd_merge(self, file_ver):
         file_path = file_ver[0]
         if len(file_ver) > 2:
-            ver_1 = file_ver[1]
-            ver_2 = file_ver[2]
+            ver_1 = self.vcs_logs["#" + file_ver[1]]["hash"]
+            ver_2 = self.vcs_logs["#" + file_ver[2]]["hash"]
         else:
-            ver_1 = "HEAD"
-            ver_2 = file_ver[1]
+            ver_1 = self.vcs_logs[self.vcs_logs["HEAD"]]["hash"]
+            ver_2 = self.vcs_logs["#" + file_ver[1]]["hash"]
         # TODO: merge file between versions and save as new version
         print "merge " + file_path + " " + ver_1 + " " + ver_2
 
     def cmd_commit(self, commit):
         file_path = commit[0]
         commit_message = commit[1]
-        self.vcs.set_repo(self.settings["repo"])
-        self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]), "log.json")
         log_content = self.vcs.commit(file_path, commit_message)
-        with open(self.vcs_db_log) as log_file:
-            logs = json.load(log_file)
-        log_flag = "#" + str(int(logs["HEAD"][1:]) + 1)
+        log_flag = "#" + str(int(self.vcs_logs["HEAD"][1:]) + 1)
         log = {}
         log["hash"] = log_content[1]
         log["message"] = log_content[4]
-        logs[log_flag] = log
-        logs["HEAD"] = log_flag
+        self.vcs_logs[log_flag] = log
+        self.vcs_logs["HEAD"] = log_flag
         with open(self.vcs_db_log, "w") as log_file:
-            json.dump(logs, log_file, indent=4)
+            json.dump(self.vcs_logs, log_file, indent=4)
         print "[New Commit]:"
         print file_path + " - " + commit_message
 
     def cmd_checkout(self, file_ver):
         file_path = file_ver[0]
-        ver = file_ver[1]
-        self.vcs.set_repo(self.settings["repo"])
+        ver = self.vcs_logs["#" + file_ver[1]]["hash"]
         self.vcs.checkout(file_path, ver)
         print "checkout " + file_path + " from " + ver
 
     def cmd_log(self, log_filter):
-        self.vcs.set_repo(self.settings["repo"])
         logs = self.vcs.log()
         print "[Commit History]:"
-        if len(log_filter) > 0:
-            for log in logs:
+        for log in logs:
+            if len(log_filter) > 0:
                 if log_filter[0] in log[1] or log_filter[0] in log[4]:
-                    print log[1] + " - " + log[4]
-        else:
-            for log in logs:
-                print log[1] + " - " + log[4]
+                    for key, value in self.vcs_logs.iteritems():
+                        if key != "HEAD" and value["hash"] == log[1]:
+                            print key + " - " + log[1] + " - " + log[4]
+                            break
+            else:
+                for key, value in self.vcs_logs.iteritems():
+                    if key != "HEAD" and value["hash"] == log[1]:
+                        print key + " - " + log[1] + " - " + log[4]
+                        break
 
 if __name__ == "__main__":
     cardiff = Cardiff()
