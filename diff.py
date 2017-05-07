@@ -9,6 +9,12 @@ def diff_file(file_before, file_after, file_output_name = None):
     saved_file = file_differ.make_diff(file_before, file_after, file_output_name)
     return saved_file
 
+def diff(file_before, file_after):
+    file_name = os.path.basename(file_before)
+    file_ext = file_name.split(".")[-1]
+    file_differ = importlib.import_module("format." + file_ext + ".differ")
+    return file_differ.diff(file_before, file_after)
+
 if __name__ == "__main__":
     file_before = sys.argv[1]
     file_after = sys.argv[2]

@@ -1,6 +1,7 @@
 import os, sys, json, time
 from init import *
-from diff import diff_file
+from diff import diff
+from visualize import visualize_diff
 
 cardiff_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -68,9 +69,9 @@ class Cardiff():
         self.vcs.checkout_as_new(file_path, ver_1, new_file_1)
         new_file_2 = str(time.time()) + file_ext
         self.vcs.checkout_as_new(file_path, ver_2, new_file_2)
-        diff_result = diff_file(os.path.join(self.vcs.repo_path, new_file_1), os.path.join(self.vcs.repo_path, new_file_2))
+        diff_result = diff(os.path.join(self.vcs.repo_path, new_file_1), os.path.join(self.vcs.repo_path, new_file_2))
         print "diff " + file_path + " " + ver_1 + " " + ver_2
-        print "result " + diff_result
+        visualize_diff(diff_result, file_path.split(".")[-1])
 
     def cmd_merge(self, file_ver):
         file_path = file_ver[0]
