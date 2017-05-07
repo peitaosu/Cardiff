@@ -100,7 +100,8 @@ class Cardiff():
     def cmd_checkout(self, file_ver):
         file_path = file_ver[0]
         ver = file_ver[1]
-        # TODO: rollback file to specified version
+        self.vcs.set_repo(self.settings["repo"])
+        self.vcs.checkout(file_path, ver)
         print "checkout " + file_path + " from " + ver
 
     def cmd_log(self, log_filter):

@@ -29,7 +29,7 @@ class VCS():
     def checkout_as_new(self, file_path, version, new_file_path):
         git = self.repo.git
         os.rename(os.path.join(self.repo_path, file_path), os.path.join(self.repo_path, "saved." + file_path))
-        git.checkout(version, "--", file_path)
+        git.checkout(version, file_path)
         os.rename(os.path.join(self.repo_path, file_path), os.path.join(self.repo_path, new_file_path))
         os.rename(os.path.join(self.repo_path, "saved." + file_path), os.path.join(self.repo_path, file_path))
 
