@@ -88,7 +88,7 @@ class Cardiff():
             logs = json.load(log_file)
         log_flag = "#" + str(int(logs["HEAD"][1:]) + 1)
         log = {}
-        log["hash"] = log_content[0]
+        log["hash"] = log_content[1]
         log["message"] = log_content[4]
         logs[log_flag] = log
         logs["HEAD"] = log_flag
