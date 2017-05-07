@@ -6,9 +6,11 @@ class VCS():
         self.name = "Git"
         self.pypkg = "GitPython"
         self.repo = None
+        self.repo_path = None
 
     def set_repo(self, repo_path):
         self.repo = git.Repo(repo_path)
+        self.repo_path = repo_path
 
     def init(self, path, name, email):
         self.repo = git.Repo.init(path)
@@ -23,6 +25,13 @@ class VCS():
     def checkout(self, file_path, version):
         git = self.repo.git
         git.checkout(version, file_path)
+
+    def checkout_as_new(self, file_path, version, new_file_path):
+        git = self.repo.git
+        os.rename(os.path.join(self.repo_path, file_path), os.path.join(self.repo_path, "saved." + file_path))
+        git.checkout(version, "--", file_path)
+        os.rename(os.path.join(self.repo_path, file_path), os.path.join(self.repo_path, new_file_path))
+        os.rename(os.path.join(self.repo_path, "saved." + file_path), os.path.join(self.repo_path, file_path))
 
     def log(self):
         head = self.repo.head

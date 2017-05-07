@@ -1,5 +1,6 @@
-import os, sys, json
+import os, sys, json, time
 from init import *
+from diff import diff_file
 
 cardiff_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -49,6 +50,7 @@ class Cardiff():
             print "You need to provide a path for repository initialing."
 
     def cmd_diff(self, file_ver):
+        self.vcs.set_repo(self.settings["repo"])
         file_path = file_ver[0]
         if len(file_ver) > 2:
             ver_1 = file_ver[1]
@@ -56,8 +58,14 @@ class Cardiff():
         else:
             ver_1 = "HEAD"
             ver_2 = file_ver[1]
-        # TODO: compare file between versions, create diff
+        file_ext = os.path.splitext(file_path)[1]
+        new_file_1 = str(time.time()) + file_ext
+        self.vcs.checkout_as_new(file_path, ver_1, new_file_1)
+        new_file_2 = str(time.time()) + file_ext
+        self.vcs.checkout_as_new(file_path, ver_2, new_file_2)
+        diff_result = diff_file(os.path.join(self.vcs.repo_path, new_file_1), os.path.join(self.vcs.repo_path, new_file_2))
         print "diff " + file_path + " " + ver_1 + " " + ver_2
+        print "result " + diff_result
 
     def cmd_merge(self, file_ver):
         file_path = file_ver[0]
