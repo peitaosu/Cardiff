@@ -38,10 +38,30 @@ def merge(file_before, file_after):
         elif accept == "2":
             for pixel_index, pixel_info in bmp_diff.pixel_diff.iteritems():
                 pixel_merged[pixel_index] = pixel_info["before"]
-    print pixel_merged
+    return pixel_merged
+
+
+def make_merged(file_before, file_after, file_output_name):
+    merged_bmp_out = BMP()
+    merged_bmp_out.load_bmp_from_file(file_after)
+    merged_bmp_out.get_bmp_pixel_data()
+    pixel_start = merged_bmp_out.FORMAT_PIXEL_DATA[0]
+    pixel_length = merged_bmp_out.FORMAT_PIXEL_DATA[1]
+    merged_bmp_out_data = merged_bmp_out.bmp_data[:pixel_start]
+    pixel_merged = merge(file_before, file_after)
+    for i in range(pixel_length / 3):
+        if str(i + 1) in pixel_merged:
+            merged_bmp_out_data = merged_bmp_out_data + \
+                chr(pixel_merged[str(i + 1)][2]) + chr(pixel_merged[str(i + 1)][1]) + chr(pixel_merged[str(i + 1)][0])
+        else:
+            merged_bmp_out_data = merged_bmp_out_data + \
+                merged_bmp_out.bmp_data[pixel_start + i * 3 + 0 : pixel_start + i * 3 + 3]
+    with open(file_output_name + ".merged.bmp", "wb") as merged_file:
+        merged_file.write(merged_bmp_out_data)
 
 
 if __name__ == "__main__":
     file_before = sys.argv[1]
     file_after = sys.argv[2]
-    merge(file_before, file_after)
+    file_output_name = sys.argv[3]
+    make_merged(file_before, file_after, file_output_name)
