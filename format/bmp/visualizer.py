@@ -2,9 +2,10 @@ import os, sys, time
 from differ import diff
 from parser.bmp import BMP
 from parser.bmp_diff import *
+from PIL import Image
 
 
-def visualize(file_diff, file_output_name = None):
+def visualize_as_bmp(file_diff, file_output_name = None):
     for attr in file_diff.attributes:
         if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
             return
@@ -37,6 +38,30 @@ def visualize(file_diff, file_output_name = None):
         diff_file.write(bytearray(bmp_data))
     os.system("open " + file_output_name + ".diff.bmp")
 
+
+def visualize(file_diff, file_after, file_output_name = None):
+    for attr in file_diff.attributes:
+        if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
+            return
+    image = Image.open(file_after)
+    image = image.convert("RGBA")
+    pixel_data = image.load()
+    pixel_index = 1
+    width, height = image.size
+    for y in xrange(height):
+        for x in xrange(width):
+            h = height - y - 1
+            if str(pixel_index) in file_diff.pixel_diff:
+                pixel_index += 1
+                continue
+            else:
+                pixel_index += 1
+                pixel_data[x, h] = (pixel_data[x, h][0], pixel_data[x, h][1], pixel_data[x, h][2], 0)
+    if file_output_name == None:
+        file_output_name = str(time.time())
+    image.save(file_output_name + ".diff.png", "PNG")
+    os.system("open " + file_output_name + ".diff.png")
+
 if __name__ == "__main__":
     bmp_before = BMP()
     bmp_after = BMP()
@@ -46,6 +71,6 @@ if __name__ == "__main__":
     bmp_diff.diff(bmp_before, bmp_after)
     try:
         file_output_name = sys.argv[3]
-        visualize(bmp_diff, file_output_name)
+        visualize(bmp_diff, sys.argv[2], file_output_name)
     except:
-        visualize(bmp_diff)
+        visualize(bmp_diff, sys.argv[2])
