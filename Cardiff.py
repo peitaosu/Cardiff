@@ -76,7 +76,7 @@ class Cardiff():
         self.vcs.checkout_as_new(file_path, ver_2, new_file_2)
         diff_result = diff(os.path.join(self.vcs.repo_path, new_file_1), os.path.join(self.vcs.repo_path, new_file_2))
         print "diff " + file_path + " " + ver_1 + " " + ver_2
-        visualize_diff(diff_result, file_path.split(".")[-1])
+        visualize_diff(diff_result, os.path.join(self.vcs.repo_path, new_file_2), file_path.split(".")[-1])
 
     def cmd_merge(self, file_ver):
         file_path = file_ver[0]
