@@ -5,6 +5,18 @@ import sys
 
 class BMP():
     def __init__(self):
+
+        '''
+        The File Header
+
+            Field      Bytes  Description
+
+            bfType       2    The characters "BM"
+            bfSize       4    The size of the file in bytes
+            bfReserved1 2    Unused - must be zero
+            bfReserved2 2    Unused - must be zero
+            bfOffBits 4    Offset to start of Pixel Data
+        '''
         self.FORMAT_FILE_HEADER = {
             "bfType": [0, 2],
             "bfSize": [2, 4],
@@ -12,6 +24,24 @@ class BMP():
             "bfReserved2": [8, 2],
             "bfOffBits": [10, 4]
         }
+
+        '''
+        The Image Header
+
+            Field          Bytes  Description
+
+            biSize         4  Header Size - Must be at least 40
+            biWidth         4  Image width in pixels
+            biHeight     4  Image height in pixels
+            biPlanes     2  Must be 1
+            biBitCount       2  Bits per pixel - 1, 4, 8, 16, 24, or 32
+            biCompression    4  Compression type (0 = uncompressed)
+            biSizeImage      4  Image Size - may be zero for uncompressed images
+            biXPelsPerMeter  4  Preferred resolution in pixels per meter
+            biYPelsPerMeter  4  Preferred resolution in pixels per meter
+            biClrUsed        4  Number Color Map entries that are actually used
+            biClrImportant   4  Number of significant colors
+        '''
         self.FORMAT_IMAGE_HEADER = {
             "biSize": [14, 4],
             "biWidth": [18, 4],
@@ -25,7 +55,19 @@ class BMP():
             "biClrUsed": [46, 4],
             "biClrImportant": [50, 4]
         }
+
+        '''
+        The Color Table
+
+            If we are dealing with a 24-bit image, then there is no Color Table present.
+        '''
         self.FORMAT_COLOR_TABLE = {}
+
+        '''
+        The Pixel Data
+
+            The pixel data is organized in rows from bottom to top and, within each row, from left to right.
+        '''
         self.FORMAT_PIXEL_DATA = {}
 
     def load_bmp_from_file(self, file_path):
