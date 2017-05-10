@@ -4,6 +4,15 @@ from parser.bmp import BMP
 from parser.bmp_diff import BMP_DIFF
 
 def diff(file_before, file_after):
+    """diff bmp file
+
+    args:
+        file_before (str)
+        file_after (str)
+
+    returns:
+        bmp_diff (BMP_DIFF)
+    """
     bmp_before = BMP()
     bmp_after = BMP()
     bmp_before.load_bmp_from_file(file_before)
@@ -14,6 +23,16 @@ def diff(file_before, file_after):
     return bmp_diff
 
 def make_diff(file_before, file_after, file_output_name):
+    """diff bmp file and save as file
+
+    args:
+        file_before (str)
+        file_after (str)
+        file_output_name (str)
+
+    returns:
+        saved_file (str)
+    """
     bmp_diff = diff(file_before, file_after)
     diff_content = {}
     for attr in bmp_diff.attributes:

@@ -6,6 +6,12 @@ from PIL import Image
 
 
 def visualize_as_bmp(file_diff, file_output_name = None):
+    """visualize the bmp diff, open as bmp file
+
+    args:
+        file_diff (BMP_DIFF)
+        file_output_name (str)
+    """
     for attr in file_diff.attributes:
         if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
             return
@@ -40,6 +46,13 @@ def visualize_as_bmp(file_diff, file_output_name = None):
 
 
 def visualize(file_diff, file_after, file_output_name = None):
+    """visualize the bmp diff, open as png file with alpha channel
+
+    args:
+        file_diff (BMP_DIFF)
+        file_after (str)
+        file_output_name (str)
+    """
     for attr in file_diff.attributes:
         if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
             return

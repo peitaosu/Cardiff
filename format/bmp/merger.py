@@ -4,6 +4,15 @@ from parser.bmp_diff import BMP_DIFF
 
 
 def merge(file_before, file_after):
+    """merge bmp diff
+
+    args:
+        file_before (str)
+        file_after (str)
+
+    returns:
+        pixel_merged (dict)
+    """
     bmp_before = BMP()
     bmp_after = BMP()
     bmp_before.load_bmp_from_file(file_before)
@@ -42,6 +51,13 @@ def merge(file_before, file_after):
 
 
 def make_merged(file_before, file_after, file_output_name):
+    """merge bmp diff and save as file
+
+    args:
+        file_before (str)
+        file_after (str)
+        file_output_name (str)
+    """
     merged_bmp_out = BMP()
     merged_bmp_out.load_bmp_from_file(file_after)
     merged_bmp_out.get_bmp_pixel_data()
