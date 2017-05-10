@@ -1,7 +1,7 @@
 import os, sys, time
 from differ import diff
 
-def visualize(file_diff, file_output_name = None):
+def visualize(file_diff, file_after, file_output_name = None):
     default_editor = os.getenv('EDITOR')
     if default_editor:
         if file_output_name == None:
@@ -20,6 +20,6 @@ if __name__ == "__main__":
     txt_diff = diff(txt_before, txt_after)
     try:
         file_output_name = sys.argv[3]
-        visualize(txt_diff, file_output_name)
+        visualize(txt_diff, txt_after, file_output_name)
     except:
-        visualize(txt_diff)
+        visualize(txt_diff, txt_after)
