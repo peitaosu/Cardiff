@@ -71,14 +71,29 @@ class BMP():
         self.FORMAT_PIXEL_DATA = {}
 
     def load_bmp_from_file(self, file_path):
+        """read bmp binary data from file
+
+        args:
+            file_path (str)
+        """
         with open(file_path, "rb") as bmp_file:
             self.bmp_data = bmp_file.read()
 
     def print_bmp_data(self):
+        """print the bmp binary data
+        """
         for byte in self.bmp_data:
             print "{:02x}".format(ord(byte)),
 
     def get_spec_data(self, field):
+        """get the specific data by field
+
+        args:
+            field (str)
+
+        returns:
+            data (list)
+        """
         if field in self.FORMAT_FILE_HEADER:
             chunk = self.FORMAT_FILE_HEADER[field]
         elif field in self.FORMAT_IMAGE_HEADER:
@@ -88,12 +103,22 @@ class BMP():
         return self.bmp_data[chunk[0]: chunk[0] + chunk[1]]
 
     def get_bmp_color_table(self):
+        """get the bmp color table data
+
+        returns:
+            data (list)
+        """
         bmp_bfOffBits = self.get_spec_data("bfOffBits")
         self.FORMAT_COLOR_TABLE[0] = 54
         self.FORMAT_COLOR_TABLE[1] = ord(bmp_bfOffBits[0]) - 54
         return self.bmp_data[54: ord(bmp_bfOffBits[0]) - 1]
 
     def get_bmp_pixel_data(self):
+        """get the bmp pixel data
+
+        returns:
+            data (list)
+        """
         bmp_bfOffBits = self.get_spec_data("bfOffBits")
         self.FORMAT_PIXEL_DATA[0] = ord(bmp_bfOffBits[0])
         self.FORMAT_PIXEL_DATA[1] = len(self.bmp_data) - ord(bmp_bfOffBits[0])

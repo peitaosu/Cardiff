@@ -20,6 +20,13 @@ class BMP_DIFF():
                             "Preferred resolution in pixels per meter", "Preferred resolution in pixels per meter", "Number Color Map entries that are actually used", "Number of significant colors"]
 
     def diff_spec(self, field, bmp_before, bmp_after):
+        """diff bmp file parameters and set the attributes
+
+        args:
+            field (str)
+            bmp_before (BMP)
+            bmp_after (BMP)
+        """
         setattr(self, field, [])
         getattr(self, field).append(bytes_to_int(bmp_before.get_spec_data(field)))
         getattr(self, field).append(bytes_to_int(bmp_after.get_spec_data(field)))
@@ -27,6 +34,15 @@ class BMP_DIFF():
             0]) + " <---> " + str(getattr(self, field)[1]))
 
     def diff_pixel(self, bmp_before, bmp_after):
+        """diff bmp file pixels and return the pixel diff
+
+        args:
+            bmp_before (BMP)
+            bmp_after (BMP)
+
+        returns:
+            pixel_diff (dict)
+        """
         pixel_data_before = bmp_before.get_bmp_pixel_data()
         pixel_data_after = bmp_after.get_bmp_pixel_data()
         index = 0
@@ -50,6 +66,12 @@ class BMP_DIFF():
         return pixel_diff
 
     def diff(self, bmp_before, bmp_after):
+        """diff bmp file parameters and pixels
+
+        args:
+            bmp_before (BMP)
+            bmp_after (BMP)
+        """
         for attr in self.attributes:
             self.diff_spec(attr, bmp_before, bmp_after)
         self.pixel_diff = self.diff_pixel(bmp_before, bmp_after)
