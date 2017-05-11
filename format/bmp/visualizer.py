@@ -11,6 +11,9 @@ def visualize_as_bmp(file_diff, file_output_name = None):
     args:
         file_diff (BMP_DIFF)
         file_output_name (str)
+    
+    returns:
+        bmp_file (str)
     """
     for attr in file_diff.attributes:
         if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
@@ -42,16 +45,19 @@ def visualize_as_bmp(file_diff, file_output_name = None):
         file_output_name = str(time.time())
     with open(file_output_name + ".diff.bmp", "wb") as diff_file:
         diff_file.write(bytearray(bmp_data))
-    os.system("open " + file_output_name + ".diff.bmp")
+    return file_output_name + ".diff.bmp"
 
 
-def visualize(file_diff, file_after, file_output_name = None):
+def visualize_as_png(file_diff, file_after, file_output_name = None):
     """visualize the bmp diff, open as png file with alpha channel
 
     args:
         file_diff (BMP_DIFF)
         file_after (str)
         file_output_name (str)
+    
+    returns:
+        png_file (str)
     """
     for attr in file_diff.attributes:
         if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
@@ -73,7 +79,20 @@ def visualize(file_diff, file_after, file_output_name = None):
     if file_output_name == None:
         file_output_name = str(time.time())
     image.save(file_output_name + ".diff.png", "PNG")
-    os.system("open " + file_output_name + ".diff.png")
+    return file_output_name + ".diff.png"
+
+def visualize(file_diff, file_after, file_output_name = None):
+    """visualize the bmp diff, open with Tk window
+
+    args:
+        file_diff (BMP_DIFF)
+        file_after (str)
+        file_output_name (str)
+    """
+    if file_output_name == None:
+        file_output_name = str(time.time())
+    saved_file = visualize_as_png(file_diff, file_after, file_output_name)
+    os.system("open " + saved_file)
 
 if __name__ == "__main__":
     bmp_before = BMP()
