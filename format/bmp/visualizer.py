@@ -2,8 +2,22 @@ import os, sys, time
 from differ import diff
 from parser.bmp import BMP
 from parser.bmp_diff import *
-from PIL import Image
+from PIL import Image, ImageTk
+import Tkinter
 
+def visualize_as_window(file_to_show):
+    """visualize the bmp diff, open with Tkinter window
+
+    args:
+        file_to_show (str)
+    """
+    window = Tkinter.Tk()
+    window.wm_title(file_to_show)
+    image_to_show = Image.open(file_to_show)
+    image_tk = ImageTk.PhotoImage(image_to_show)
+    image_label = Tkinter.Label(window, image=image_tk)
+    image_label.pack(side = "bottom", fill = "both", expand = "yes")
+    window.mainloop()
 
 def visualize_as_bmp(file_diff, file_output_name = None):
     """visualize the bmp diff, open as bmp file
@@ -92,7 +106,7 @@ def visualize(file_diff, file_after, file_output_name = None):
     if file_output_name == None:
         file_output_name = str(time.time())
     saved_file = visualize_as_png(file_diff, file_after, file_output_name)
-    os.system("open " + saved_file)
+    visualize_as_window(saved_file)
 
 if __name__ == "__main__":
     bmp_before = BMP()
