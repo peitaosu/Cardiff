@@ -29,12 +29,16 @@ class Cardiff():
         for key in ["user.name", "user.email"]:
             if self.settings[key].startswith("<") and self.settings[key].endswith(">"):
                 print "Please set the " + key + " in settings file."
+                sys.exit(-1)
+        self.temp = os.path.join(cardiff_path, self.settings["temp"])
+        self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
+        if not os.path.exists(self.vcs_db_path):
+            os.mkdir(self.vcs_db_path) 
 
     def setup_vcs(self):
         self.vcs = init_vcs(self.settings["vcs"])
-        self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
         init_vcs_db(self.vcs_db_path)
-        if self.settings["repo"] is not "":
+        if self.settings["repo"] != "":
             self.vcs.set_repo(self.settings["repo"])
             self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]), "log.json")
             with open(self.vcs_db_log) as log_file:
@@ -71,12 +75,12 @@ class Cardiff():
             ver_2 = self.vcs_logs["#" + file_ver[1]]["hash"]
         file_ext = os.path.splitext(file_path)[1]
         new_file_1 = str(time.time()) + file_ext
-        self.vcs.checkout_as_new(file_path, ver_1, new_file_1)
+        self.vcs.checkout_as_new(file_path, ver_1, os.path.join(self.temp, new_file_1))
         new_file_2 = str(time.time()) + file_ext
-        self.vcs.checkout_as_new(file_path, ver_2, new_file_2)
-        diff_result = diff(os.path.join(self.vcs.repo_path, new_file_1), os.path.join(self.vcs.repo_path, new_file_2))
+        self.vcs.checkout_as_new(file_path, ver_2, os.path.join(self.temp, new_file_2))
+        diff_result = diff(os.path.join(self.temp, new_file_1), os.path.join(self.temp, new_file_2))
         print "diff " + file_path + " " + ver_1 + " " + ver_2
-        visualize_diff(diff_result, os.path.join(self.vcs.repo_path, new_file_2), file_path.split(".")[-1])
+        visualize_diff(diff_result, os.path.join(self.temp, new_file_2), file_path.split(".")[-1], os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6]))
 
     def cmd_merge(self, file_ver):
         file_path = file_ver[0]
