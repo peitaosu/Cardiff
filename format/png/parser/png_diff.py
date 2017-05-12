@@ -2,7 +2,20 @@ import PIL
 
 class PNG_DIFF():
     def __init__(self):
-        pass
+        self.attributes = ["compression", "dpi", "mode", "size"]
+
+    def diff_spec(self, field, png_before, png_after):
+        setattr(self, field, [])
+        if field in ["compression", "dpi"]:
+            getattr(self, field).append(getattr(png_before, "info")[field])
+            getattr(self, field).append(getattr(png_after, "info")[field])
+            getattr(self, field).append(str(getattr(self, field)[
+                0]) + " <---> " + str(getattr(self, field)[1]))
+        else:
+            getattr(self, field).append(getattr(png_before, field))
+            getattr(self, field).append(getattr(png_after, field))
+            getattr(self, field).append(str(getattr(self, field)[
+                0]) + " <---> " + str(getattr(self, field)[1]))
 
     def diff_pixel(self, png_before, png_after):
         pixel_data_before = png_before.convert("RGBA").load()
@@ -20,4 +33,6 @@ class PNG_DIFF():
         return pixel_diff
 
     def diff(self, png_before, png_after):
+        for attr in self.attributes:
+            self.diff_spec(attr, png_before, png_after)
         self.pixel_diff = self.diff_pixel(png_before, png_after)

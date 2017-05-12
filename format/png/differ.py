@@ -7,7 +7,7 @@ def diff(file_before, file_after):
     png_after = Image.open(file_after)
     png_diff = PNG_DIFF()
     png_diff.diff(png_before, png_after)
-    print png_diff.pixel_diff
+    return png_diff
 
 if __name__ == "__main__":
     file_before = sys.argv[1]
