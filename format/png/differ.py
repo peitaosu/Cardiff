@@ -21,9 +21,22 @@ def make_diff(file_before, file_after, file_output_name):
     diff_content["pixel"] = png_diff.pixel_diff
     with open(file_output_name + "diff.json", "w") as diff_file:
         json.dump(diff_content, diff_file, indent=4)
-    return file_output_name + ".diff.json"
+    diff_png_out = Image.new("RGBA", diff_content["size"]["after"])
+    diff_png_out_data = diff_png_out.load()
+    width, height = diff_png_out.size
+    pixel_index = 1
+    for y in xrange(height):
+        for x in xrange(width):
+            if str(pixel_index) in diff_content["pixel"]:
+                diff_png_out_data[x, y] = (0, 0, 0, 255)
+            else:
+                diff_png_out_data[x, y] = (0, 0, 0, 0)
+            pixel_index += 1
+    diff_png_out.save(file_output_name + ".diff.png", "PNG")
+    return file_output_name + ".diff.png"
 
 if __name__ == "__main__":
     file_before = sys.argv[1]
     file_after = sys.argv[2]
-    diff(file_before, file_after)
+    file_output_name = sys.argv[3]
+    make_diff(file_before, file_after, file_output_name)
