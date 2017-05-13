@@ -3,6 +3,15 @@ from PIL import Image
 from parser.png_diff import PNG_DIFF
 
 def diff(file_before, file_after):
+    """diff png file
+
+    args:
+        file_before (str)
+        file_after (str)
+
+    returns:
+        png_diff (PNG_DIFF)
+    """
     png_before = Image.open(file_before)
     png_after = Image.open(file_after)
     png_diff = PNG_DIFF()
@@ -10,6 +19,16 @@ def diff(file_before, file_after):
     return png_diff
 
 def make_diff(file_before, file_after, file_output_name):
+    """diff png file and save as file
+
+    args:
+        file_before (str)
+        file_after (str)
+        file_output_name (str)
+
+    returns:
+        saved_file (str)
+    """
     png_diff = diff(file_before, file_after)
     diff_content = {}
     for attr in png_diff.attributes:
