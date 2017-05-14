@@ -2,21 +2,15 @@ import PIL
 
 class PNG_DIFF():
     def __init__(self):
-        self.attributes = ["compression", "dpi", "mode", "size"]
-        self.description = ["Compression", "DPI", "Color Mode", "Image Size"]
+        self.attributes = ["mode", "size"]
+        self.description = ["Color Mode", "Image Size"]
 
     def diff_spec(self, field, png_before, png_after):
         setattr(self, field, [])
-        if field in ["compression", "dpi"]:
-            getattr(self, field).append(getattr(png_before, "info")[field])
-            getattr(self, field).append(getattr(png_after, "info")[field])
-            getattr(self, field).append(str(getattr(self, field)[
-                0]) + " <---> " + str(getattr(self, field)[1]))
-        else:
-            getattr(self, field).append(getattr(png_before, field))
-            getattr(self, field).append(getattr(png_after, field))
-            getattr(self, field).append(str(getattr(self, field)[
-                0]) + " <---> " + str(getattr(self, field)[1]))
+        getattr(self, field).append(getattr(png_before, field))
+        getattr(self, field).append(getattr(png_after, field))
+        getattr(self, field).append(str(getattr(self, field)[
+            0]) + " <---> " + str(getattr(self, field)[1]))
 
     def diff_pixel(self, png_before, png_after):
         pixel_data_before = png_before.convert("RGBA").load()
@@ -30,7 +24,7 @@ class PNG_DIFF():
                     pixel_diff[str(pixel_index)] = {}
                     pixel_diff[str(pixel_index)]["before"] = list(pixel_data_before[x, y])
                     pixel_diff[str(pixel_index)]["after"] = list(pixel_data_after[x, y])
-                    pixel_index += 1
+                pixel_index += 1
         return pixel_diff
 
     def diff(self, png_before, png_after):
