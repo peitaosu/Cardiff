@@ -3,6 +3,7 @@ import PIL
 class PNG_DIFF():
     def __init__(self):
         self.attributes = ["compression", "dpi", "mode", "size"]
+        self.description = ["Compression", "DPI", "Color Mode", "Image Size"]
 
     def diff_spec(self, field, png_before, png_after):
         setattr(self, field, [])
