@@ -1,4 +1,5 @@
 import sys, struct
+from format.image_diff import IMAGE_DIFF
 
 def bytes_to_int(bytes):
     result = ord(bytes[0])
@@ -12,7 +13,7 @@ def int_to_bytes(value, length):
         result.append(value >> (i * 8) & 0xff)
     return result
 
-class BMP_DIFF():
+class BMP_DIFF(IMAGE_DIFF):
     def __init__(self):
         self.attributes = ["bfSize", "bfOffBits", "biSize", "biWidth", "biHeight", "biBitCount", "biCompression",
                            "biSizeImage", "biXPelsPerMeter", "biYPelsPerMeter", "biClrUsed", "biClrImportant"]
@@ -64,14 +65,3 @@ class BMP_DIFF():
             pixel_diff[str(pixel_index)]["after"] = pixel_rgb_after
             index += 3
         return pixel_diff
-
-    def diff(self, bmp_before, bmp_after):
-        """diff bmp file parameters and pixels
-
-        args:
-            bmp_before (BMP)
-            bmp_after (BMP)
-        """
-        for attr in self.attributes:
-            self.diff_spec(attr, bmp_before, bmp_after)
-        self.pixel_diff = self.diff_pixel(bmp_before, bmp_after)
