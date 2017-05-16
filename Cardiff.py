@@ -1,4 +1,5 @@
 import os, sys, json, time
+from common import *
 from init import *
 from diff import diff
 from visualize import visualize_diff
@@ -9,7 +10,6 @@ cardiff_path = os.path.dirname(os.path.realpath(__file__))
 class Cardiff():
     def __init__(self):
         self.settings = {}
-        self.settings_path = os.path.join(cardiff_path, "settings.json")
         self.vcs = None
         self.commands = {
             "init": self.cmd_init,
@@ -22,7 +22,9 @@ class Cardiff():
         }
 
     def load_settings(self, settings_path = None):
-        if settings_path is not None:
+        if settings_path == None:
+            self.settings_path = os.path.join(cardiff_path, "settings.json")
+        else:
             self.settings_path = settings_path
         with open(self.settings_path) as settings_file:
             self.settings = json.load(settings_file)
@@ -30,20 +32,23 @@ class Cardiff():
             if self.settings[key].startswith("<") and self.settings[key].endswith(">"):
                 print "Please set the " + key + " in settings file."
                 sys.exit(-1)
+        if self.settings["repo"].startswith("<") and self.settings["repo"].endswith(">"):
+            print "You need to init a repo first time."
         self.temp = os.path.join(cardiff_path, self.settings["temp"])
         self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
-        if not os.path.exists(self.vcs_db_path):
-            os.mkdir(self.vcs_db_path) 
+        make_path_exist(self.temp)
+        make_path_exist(self.vcs_db_path)
+        self.vcs = init_vcs(self.settings["vcs"])
 
     def setup_vcs(self):
-        self.vcs = init_vcs(self.settings["vcs"])
-        init_vcs_db(self.vcs_db_path)
         if self.settings["repo"] != "":
+            if self.settings["repo"].startswith("<") and self.settings["repo"].endswith(">"):
+                print "You need to init a repo first time."
+                sys.exit(-1)
             self.vcs.set_repo(self.settings["repo"])
             self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]), "log.json")
             with open(self.vcs_db_log) as log_file:
                 self.vcs_logs = json.load(log_file)
-
 
     def cmd_init(self, init_path):
         if len(init_path) > 0:
@@ -51,8 +56,8 @@ class Cardiff():
             if os.path.isdir(init_path):
                 print init_path + " is exist."
             else:
-                os.mkdir(init_path)
-                os.mkdir(os.path.join(self.vcs_db_path, os.path.basename(init_path)))
+                make_path_exist(init_path)
+                make_path_exist(os.path.join(self.vcs_db_path, os.path.basename(init_path)))
                 init_vcs_log(self.vcs_db_path, os.path.basename(init_path))
                 user_name = self.settings["user.name"]
                 user_email = self.settings["user.email"]
@@ -66,6 +71,7 @@ class Cardiff():
             print "You need to provide a path for repository initialing."
 
     def cmd_diff(self, file_ver):
+        self.setup_vcs()
         file_path = file_ver[0]
         if len(file_ver) > 2:
             ver_1 = self.vcs_logs["#" + file_ver[1]]["hash"]
@@ -83,6 +89,7 @@ class Cardiff():
         visualize_diff(diff_result, os.path.join(self.temp, new_file_2), file_path.split(".")[-1], os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6]))
 
     def cmd_merge(self, file_ver):
+        self.setup_vcs()
         file_path = file_ver[0]
         if len(file_ver) > 2:
             ver_1 = self.vcs_logs["#" + file_ver[1]]["hash"]
@@ -99,6 +106,7 @@ class Cardiff():
         print "merge " + file_path + " " + ver_1 + " " + ver_2
 
     def cmd_commit(self, commit):
+        self.setup_vcs()
         file_path = commit[0]
         commit_message = commit[1]
         log_content = self.vcs.commit(file_path, commit_message)
@@ -114,12 +122,14 @@ class Cardiff():
         print file_path + " - " + commit_message
 
     def cmd_checkout(self, file_ver):
+        self.setup_vcs()
         file_path = file_ver[0]
         ver = self.vcs_logs["#" + file_ver[1]]["hash"]
         self.vcs.checkout(file_path, ver)
         print "checkout " + file_path + " from " + ver
 
     def cmd_log(self, log_filter):
+        self.setup_vcs()
         logs = self.vcs.log()
         print "[Commit History]:"
         for log in logs:
@@ -156,5 +166,4 @@ if __name__ == "__main__":
     cardiff = Cardiff()
     settings_path = os.path.join(cardiff_path, "settings.json")
     cardiff.load_settings(settings_path)
-    cardiff.setup_vcs()
     cardiff.commands[sys.argv[1]](sys.argv[2:])
