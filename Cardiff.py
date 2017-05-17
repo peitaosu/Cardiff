@@ -162,8 +162,11 @@ class Cardiff():
             for key, value in commands.iteritems():
                 print "  Cardiff.py " + value
 
+    def exec_cmd(self, command):
+        self.commands[command[0]](command[1:])
+
 if __name__ == "__main__":
     cardiff = Cardiff()
     settings_path = os.path.join(cardiff_path, "settings.json")
     cardiff.load_settings(settings_path)
-    cardiff.commands[sys.argv[1]](sys.argv[2:])
+    cardiff.exec_cmd(sys.argv[1:])
