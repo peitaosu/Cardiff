@@ -53,9 +53,3 @@ def make_diff(file_before, file_after, file_output_name):
             pixel_index += 1
     diff_jpg_out.save(file_output_name + ".diff.jpg", "JPG")
     return file_output_name + ".diff.jpg"
-
-if __name__ == "__main__":
-    file_before = sys.argv[1]
-    file_after = sys.argv[2]
-    file_output_name = sys.argv[3]
-    make_diff(file_before, file_after, file_output_name)

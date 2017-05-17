@@ -14,12 +14,3 @@ def visualize(file_diff, file_after, file_output_name = None):
         for line in file_diff:
             sys.stdout.write(line)
 
-if __name__ == "__main__":
-    txt_before = sys.argv[1]
-    txt_after = sys.argv[2]
-    txt_diff = diff(txt_before, txt_after)
-    try:
-        file_output_name = sys.argv[3]
-        visualize(txt_diff, txt_after, file_output_name)
-    except:
-        visualize(txt_diff, txt_after)

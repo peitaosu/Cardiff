@@ -124,9 +124,3 @@ class BMP():
         self.FORMAT_PIXEL_DATA[1] = len(self.bmp_data) - ord(bmp_bfOffBits[0])
         return self.bmp_data[ord(bmp_bfOffBits[0]):]
 
-
-if __name__ == "__main__":
-    bmp = BMP()
-    bmp.load_bmp_from_file(sys.argv[1])
-    for byte in bmp.get_bmp_pixel_data():
-        print "{:02x}".format(ord(byte)),

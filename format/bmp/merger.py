@@ -75,9 +75,3 @@ def make_merged(file_before, file_after, file_output_name):
     with open(file_output_name + ".merged.bmp", "wb") as merged_file:
         merged_file.write(merged_bmp_out_data)
 
-
-if __name__ == "__main__":
-    file_before = sys.argv[1]
-    file_after = sys.argv[2]
-    file_output_name = sys.argv[3]
-    make_merged(file_before, file_after, file_output_name)

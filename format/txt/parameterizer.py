@@ -12,8 +12,3 @@ def parameterize(file_diff):
     print "add(+): " + str(add)
     print "subtract(-): " + str(subtract)
 
-if __name__ == "__main__":
-    txt_before = sys.argv[1]
-    txt_after = sys.argv[2]
-    txt_diff = diff(txt_before, txt_after)
-    parameterize(txt_diff)

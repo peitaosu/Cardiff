@@ -54,8 +54,3 @@ def make_diff(file_before, file_after, file_output_name):
     diff_png_out.save(file_output_name + ".diff.png", "PNG")
     return file_output_name + ".diff.png"
 
-if __name__ == "__main__":
-    file_before = sys.argv[1]
-    file_after = sys.argv[2]
-    file_output_name = sys.argv[3]
-    make_diff(file_before, file_after, file_output_name)

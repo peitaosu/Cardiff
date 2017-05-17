@@ -63,13 +63,3 @@ def visualize(file_diff, file_after, file_output_name = None):
     saved_file = visualize_as_png(file_diff, file_after, file_output_name)
     visualize_as_window(saved_file)
 
-if __name__ == "__main__":
-    png_before = sys.argv[1]
-    png_after = sys.argv[2]
-    png_diff = PNG_DIFF()
-    png_diff.diff(png_before, png_after)
-    try:
-        file_output_name = sys.argv[3]
-        visualize(png_diff, sys.argv[2], file_output_name)
-    except:
-        visualize(png_diff, sys.argv[2])

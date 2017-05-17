@@ -108,15 +108,3 @@ def visualize(file_diff, file_after, file_output_name = None):
     saved_file = visualize_as_png(file_diff, file_after, file_output_name)
     visualize_as_window(saved_file)
 
-if __name__ == "__main__":
-    bmp_before = BMP()
-    bmp_after = BMP()
-    bmp_before.load_bmp_from_file(sys.argv[1])
-    bmp_after.load_bmp_from_file(sys.argv[2])
-    bmp_diff = BMP_DIFF()
-    bmp_diff.diff(bmp_before, bmp_after)
-    try:
-        file_output_name = sys.argv[3]
-        visualize(bmp_diff, sys.argv[2], file_output_name)
-    except:
-        visualize(bmp_diff, sys.argv[2])
