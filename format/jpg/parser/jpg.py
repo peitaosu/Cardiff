@@ -70,3 +70,12 @@ class JPG():
             segment_body = self.jpg_file.read(segment_length)
             return {"marker_name": marker_name, "segment_length": segment_length, "segment_body": segment_body}
         return None
+
+    def get_segment_data(self):
+        segments = {}
+        while True:
+            segment = self.get_next_segment()
+            if segment != None:
+                segments[segment["marker_name"]] = {"length": segment["segment_length"], "body": segment["segment_body"]}
+            else:
+                return segments
