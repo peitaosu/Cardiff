@@ -1,3 +1,17 @@
+import os
+
+def bytes_to_int(bytes):
+    result = ord(bytes[0])
+    for b in bytes[1:]:
+        result = result + ord(b) * 256
+    return result
+
+def int_to_bytes(value, length):
+    result = []
+    for i in range(0, length):
+        result.append(value >> (i * 8) & 0xff)
+    return result
+
 class JPG():
     def __init__(self):
         self.marker = {
@@ -29,6 +43,7 @@ class JPG():
     def load_jpg_from_file(self, file_path):
         with open(file_path, "rb") as jpg_file:
             self.jpg_data = jpg_file.read()
+        self.jpg_file = open(file_path, "rb")
 
     def print_jpg_data(self):
         for byte in self.jpg_data:
@@ -39,3 +54,19 @@ class JPG():
             return True
         else:
             return False
+    
+    def get_segment_length(self, bin):
+        return bytes_to_int(bin) - 2
+
+    def get_next_segment(self):
+        if self.jpg_file.tell() == 0:
+            self.jpg_file.seek(0)
+            self.jpg_file.read(2)
+        elif self.jpg_file.tell() == os.fstat(self.jpg_file.fileno()).st_size:
+            return None
+        marker_name = self.marker[self.jpg_file.read(2)]
+        if marker_name != "SOS":
+            segment_length = self.get_segment_length(self.jpg_file.read(2))
+            segment_body = self.jpg_file.read(segment_length)
+            return {"marker_name": marker_name, "segment_length": segment_length, "segment_body": segment_body}
+        return None
