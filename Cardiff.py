@@ -3,6 +3,7 @@ from common import *
 from init import *
 from diff import diff
 from visualize import visualize_diff
+from parameterize import parameterize_diff
 from merge import merge_file
 
 cardiff_path = os.path.dirname(os.path.realpath(__file__))
@@ -86,6 +87,7 @@ class Cardiff():
         self.vcs.checkout_as_new(file_path, ver_2, os.path.join(self.temp, new_file_2))
         diff_result = diff(os.path.join(self.temp, new_file_1), os.path.join(self.temp, new_file_2))
         print "diff " + file_path + " " + ver_1 + " " + ver_2
+        parameterize_diff(diff_result, file_path.split(".")[-1])
         visualize_diff(diff_result, os.path.join(self.temp, new_file_2), file_path.split(".")[-1], os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6]))
 
     def cmd_merge(self, file_ver):
