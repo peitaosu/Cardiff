@@ -64,7 +64,6 @@ def make_merged(file_before, file_after, file_output_name):
     for y in xrange(height):
         for x in xrange(width):
             if str(pixel_index) in pixel_merged:
-                print pixel_merged[str(pixel_index)]
                 merged_jpg_out_data[x, y] = tuple(pixel_merged[str(pixel_index)])
             pixel_index += 1
     merged_jpg_out.save(file_output_name + ".merged.jpg", "JPEG")

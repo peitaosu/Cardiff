@@ -19,8 +19,8 @@ def visualize_as_window(file_to_show):
     window.mainloop()
 
 
-def visualize_as_jpg(file_diff, file_after, file_output_name = None):
-    """visualize the jpg diff, open as jpg file with alpha channel
+def visualize_as_png(file_diff, file_after, file_output_name = None):
+    """visualize the jpg diff, open as png file with alpha channel
 
     args:
         file_diff (JPG_DIFF)
@@ -28,12 +28,13 @@ def visualize_as_jpg(file_diff, file_after, file_output_name = None):
         file_output_name (str)
     
     returns:
-        jpg_file (str)
+        png_file (str)
     """
     for attr in file_diff.attributes:
         if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
             return
     image = Image.open(file_after)
+    image = image.convert("RGBA")
     pixel_data = image.load()
     pixel_index = 1
     width, height = image.size
@@ -44,11 +45,11 @@ def visualize_as_jpg(file_diff, file_after, file_output_name = None):
                 continue
             else:
                 pixel_index += 1
-                pixel_data[x, y] = (pixel_data[x, y][0], pixel_data[x, y][1], pixel_data[x, y][2])
+                pixel_data[x, y] = (pixel_data[x, y][0], pixel_data[x, y][1], pixel_data[x, y][2], 0)
     if file_output_name == None:
         file_output_name = str(time.time())
-    image.save(file_output_name + ".diff.jpg", "JPEG")
-    return file_output_name + ".diff.jpg"
+    image.save(file_output_name + ".diff.png", "PNG")
+    return file_output_name + ".diff.png"
 
 def visualize(file_diff, file_after, file_output_name = None):
     """visualize the jpg diff, open with Tk window
@@ -60,6 +61,6 @@ def visualize(file_diff, file_after, file_output_name = None):
     """
     if file_output_name == None:
         file_output_name = str(time.time())
-    saved_file = visualize_as_jpg(file_diff, file_after, file_output_name)
+    saved_file = visualize_as_png(file_diff, file_after, file_output_name)
     visualize_as_window(saved_file)
 
