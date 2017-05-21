@@ -149,7 +149,7 @@ class Cardiff():
                         break
 
     def cmd_clean(self, command):
-        clean_path(self.temp)
+        clean_path(self.temp, command[0])
 
     def cmd_help(self, command):
         commands = {
@@ -159,7 +159,7 @@ class Cardiff():
             "commit": "commit <file> <message>",
             "checkout": "checkout <file> <version>",
             "log": "log [filter]",
-            "clean": "clean",
+            "clean": "clean [filter]",
             "help": "help [command]"
         }
         print "Usage:"
