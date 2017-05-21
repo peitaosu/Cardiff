@@ -101,10 +101,10 @@ class Cardiff():
             ver_2 = self.vcs_logs["#" + file_ver[1]]["hash"]
         file_ext = os.path.splitext(file_path)[1]
         new_file_1 = str(time.time()) + file_ext
-        self.vcs.checkout_as_new(file_path, ver_1, new_file_1)
+        self.vcs.checkout_as_new(file_path, ver_1, os.path.join(self.temp, new_file_1))
         new_file_2 = str(time.time()) + file_ext
-        self.vcs.checkout_as_new(file_path, ver_2, new_file_2)
-        merged_file = merge_file(os.path.join(self.vcs.repo_path, new_file_1), os.path.join(self.vcs.repo_path, new_file_2), os.path.join(self.vcs.repo_path, file_path))
+        self.vcs.checkout_as_new(file_path, ver_2, os.path.join(self.temp, new_file_2))
+        merged_file = merge_file(os.path.join(self.temp, new_file_1), os.path.join(self.temp, new_file_2), os.path.join(self.vcs.repo_path, file_path))
         print "merge " + file_path + " " + ver_1 + " " + ver_2
 
     def cmd_commit(self, commit):
