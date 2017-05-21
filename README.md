@@ -8,16 +8,20 @@ This tool can be used to diff difference between file versions, to check what ha
 
 ![How It Works](How_It_Works.png)
 
-## Plan to Support
+## Already Supported
 * Single Image Format
-    - .PNG
     - .BMP
+    - .PNG
     - .JPG
-    - ....
+    - .GIF
+
+## Plan to Support
 * Complex Document/Project Format
     - .PDF
     - .DWG
     - .PSD
+    - ....
+* Composite Data Format
     - ....
 
 ## Key Features
