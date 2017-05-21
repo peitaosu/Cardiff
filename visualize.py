@@ -3,6 +3,11 @@ from PIL import Image, ImageTk
 import Tkinter
 
 def visualize_image(file_image):
+    """visualize the image with Tk window
+
+    args:
+        file_image (str)
+    """
     window = Tkinter.Tk()
     window.wm_title(file_image)
     image_to_show = Image.open(file_image)
@@ -12,6 +17,17 @@ def visualize_image(file_image):
     window.mainloop()
 
 def visualize_diff(file_diff, file_after, file_ext, file_output_name = None):
+    """visualize the file diff
+
+    args:
+        file_diff (object)
+        file_after (str)
+        file_ext (str)
+        file_output_name (str)
+    
+    returns:
+        saved_file (str)
+    """
     file_visualizer = importlib.import_module("format." + file_ext + ".visualizer")
     if file_output_name == None:
         file_output_name = str(time.time())

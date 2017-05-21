@@ -1,12 +1,23 @@
 import os, re
 
 def make_path_exist(path):
+    """check the path if any folder not exists then create it
+
+    args:
+        path (str)
+    """
     if path is not "":
         if not os.path.isdir(path):
             make_path_exist(os.path.dirname(path))
             os.mkdir(path)
 
 def clean_path(path, pattern=None):
+    """check the files in the path with pattern, if match then delete the file
+
+    args:
+        path (str)
+        pattern (str)
+    """
     for root, dirs, files in os.walk(path):
         for file_item in files:
             if pattern is not None:
