@@ -19,6 +19,7 @@ class Cardiff():
             "commit": self.cmd_commit,
             "checkout": self.cmd_checkout,
             "log": self.cmd_log,
+            "clean": self.cmd_clean,
             "help": self.cmd_help
         }
 
@@ -147,6 +148,9 @@ class Cardiff():
                         print key + " - " + log[1] + " - " + log[4]
                         break
 
+    def cmd_clean(self, command):
+        clean_path(self.temp)
+
     def cmd_help(self, command):
         commands = {
             "init": "init <repo_path>",
@@ -155,6 +159,7 @@ class Cardiff():
             "commit": "commit <file> <message>",
             "checkout": "checkout <file> <version>",
             "log": "log [filter]",
+            "clean": "clean",
             "help": "help [command]"
         }
         print "Usage:"
