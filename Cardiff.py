@@ -149,7 +149,12 @@ class Cardiff():
                         break
 
     def cmd_clean(self, command):
-        clean_path(self.temp, command[0])
+        if len(command) == 0:
+            clean_path(self.temp)
+            clean_path(cardiff_path, "\.pyc")
+        else:
+            for filter in command:
+                clean_path(self.temp, filter)
 
     def cmd_help(self, command):
         commands = {
