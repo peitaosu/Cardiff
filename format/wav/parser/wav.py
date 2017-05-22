@@ -22,12 +22,12 @@ class WAV():
         else:
             return self.file.readframes(self.file.getnframes())
 
-    def get_rate(self):
-        self.rate = self.file.getframerate()
-        return self.rate
+    def get_framerate(self):
+        self.framerate = self.file.getframerate()
+        return self.framerate
 
     def get_duration(self):
-        self.duration = self.get_frames_count() / float(self.get_rate())
+        self.duration = self.get_frames_count() / float(self.get_framerate())
         return self.duration
 
     def get_channels_count(self):
@@ -38,17 +38,13 @@ class WAV():
         self.sample_width = self.file.getsampwidth()
         return self.sample_width
 
-    def get_framerate(self):
-        self.framerate = self.file.getframerate()
-        return self.framerate
+    def get_compress_type(self):
+        self.compress_type = self.file.getcomptype()
+        return self.compress_type
 
-    def get_comptype(self):
-        self.comptype = self.file.getcomptype()
-        return self.comptype
-
-    def get_compname(self):
-        self.compname = self.file.getcompname()
-        return self.compname
+    def get_compress_name(self):
+        self.compress_name = self.file.getcompname()
+        return self.compress_name
 
     def get_params(self):
         self.params = self.file.getparams()
