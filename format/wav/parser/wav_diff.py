@@ -37,3 +37,8 @@ class WAV_DIFF():
                         frame_diff[channel][index]["before"] = channels_before[channel][index]
                         frame_diff[channel][index]["after"] = channels_after[channel][index]
         return frame_diff
+
+    def diff(self, wav_before, wav_after):
+        for attr in self.attributes:
+            self.diff_spec(attr, wav_before, wav_after)
+        self.frame_diff = self.diff_frame(wav_before, wav_after)
