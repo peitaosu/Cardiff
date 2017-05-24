@@ -21,5 +21,3 @@ def visualize_wave_file(file_path):
     for channel in channels:
         matplotlib.pyplot.plot(Time, channel)
     matplotlib.pyplot.show()
-
-visualize_wave_file("/Users/tony/Desktop/test.wav")

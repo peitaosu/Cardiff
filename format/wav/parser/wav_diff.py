@@ -27,7 +27,6 @@ class WAV_DIFF():
             channels_after[index % len(channels_after)].append(datum)
 
         frame_diff = {}
-        print len(channels_before[0])
         for channel in range(len(channels_before)):
             frame_diff[channel] = {}
             if channels_before[channel] != channels_after[channel]:
