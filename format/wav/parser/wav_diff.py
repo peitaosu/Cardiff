@@ -27,14 +27,22 @@ class WAV_DIFF():
             channels_after[index % len(channels_after)].append(datum)
 
         frame_diff = {}
-        for channel in range(len(channels_before)):
-            frame_diff[channel] = {}
-            if channels_before[channel] != channels_after[channel]:
-                frame_diff[channel][index] = {}
-                for index in range(len(channels_before[0])):
-                    if channels_before[channel][index] != channels_after[channel][index]:
-                        frame_diff[channel][index]["before"] = channels_before[channel][index]
-                        frame_diff[channel][index]["after"] = channels_after[channel][index]
+        if len(channels_before) == len(channels_after):
+            for channel in range(len(channels_before)):
+                frame_diff[channel] = {}
+                if len(channels_before[channel]) == len(channels_after[channel]):
+                    if channels_before[channel] != channels_after[channel]:
+                        frame_diff[channel][index] = {}
+                        for index in range(len(channels_before[0])):
+                            if channels_before[channel][index] != channels_after[channel][index]:
+                                frame_diff[channel][index]["before"] = channels_before[channel][index]
+                                frame_diff[channel][index]["after"] = channels_after[channel][index]
+                else:
+                    #TODO: add the diff for different length
+                    pass
+        else:
+            #TODO: add the diff for different count of channels
+            pass
         return frame_diff
 
     def diff(self, wav_before, wav_after):
