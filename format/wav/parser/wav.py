@@ -1,4 +1,5 @@
 import wave
+import struct
 
 class WAV():
     def __init__(self):
@@ -49,3 +50,11 @@ class WAV():
     def get_params(self):
         self.params = self.file.getparams()
         return self.params
+
+    def create_wave_file(self, channels_count, sample_pwidth, framerate, frames_count, compress_type, compress_name, amp, data, file_path):
+        wav_file = wave.open(file_path, 'w')
+        wav_file.setparams((channels_count, sample_pwidth, framerate, frames_count, compress_type, compress_name))
+        for values in data:
+            for v in values:
+                wav_file.writeframes(struct.pack('h', int(v * amp / 2)))
+        wav_file.close()
