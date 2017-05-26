@@ -6,6 +6,13 @@ class WAV_DIFF():
         self.description = ["Numbers of Frames", "Sampling Frequency", "Duration", "Numbers of Channels", "Sample Width", "Compression Type", "Compression Name"]
 
     def diff_spec(self, field, wav_before, wav_after):
+        """diff wave specification
+
+        args:
+            field (str)
+            wav_before (WAV)
+            wav_after (WAV)
+        """
         setattr(self, field, [])
         getattr(self, field).append(getattr(wav_before, "get_" + field)())
         getattr(self, field).append(getattr(wav_after, "get_" + field)())
@@ -13,6 +20,15 @@ class WAV_DIFF():
             0]) + " <---> " + str(getattr(self, field)[1]))
 
     def diff_frame(self, wav_before, wav_after):
+        """diff wav file frames and return the frame diff
+
+        args:
+            wav_before (WAV)
+            wav_after (WAV)
+
+        returns:
+            frame_diff (dict)
+        """
         signal_before = wav_before.get_frames()
         signal_after = wav_after.get_frames()
 
@@ -46,6 +62,12 @@ class WAV_DIFF():
         return frame_diff
 
     def diff(self, wav_before, wav_after):
+        """diff wav file
+
+        args:
+            wav_before (WAV)
+            wav_after (WAV)
+        """
         for attr in self.attributes:
             self.diff_spec(attr, wav_before, wav_after)
         self.frame_diff = self.diff_frame(wav_before, wav_after)
