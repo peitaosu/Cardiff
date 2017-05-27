@@ -27,6 +27,8 @@ def merge(file_before, file_after):
 
     frame_merged = {}
     for channel in range(len(wav_diff.frame_diff)):
+        if len(wav_diff.frame_diff[channel]) == 0:
+            continue
         print "Merging channel: " + str(channel + 1)
         frame_merged[channel] = {}
         option = raw_input("Choose your merge option: 1-All, 2-Frame By Frame: ")
