@@ -1,4 +1,5 @@
 import sys
+import numpy
 from parser.wav import WAV
 from parser.wav_diff import WAV_DIFF
 
@@ -51,4 +52,25 @@ def merge(file_before, file_after):
                 for frame_index, frame_info in wav_diff.frame_diff.iteritems():
                     frame_merged[channel][frame_index] = frame_info["before"]
     return frame_merged
+
+
+def make_merged(file_before, file_after, file_output_name):
+    """merge wav diff and save as file
+
+    args:
+        file_before (str)
+        file_after (str)
+        file_output_name (str)
+    """
+    merged_wav_out = WAV()
+    merged_wav_out.load_from_file(file_after)
+    merged_wav_out_data = merged_wav_out.get_frames()
+    merged_wav_out_data = numpy.fromstring(merged_wav_out_data, "Int16")
+    frame_merged = merge(file_before, file_after)
+    for channel in range(len(frame_merged)):
+        for frame_index, frame_info in frame_merged[channel]:
+            merged_wav_out_data[channel * frame_index] = frame_info
+    merged_wav_out_data = merged_wav_out_data.tostring()
+    merged_wav_out.create_wave_file(merged_wav_out.channels_count, merged_wav_out.sample_width, merged_wav_out.framerate, merged_wav_out.frames_count, merged_wav_out.compress_type, merged_wav_out.compress_name, merged_wav_out.amp, merged_wav_out_data, file_output_name + ".merged.wav")
+    return file_output_name + ".merged.wav"
 
