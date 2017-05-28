@@ -3,6 +3,11 @@ import numpy
 import wave
 
 def visualize_wave_file(file_path):
+    """visualize the wave file, show as plot
+
+    args:
+        file_path (str)
+    """
     wav_file = wave.open(file_path, "r")
 
     signal = wav_file.readframes(-1)
@@ -23,6 +28,15 @@ def visualize_wave_file(file_path):
     matplotlib.pyplot.show()
 
 def visualize_as_png(file_path, file_output_name = None):
+    """visualize the wave file, save as plot png file
+
+    args:
+        file_path (str)
+        file_output_name (str)
+    
+    returns:
+        png_file (str)
+    """
     wav_file = wave.open(file_path, "r")
 
     signal = wav_file.readframes(-1)

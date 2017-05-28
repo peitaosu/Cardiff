@@ -3,6 +3,15 @@ from parser.wav import WAV
 from parser.wav_diff import WAV_DIFF
 
 def diff(file_before, file_after):
+    """diff wave file
+
+    args:
+        file_before (str)
+        file_after (str)
+
+    returns:
+        wav_diff (WAV_DIFF)
+    """
     wav_before = WAV()
     wav_before.load_from_file(file_before)
     wav_after = WAV()
@@ -12,6 +21,16 @@ def diff(file_before, file_after):
     return wav_diff
 
 def make_diff(file_before, file_after, file_output_name):
+    """diff wave file and save as file
+
+    args:
+        file_before (str)
+        file_after (str)
+        file_output_name (str)
+
+    returns:
+        saved_file (str)
+    """
     wav_diff = diff(file_before, file_after)
     diff_content = {}
     for attr in wav_diff.attributes:
