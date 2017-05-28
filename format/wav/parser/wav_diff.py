@@ -71,3 +71,4 @@ class WAV_DIFF():
         for attr in self.attributes:
             self.diff_spec(attr, wav_before, wav_after)
         self.frame_diff = self.diff_frame(wav_before, wav_after)
+        self.frame_diff_count = sum(len(v) for v in self.frame_diff.itervalues())
