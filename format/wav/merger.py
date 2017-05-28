@@ -27,32 +27,33 @@ def merge(file_before, file_after):
 
     frame_merged = {}
     for channel in range(len(wav_diff.frame_diff)):
-        if len(wav_diff.frame_diff[channel]) == 0:
+        if len(wav_diff.frame_diff[str(channel)]) == 0:
+            print "Channel " + str(channel) + " nothing to merge."
             continue
         print "Merging channel: " + str(channel + 1)
-        frame_merged[channel] = {}
+        frame_merged[str(channel)] = {}
         option = raw_input("Choose your merge option: 1-All, 2-Frame By Frame: ")
         if option == "2":
-            for frame_index, frame_info in wav_diff.frame_diff[channel].iteritems():
-                frame_merged[channel][frame_index] = {}
-                print "Frame: " + str(frame_index)
-                print "Before: " + ", ".join([str(p) for p in frame_info["before"]])
-                print "After: " + ", ".join([str(p) for p in frame_info["after"]])
+            for frame_index, frame_info in wav_diff.frame_diff[str(channel)].iteritems():
+                frame_merged[str(channel)][frame_index] = {}
+                print "Frame: " + frame_index
+                print "Before: " + frame_info["before"]
+                print "After: " + frame_info["after"]
                 accept = raw_input(
                     "Choose your merge option: 1-Accept After, 2-Accept Before: ")
                 if accept == "1":
-                    frame_merged[channel][frame_index] = frame_info["after"]
+                    frame_merged[str(channel)][frame_index] = frame_info["after"]
                 elif accept == "2":
-                    frame_merged[channel][frame_index] = frame_info["before"]
+                    frame_merged[str(channel)][frame_index] = frame_info["before"]
         elif option == "1":
             accept = raw_input(
                 "Choose your merge option: 1-Accept After, 2-Accept Before: ")
             if accept == "1":
-                for frame_index, frame_info in wav_diff.frame_diff.iteritems():
-                    frame_merged[channel][frame_index] = frame_info["after"]
+                for frame_index, frame_info in wav_diff.frame_diff[str(channel)].iteritems():
+                    frame_merged[str(channel)][frame_index] = frame_info["after"]
             elif accept == "2":
-                for frame_index, frame_info in wav_diff.frame_diff.iteritems():
-                    frame_merged[channel][frame_index] = frame_info["before"]
+                for frame_index, frame_info in wav_diff.frame_diff[str(channel)].iteritems():
+                    frame_merged[str(channel)][frame_index] = frame_info["before"]
     return frame_merged
 
 
@@ -70,9 +71,8 @@ def make_merged(file_before, file_after, file_output_name):
     merged_wav_out_data = numpy.fromstring(merged_wav_out_data, "Int16")
     frame_merged = merge(file_before, file_after)
     for channel in range(len(frame_merged)):
-        for frame_index, frame_info in frame_merged[channel]:
-            merged_wav_out_data[channel * frame_index] = frame_info
-    merged_wav_out_data = merged_wav_out_data.tostring()
-    merged_wav_out.create_wave_file(merged_wav_out.channels_count, merged_wav_out.sample_width, merged_wav_out.framerate, merged_wav_out.frames_count, merged_wav_out.compress_type, merged_wav_out.compress_name, merged_wav_out.amp, merged_wav_out_data, file_output_name + ".merged.wav")
+        for frame_index, frame_info in frame_merged[str(channel)].iteritems():
+            merged_wav_out_data[channel * int(frame_index)] = frame_info
+    merged_wav_out.create_wave_file(merged_wav_out.get_channels_count(), merged_wav_out.get_sample_width(), merged_wav_out.get_framerate(), merged_wav_out.get_frames_count(), merged_wav_out.get_compress_type(), merged_wav_out.get_compress_name(), merged_wav_out_data, file_output_name + ".merged.wav")
     return file_output_name + ".merged.wav"
 

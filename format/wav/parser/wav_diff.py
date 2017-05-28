@@ -45,14 +45,14 @@ class WAV_DIFF():
         frame_diff = {}
         if len(channels_before) == len(channels_after):
             for channel in range(len(channels_before)):
-                frame_diff[channel] = {}
+                frame_diff[str(channel)] = {}
                 if len(channels_before[channel]) == len(channels_after[channel]):
                     if channels_before[channel] != channels_after[channel]:
-                        frame_diff[channel][index] = {}
                         for index in range(len(channels_before[0])):
                             if channels_before[channel][index] != channels_after[channel][index]:
-                                frame_diff[channel][index]["before"] = channels_before[channel][index]
-                                frame_diff[channel][index]["after"] = channels_after[channel][index]
+                                frame_diff[str(channel)][str(index)] = {}
+                                frame_diff[str(channel)][str(index)]["before"] = str(channels_before[channel][index])
+                                frame_diff[str(channel)][str(index)]["after"] = str(channels_after[channel][index])
                 else:
                     #TODO: add the diff for different length
                     pass
