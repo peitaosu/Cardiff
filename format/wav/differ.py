@@ -15,7 +15,7 @@ def diff(file_before, file_after):
     wav_before = WAV()
     wav_before.load_from_file(file_before)
     wav_after = WAV()
-    wav_after.load_from_file(wav_after)
+    wav_after.load_from_file(file_after)
     wav_diff = WAV_DIFF()
     wav_diff.diff(wav_before, wav_after)
     return wav_diff
