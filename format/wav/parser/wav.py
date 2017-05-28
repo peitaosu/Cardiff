@@ -109,7 +109,7 @@ class WAV():
         self.params = self.file.getparams()
         return self.params
 
-    def create_wave_file(self, channels_count, sample_width, framerate, frames_count, compress_type, compress_name, amp, data, file_path):
+    def create_wave_file(self, channels_count, sample_width, framerate, frames_count, compress_type, compress_name, data, file_path):
         """creare wave file
 
         args:
@@ -119,13 +119,11 @@ class WAV():
             frames_count (int)
             compress_type (str)
             compress_name (str)
-            amp (float)
             data (bin)
             file_path (str)
         """
         wav_file = wave.open(file_path, 'w')
         wav_file.setparams((channels_count, sample_width, framerate, frames_count, compress_type, compress_name))
-        for values in data:
-            for v in values:
-                wav_file.writeframes(struct.pack('h', int(v * amp / 2)))
+        for value in data:
+            wav_file.writeframes(struct.pack('h', value))
         wav_file.close()
