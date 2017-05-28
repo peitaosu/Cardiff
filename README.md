@@ -14,6 +14,8 @@ This tool can be used to diff difference between file versions, to check what ha
     - .PNG
     - .JPG
     - .GIF
+* Composite Data Format
+    - .WAV
 
 ## Plan to Support
 * Complex Document/Project Format
