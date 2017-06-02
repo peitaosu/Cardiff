@@ -1,7 +1,8 @@
 import aifc
 import struct
+from format.audio import AUDIO
 
-class AIF():
+class AIF(AUDIO):
     def __init__(self):
         pass
 
@@ -13,101 +14,6 @@ class AIF():
         """
         self.file_path = aifc_file
         self.file = aifc.open(aifc_file, "r")
-
-    def get_frames_count(self):
-        """get aifc frames count
-        
-        returns:
-            self.frames_count (int)
-        """
-        self.frames_count = self.file.getnframes()
-        return self.frames_count
-    
-    def get_frames(self):
-        """get all the frames data
-
-        returns:
-            self.frames (bin)
-        """
-        self.frames = self.file.readframes(self.file.getnframes())
-        return self.frames
-
-    def get_nframes(self, number_of_frames=None):
-        """get all or number of frames
-
-        args:
-            number_of_frames (int)
-        
-        returns:
-            frames (bin)
-        """
-        if number_of_frames is not None:
-            return self.file.readframes(number_of_frames)
-        else:
-            return self.file.readframes(self.file.getnframes())
-
-    def get_framerate(self):
-        """get aifc framerate
-
-        returns:
-            self.framerate (int)
-        """
-        self.framerate = self.file.getframerate()
-        return self.framerate
-
-    def get_duration(self):
-        """get aifc duration
-
-        returns:
-            self.duration (float)
-        """
-        self.duration = self.get_frames_count() / float(self.get_framerate())
-        return self.duration
-
-    def get_channels_count(self):
-        """get aifc channels count
-
-        returns:
-            self.channels_count (int)
-        """
-        self.channels_count = self.file.getnchannels()
-        return self.channels_count
-
-    def get_sample_width(self):
-        """get aifc sample width
-
-        returns:
-            self.sample_width (int)
-        """
-        self.sample_width = self.file.getsampwidth()
-        return self.sample_width
-
-    def get_compress_type(self):
-        """get aifc compress type
-
-        returns:
-            self.compress_type (str)
-        """
-        self.compress_type = self.file.getcomptype()
-        return self.compress_type
-
-    def get_compress_name(self):
-        """get aifc compress name
-
-        returns:
-            self.compress_name (str)
-        """
-        self.compress_name = self.file.getcompname()
-        return self.compress_name
-
-    def get_params(self):
-        """get aifc parameters
-
-        returns:
-            self.params (tuple)
-        """
-        self.params = self.file.getparams()
-        return self.params
 
     def get_markers(self):
         """get aifc markers
