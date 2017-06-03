@@ -82,3 +82,12 @@ class VCS():
             branch_name (str)
         """
         new_branch = self.repo.create_head(branch_name)
+
+    def switch_branch(self, branch):
+        """switch to specific branch
+
+        args:
+            branch (str)
+        """
+        self.previous_branch = self.repo.active_branch
+        self.repo.head.reference = self.repo.heads[branch]
