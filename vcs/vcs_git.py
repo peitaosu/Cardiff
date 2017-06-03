@@ -74,3 +74,11 @@ class VCS():
         master = head.reference
         log = master.log()
         return log
+    
+    def create_branch(self, branch_name):
+        """create new branch
+
+        args:
+            branch_name (str)
+        """
+        new_branch = self.repo.create_head(branch_name)
