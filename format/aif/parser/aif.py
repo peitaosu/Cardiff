@@ -38,8 +38,7 @@ class AIF(AUDIO):
             file_path (str)
         """
         aif_file = aifc.open(file_path, 'w')
-        aif_file.setnframes(frames_count)
-        aif_file.setparams((channels_count, sample_width, framerate, compress_type, compress_name))
+        aif_file.setparams((channels_count, sample_width, framerate, frames_count, compress_type, compress_name))
         for value in data:
             aif_file.writeframes(struct.pack('h', value))
         aif_file.close()
