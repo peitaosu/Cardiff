@@ -13,7 +13,9 @@ class AIF(AUDIO):
             aifc_file (str)
         """
         self.file_path = aifc_file
-        self.file = aifc.open(aifc_file, "r")
+        # there is a aifc module issue, need to pass file object, not name
+        file_obj = open(aifc_file, "r")
+        self.file = aifc.open(file_obj)
 
     def get_markers(self):
         """get aifc markers
@@ -37,7 +39,9 @@ class AIF(AUDIO):
             data (bin)
             file_path (str)
         """
-        aif_file = aifc.open(file_path, 'w')
+        # there is a aifc module issue, need to pass file object, not name
+        file_obj = open(file_path, "w")
+        aif_file = aifc.open(file_obj)
         aif_file.setparams((channels_count, sample_width, framerate, frames_count, compress_type, compress_name))
         for value in data:
             aif_file.writeframes(struct.pack('h', value))

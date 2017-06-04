@@ -9,7 +9,9 @@ def visualize_aifc_file(file_path):
     args:
         file_path (str)
     """
-    aif_file = aifc.open(file_path, "r")
+    # there is a aifc module issue, need to pass file object, not name
+    file_obj = open(file_path, "r")
+    aif_file = aifc.open(file_obj)
 
     signal = aif_file.readframes(-1)
     signal = numpy.fromstring(signal, "Int16")
@@ -38,7 +40,9 @@ def visualize_as_png(file_path, file_output_name = None):
     returns:
         png_file (str)
     """
-    aif_file = aifc.open(file_path, "r")
+    # there is a aifc module issue, need to pass file object, not name
+    file_obj = open(file_path, "r")
+    aif_file = aifc.open(file_obj)
 
     signal = aif_file.readframes(-1)
     signal = numpy.fromstring(signal, "Int16")
@@ -66,7 +70,9 @@ def visualize_file_diff(file_diff, file_base):
         file_diff (str)
         file_base (str)
     """
-    aif_file = aifc.open(file_base, "r")
+    # there is a aifc module issue, need to pass file object, not name
+    file_obj = open(file_base, "r")
+    aif_file = aifc.open(file_obj)
     signal = aif_file.readframes(-1)
     signal = numpy.fromstring(signal, "Int16")
     channel_count = len(file_diff.frame_diff)
