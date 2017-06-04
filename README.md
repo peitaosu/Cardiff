@@ -16,6 +16,7 @@ This tool can be used to diff difference between file versions, to check what ha
     - .GIF
 * Composite Data Format
     - .WAV
+    - .AIF
 
 ## Plan to Support
 * Complex Document/Project Format
