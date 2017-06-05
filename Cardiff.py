@@ -151,8 +151,11 @@ class Cardiff():
 
     def cmd_branch(self, command):
         self.setup_vcs()
-        self.vcs.create_branch(command[0])
-        self.vcs.switch_branch(command[0])
+        if len(command) == 0:
+            self.vcs.get_branches()
+        else:
+            self.vcs.create_branch(command[0])
+            self.vcs.switch_branch(command[0])
 
     def cmd_clean(self, command):
         if len(command) == 0:
