@@ -19,6 +19,7 @@ class Cardiff():
             "commit": self.cmd_commit,
             "checkout": self.cmd_checkout,
             "log": self.cmd_log,
+            "branch": self.cmd_branch,
             "clean": self.cmd_clean,
             "help": self.cmd_help
         }
@@ -148,6 +149,11 @@ class Cardiff():
                         print key + " - " + log[1] + " - " + log[4]
                         break
 
+    def cmd_branch(self, command):
+        self.setup_vcs()
+        self.vcs.create_branch(command[0])
+        self.vcs.switch_branch(command[0])
+
     def cmd_clean(self, command):
         if len(command) == 0:
             clean_path(self.temp)
@@ -155,7 +161,7 @@ class Cardiff():
         else:
             for filter in command:
                 clean_path(self.temp, filter)
-
+    
     def cmd_help(self, command):
         commands = {
             "init": "init <repo_path>",
@@ -164,6 +170,7 @@ class Cardiff():
             "commit": "commit <file> <message>",
             "checkout": "checkout <file> <version>",
             "log": "log [filter]",
+            "branch": "branch <branch>",
             "clean": "clean [filter]",
             "help": "help [command]"
         }
