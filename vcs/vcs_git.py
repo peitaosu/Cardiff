@@ -91,3 +91,13 @@ class VCS():
         """
         self.previous_branch = self.repo.active_branch
         self.repo.head.reference = self.repo.heads[branch]
+
+    def get_branches(self):
+        """get branches
+        """
+        self.branches = self.repo.heads
+        for branch in self.branches:
+            if branch == self.repo.head.reference:
+                print " * " + branch.name
+            else:
+                print "   " + branch.name
