@@ -152,6 +152,7 @@ class Cardiff():
     def cmd_branch(self, command):
         self.setup_vcs()
         if len(command) == 0:
+            print "[Local Branches]:"
             self.vcs.get_branches()
         else:
             self.vcs.create_branch(command[0])
