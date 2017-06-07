@@ -11,6 +11,10 @@ def test_cmd_branch():
     cardiff.exec_cmd(["help", "branch"])
     cardiff.exec_cmd(["branch"])
 
+def test_cmd_clean():
+    cardiff.exec_cmd(["help", "clean"])
+    cardiff.exec_cmd(["clean"])
+
 if __name__ == "__main__":
     print "[TEST] New a Cardiff object..."
     cardiff = Cardiff()
@@ -27,3 +31,6 @@ if __name__ == "__main__":
 
     print "[TEST] Command - branch"
     test_cmd_branch()
+
+    print "[TEST] Command - clean"
+    test_cmd_clean()
