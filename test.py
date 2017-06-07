@@ -7,6 +7,9 @@ def test_cmd_help():
 def test_cmd_log():
     cardiff.exec_cmd(["log"])
 
+def test_cmd_branch():
+    cardiff.exec_cmd(["branch"])
+
 if __name__ == "__main__":
     print "[TEST] New a Cardiff object..."
     cardiff = Cardiff()
@@ -20,3 +23,6 @@ if __name__ == "__main__":
 
     print "[TEST] Test log command..."
     test_cmd_log()
+
+    print "[TEST] Test branch command..."
+    test_cmd_branch()
