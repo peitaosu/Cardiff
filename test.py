@@ -3,6 +3,9 @@ from Cardiff import Cardiff
 def test_cmd_help():
     cardiff.exec_cmd(["help"])
 
+def test_cmd_init():
+    cardiff.exec_cmd(["init", "./test"])
+
 def test_cmd_log():
     cardiff.exec_cmd(["help", "log"])
     cardiff.exec_cmd(["log"])
@@ -25,6 +28,9 @@ if __name__ == "__main__":
 
     print "[TEST] Command - help"
     test_cmd_help()
+
+    print "[TEST] Command - init"
+    test_cmd_init()
 
     print "[TEST] Command - log"
     test_cmd_log()
