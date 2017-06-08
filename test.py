@@ -1,5 +1,6 @@
 from Cardiff import Cardiff
 import shutil
+import importlib
 
 def test_cmd_help():
     cardiff.exec_cmd(["help"])
@@ -22,6 +23,11 @@ def test_cmd_clean():
 def test_rollback():
     shutil.rmtree("./test")
 
+def create_dummy_file(ext, content):
+    file_module = importlib.import_module("format." + ext + ".parser." + ext)
+    file_class = getattr(file_module, ext.upper())
+    #TODO: create file with method of class
+
 if __name__ == "__main__":
     print "[TEST] New a Cardiff object..."
     cardiff = Cardiff()
@@ -41,6 +47,9 @@ if __name__ == "__main__":
 
     print "[TEST] Command - branch"
     test_cmd_branch()
+
+    print "[TEST] Create Dummy File"
+    create_dummy_file("bmp", None)
 
     print "[TEST] Command - clean"
     test_cmd_clean()
