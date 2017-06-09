@@ -15,6 +15,9 @@ def test_cmd_commit():
 def test_cmd_diff():
     cardiff.exec_cmd(["diff", "file.bmp", "1", "2"])
 
+def test_cmd_merge():
+    cardiff.exec_cmd(["merge", "file.bmp", "1", "2"])
+
 def test_cmd_log():
     cardiff.exec_cmd(["help", "log"])
     cardiff.exec_cmd(["log"])
@@ -70,6 +73,9 @@ if __name__ == "__main__":
     print "[TEST] Command - diff"
     test_cmd_commit()
     test_cmd_diff()
+
+    print "[TEST] Command - merge"
+    test_cmd_merge()
 
     print "[TEST] Command - log"
     test_cmd_log()
