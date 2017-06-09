@@ -12,6 +12,9 @@ def test_cmd_init():
 def test_cmd_commit():
     cardiff.exec_cmd(["commit", "file.bmp", "commit no.1"])
 
+def test_cmd_diff():
+    cardiff.exec_cmd(["diff", "file.bmp", "1", "2"])
+
 def test_cmd_log():
     cardiff.exec_cmd(["help", "log"])
     cardiff.exec_cmd(["log"])
@@ -63,6 +66,10 @@ if __name__ == "__main__":
 
     print "[TEST] Command - commit"
     test_cmd_commit()
+
+    print "[TEST] Command - diff"
+    test_cmd_commit()
+    test_cmd_diff()
 
     print "[TEST] Command - log"
     test_cmd_log()
