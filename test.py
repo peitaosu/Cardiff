@@ -1,12 +1,16 @@
 from Cardiff import Cardiff
 import shutil
 import importlib
+from PIL import Image
 
 def test_cmd_help():
     cardiff.exec_cmd(["help"])
 
 def test_cmd_init():
     cardiff.exec_cmd(["init", "./test"])
+
+def test_cmd_commit():
+    cardiff.exec_cmd(["commit", "file.bmp", "commit no.1"])
 
 def test_cmd_log():
     cardiff.exec_cmd(["help", "log"])
@@ -22,6 +26,14 @@ def test_cmd_clean():
 
 def test_rollback():
     shutil.rmtree("./test")
+
+def create_dummy_bmp():
+    img = Image.new('RGB', (256, 256))
+    pixels = img.load()
+    for x in range(img.size[0]):
+        for y in range(img.size[1]):
+            pixels[x, y] = (0, 0, 0)
+    img.save("./test/file.bmp")
 
 def create_dummy_file(ext, content):
     file_module = importlib.import_module("format." + ext + ".parser." + ext)
@@ -42,14 +54,18 @@ if __name__ == "__main__":
     print "[TEST] Command - init"
     test_cmd_init()
 
-    print "[TEST] Command - log"
-    test_cmd_log()
-
     print "[TEST] Command - branch"
     test_cmd_branch()
 
     print "[TEST] Create Dummy File"
     create_dummy_file("bmp", None)
+    create_dummy_bmp()
+
+    print "[TEST] Command - commit"
+    test_cmd_commit()
+
+    print "[TEST] Command - log"
+    test_cmd_log()
 
     print "[TEST] Command - clean"
     test_cmd_clean()
