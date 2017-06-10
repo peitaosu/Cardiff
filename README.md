@@ -34,3 +34,8 @@ This tool can be used to diff difference between file versions, to check what ha
 * Version Merge
 * Version Rollback
 * Version Branch
+
+## Requirements
+* python 2.x
+* ```pip install -r requirements.txt```
+
