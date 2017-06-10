@@ -39,3 +39,36 @@ This tool can be used to diff difference between file versions, to check what ha
 * python 2.x
 * ```pip install -r requirements.txt```
 
+## Usage
+1. Command Line
+   ```
+   > python Cardiff.py help
+
+   Usage:
+     Cardiff.py merge <file> <version_1> [<version_2>]
+     Cardiff.py init <repo_path>
+     Cardiff.py log [filter]
+     Cardiff.py branch <branch>
+     Cardiff.py commit <file> <message>
+     Cardiff.py diff <file> <version_1> [<version_2>]
+     Cardiff.py clean [filter]
+     Cardiff.py checkout <file> <version>
+     Cardiff.py help [command]
+   ```
+
+2. Python Module
+   ```
+   from Cardiff import Cardiff
+
+   # new a cardiff object
+   cardiff = Cardiff()
+
+   # load settings
+   settings_path = "./settings.json"
+   cardiff.load_settings(settings_path)
+
+   # execute command
+   cardiff.exec_cmd(["help"])
+   # or
+   cardiff.cmd_help([])
+   ```
