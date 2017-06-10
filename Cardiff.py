@@ -49,6 +49,8 @@ class Cardiff():
                 print "You need to init a repo first time."
                 sys.exit(-1)
             self.vcs.set_repo(self.settings["repo"])
+            self.vcs_branches = self.vcs.get_branches()
+            self.vcs_current_branch = self.vcs_branches["current"]
             self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]), "log.json")
             with open(self.vcs_db_log) as log_file:
                 self.vcs_logs = json.load(log_file)
@@ -77,11 +79,11 @@ class Cardiff():
         self.setup_vcs()
         file_path = file_ver[0]
         if len(file_ver) > 2:
-            ver_1 = self.vcs_logs["#" + file_ver[1]]["hash"]
-            ver_2 = self.vcs_logs["#" + file_ver[2]]["hash"]
+            ver_1 = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[1]]["hash"]
+            ver_2 = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[2]]["hash"]
         else:
-            ver_1 = self.vcs_logs[self.vcs_logs["HEAD"]]["hash"]
-            ver_2 = self.vcs_logs["#" + file_ver[1]]["hash"]
+            ver_1 = self.vcs_logs[self.vcs_current_branch][self.vcs_logs[self.vcs_current_branch]["HEAD"]]["hash"]
+            ver_2 = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[1]]["hash"]
         file_ext = os.path.splitext(file_path)[1]
         new_file_1 = str(time.time()) + file_ext
         self.vcs.checkout_as_new(file_path, ver_1, os.path.join(self.temp, new_file_1))
@@ -96,11 +98,11 @@ class Cardiff():
         self.setup_vcs()
         file_path = file_ver[0]
         if len(file_ver) > 2:
-            ver_1 = self.vcs_logs["#" + file_ver[1]]["hash"]
-            ver_2 = self.vcs_logs["#" + file_ver[2]]["hash"]
+            ver_1 = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[1]]["hash"]
+            ver_2 = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[2]]["hash"]
         else:
-            ver_1 = self.vcs_logs[self.vcs_logs["HEAD"]]["hash"]
-            ver_2 = self.vcs_logs["#" + file_ver[1]]["hash"]
+            ver_1 = self.vcs_logs[self.vcs_current_branch][self.vcs_logs[self.vcs_current_branch]["HEAD"]]["hash"]
+            ver_2 = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[1]]["hash"]
         file_ext = os.path.splitext(file_path)[1]
         new_file_1 = str(time.time()) + file_ext
         self.vcs.checkout_as_new(file_path, ver_1, os.path.join(self.temp, new_file_1))
@@ -114,12 +116,12 @@ class Cardiff():
         file_path = commit[0]
         commit_message = commit[1]
         log_content = self.vcs.commit(file_path, commit_message)
-        log_flag = "#" + str(int(self.vcs_logs["HEAD"][1:]) + 1)
+        log_flag = "#" + str(int(self.vcs_logs[self.vcs_current_branch]["HEAD"][1:]) + 1)
         log = {}
         log["hash"] = log_content[1]
         log["message"] = log_content[4]
-        self.vcs_logs[log_flag] = log
-        self.vcs_logs["HEAD"] = log_flag
+        self.vcs_logs[self.vcs_current_branch][log_flag] = log
+        self.vcs_logs[self.vcs_current_branch]["HEAD"] = log_flag
         with open(self.vcs_db_log, "w") as log_file:
             json.dump(self.vcs_logs, log_file, indent=4)
         print "[New Commit]:"
@@ -128,7 +130,7 @@ class Cardiff():
     def cmd_checkout(self, file_ver):
         self.setup_vcs()
         file_path = file_ver[0]
-        ver = self.vcs_logs["#" + file_ver[1]]["hash"]
+        ver = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[1]]["hash"]
         self.vcs.checkout(file_path, ver)
         print "checkout " + file_path + " from " + ver
 
@@ -139,12 +141,12 @@ class Cardiff():
         for log in logs:
             if len(log_filter) > 0:
                 if log_filter[0] in log[1] or log_filter[0] in log[4]:
-                    for key, value in self.vcs_logs.iteritems():
+                    for key, value in self.vcs_logs[self.vcs_current_branch].iteritems():
                         if key != "HEAD" and value["hash"] == log[1]:
                             print key + " - " + log[1] + " - " + log[4]
                             break
             else:
-                for key, value in self.vcs_logs.iteritems():
+                for key, value in self.vcs_logs[self.vcs_current_branch].iteritems():
                     if key != "HEAD" and value["hash"] == log[1]:
                         print key + " - " + log[1] + " - " + log[4]
                         break
@@ -153,7 +155,10 @@ class Cardiff():
         self.setup_vcs()
         if len(command) == 0:
             print "[Local Branches]:"
-            self.vcs.get_branches()
+            print "* " + self.vcs_branches["current"]
+            if len(self.vcs_branches["other"]) > 0:
+                for branch in self.vcs_branches["other"]:
+                    print "  " + branch
         else:
             self.vcs.create_branch(command[0])
             self.vcs.switch_branch(command[0])

@@ -22,4 +22,4 @@ def init_vcs_log(vcs_db_path, repo_name):
         repo_name (str)
     """
     with open(os.path.join(vcs_db_path, repo_name, "log.json"), "w") as vcs_log_file:
-        vcs_log_file.write("{\"HEAD\":\"#0\"}")
+        vcs_log_file.write("{\"master\":{\"HEAD\": \"#0\"}}")
