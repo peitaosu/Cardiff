@@ -95,9 +95,12 @@ class VCS():
     def get_branches(self):
         """get branches
         """
-        self.branches = self.repo.heads
-        for branch in self.branches:
+        self.branches = {}
+        self.branches["current"] = "master"
+        self.branches["other"] = []
+        for branch in self.repo.heads:
             if branch == self.repo.head.reference:
-                print " * " + branch.name
+                self.branches["current"] = branch.name
             else:
-                print "   " + branch.name
+                self.branches["other"].append(branch.name)
+        return self.branches
