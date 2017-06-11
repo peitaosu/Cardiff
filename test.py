@@ -26,6 +26,9 @@ def test_cmd_branch():
     cardiff.exec_cmd(["help", "branch"])
     cardiff.exec_cmd(["branch"])
 
+def test_switch_branch():
+    cardiff.exec_cmd(["branch", "new_branch"])
+
 def test_cmd_clean():
     cardiff.exec_cmd(["help", "clean"])
     cardiff.exec_cmd(["clean"])
@@ -74,7 +77,12 @@ if __name__ == "__main__":
     test_cmd_commit()
     test_cmd_diff()
 
+    print "[TEST] Switch Branch"
+    test_switch_branch()
+
     print "[TEST] Command - merge"
+    test_cmd_commit()
+    test_cmd_commit()
     test_cmd_merge()
 
     print "[TEST] Command - log"
