@@ -160,7 +160,11 @@ class Cardiff():
                 for branch in self.vcs_branches["other"]:
                     print "  " + branch
         else:
-            self.vcs.create_branch(command[0])
+            if command[0] not in self.vcs_logs:
+                self.vcs.create_branch(command[0])
+                self.vcs_logs[command[0]] = {"HEAD": "#0"}
+                with open(self.vcs_db_log, "w") as log_file:
+                    json.dump(self.vcs_logs, log_file, indent=4)
             self.vcs.switch_branch(command[0])
 
     def cmd_clean(self, command):
@@ -170,7 +174,7 @@ class Cardiff():
         else:
             for filter in command:
                 clean_path(self.temp, filter)
-    
+
     def cmd_help(self, command):
         commands = {
             "init": "init <repo_path>",
