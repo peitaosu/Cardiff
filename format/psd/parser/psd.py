@@ -8,7 +8,10 @@ class PSD():
         self.psd_file = PSDImage.load(file_path)
 
     def get_psd_header(self):
-        return self.psd_file.header
+        self.header = {}
+        for field in self.psd_file.header._fields:
+            self.header[field] = getattr(self.psd_file.header, field)
+        return self.header
 
     def get_psd_layers(self, index = None):
         if index is not None:
