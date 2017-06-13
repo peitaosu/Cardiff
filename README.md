@@ -1,5 +1,7 @@
 # Project Cardiff
 
+[![Build Status](https://travis-ci.org/peitaosu/Cardiff.svg?branch=master)](https://travis-ci.org/peitaosu/Cardiff)
+
 ## What is Project Cardiff ?
 
 Project Cardiff want to create a version control tool for binary format files.
