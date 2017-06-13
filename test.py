@@ -2,6 +2,7 @@ from Cardiff import Cardiff
 import shutil
 import importlib
 from PIL import Image
+import json
 
 def test_cmd_help():
     cardiff.exec_cmd(["help"])
@@ -54,7 +55,14 @@ if __name__ == "__main__":
     cardiff = Cardiff()
 
     print "[TEST] Load settings.json from Cardiff root path..."
+
     settings_path = "./settings.json"
+    with open(settings_path) as settings_file:
+        settings = json.load(settings_file)
+    settings["user.name"] = "test"
+    settings["user.email"] = "test@@cardiff"
+    with open(settings_path, "w") as settings_file:
+        json.dump(settings, settings_file, indent=4)
     cardiff.load_settings(settings_path)
 
     print "[TEST] Command - help"
