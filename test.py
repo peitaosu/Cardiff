@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     print "[TEST] Command - diff"
     test_cmd_commit()
-    test_cmd_diff()
+    #test_cmd_diff()
 
     print "[TEST] Switch Branch"
     test_switch_branch()
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     print "[TEST] Command - merge"
     test_cmd_commit()
     test_cmd_commit()
-    test_cmd_merge()
+    #test_cmd_merge()
 
     print "[TEST] Command - log"
     test_cmd_log()
