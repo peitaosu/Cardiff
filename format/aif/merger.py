@@ -3,7 +3,7 @@ import numpy
 from parser.aif import AIF
 from parser.aif_diff import AIF_DIFF
 
-def merge(file_before, file_after):
+def merge(file_before, file_after, default_option="0", default_accept="0"):
     """merge aif diff
 
     args:
@@ -32,22 +32,31 @@ def merge(file_before, file_after):
             continue
         print "Merging channel: " + str(channel + 1)
         frame_merged[str(channel)] = {}
-        option = raw_input("Choose your merge option: 1-All, 2-Frame By Frame: ")
+        if default_option == "0":
+            option = raw_input("Choose your merge option: 1-All, 2-Frame By Frame: ")
+        else:
+            option = default_option
         if option == "2":
             for frame_index, frame_info in aif_diff.frame_diff[str(channel)].iteritems():
                 frame_merged[str(channel)][frame_index] = {}
                 print "Frame: " + frame_index
                 print "Before: " + frame_info["before"]
                 print "After: " + frame_info["after"]
-                accept = raw_input(
-                    "Choose your merge option: 1-Accept After, 2-Accept Before: ")
+                if default_accept == "0":
+                    accept = raw_input(
+                        "Choose your merge option: 1-Accept After, 2-Accept Before: ")
+                else:
+                    accept = default_accept
                 if accept == "1":
                     frame_merged[str(channel)][frame_index] = frame_info["after"]
                 elif accept == "2":
                     frame_merged[str(channel)][frame_index] = frame_info["before"]
         elif option == "1":
-            accept = raw_input(
-                "Choose your merge option: 1-Accept After, 2-Accept Before: ")
+            if default_accept == "0":
+                accept = raw_input(
+                    "Choose your merge option: 1-Accept After, 2-Accept Before: ")
+            else:
+                accept = default_accept
             if accept == "1":
                 for frame_index, frame_info in aif_diff.frame_diff[str(channel)].iteritems():
                     frame_merged[str(channel)][frame_index] = frame_info["after"]
