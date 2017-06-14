@@ -18,16 +18,16 @@ class PSD():
     def get_psd_layers(self, layer_id = None):
         self.layers = {}
         for layer in self.psd_file.layers:
-            layer_id = str(layer.layer_id)
-            self.layers[layer_id] = {}
+            l_id = str(layer.layer_id)
+            self.layers[l_id] = {}
             for field in self.layer_fields:
-                self.layers[layer_id][field] = getattr(layer, field)
+                self.layers[l_id][field] = getattr(layer, field)
             bbox = {}
             for field in self.bbox_fields:
                 bbox[field] = getattr(layer.bbox, field)
-            self.layers[layer_id]["bbox"] = bbox
+            self.layers[l_id]["bbox"] = bbox
         if layer_id is not None:
-            return self.layers[layer_id]
+            return self.layers[str(layer_id)]
         return self.layers
 
     def get_decoded_data(self):
