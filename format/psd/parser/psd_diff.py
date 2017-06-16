@@ -41,8 +41,10 @@ class PSD_DIFF():
         for layer_id in layer_ids:
             self.layer[layer_id] = {}
             self.layer[layer_id]["parameter"] = self.diff_layer_parameters(layers_parameter_before[layer_id], layers_parameter_after[layer_id])
-            layer_image_before = psd_before.get_single_layer_image(int(layer_id))
-            layer_image_after = psd_after.get_single_layer_image(int(layer_id))
-            self.layer[layer_id]["pixel"] = self.diff_layer_pixel(layer_image_before, layer_image_after)
-
-            
+            try:
+                layer_image_before = psd_before.get_single_layer_image(int(layer_id))
+                layer_image_after = psd_after.get_single_layer_image(int(layer_id))
+                self.layer[layer_id]["pixel"] = self.diff_layer_pixel(layer_image_before, layer_image_after)
+            except:
+                self.layer[layer_id]["pixel"] = "Empty Layer."
+       
