@@ -36,12 +36,16 @@ class PSD():
     def get_embedded(self):
         return self.psd_file.embedded
 
-    def export_single_layer(self, layer_id, file_path):
+    def get_single_layer_image(self, layer_id):
         for layer in self.psd_file.layers:
             if layer.layer_id == layer_id:
-                layer_image = layer.as_PIL()
-                layer_image.save(file_path)
+                return layer.as_PIL()
+
+    def get_merged_image(self):
+        return self.psd_file.as_PIL()
+
+    def export_single_layer(self, layer_id, file_path):
+        self.get_single_layer_image(layer_id).save(file_path)
 
     def export_merged_image(self, file_path):
-        merged_image = self.psd_file.as_PIL()
-        merged_image.save(file_path)
+        self.get_merged_image().save(file_path)
