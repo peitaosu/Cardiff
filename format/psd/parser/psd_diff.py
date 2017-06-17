@@ -8,6 +8,12 @@ class PSD_DIFF():
         self.layer_image = {}
 
     def diff_header(self, psd_before, psd_after):
+        """diff psd header
+
+        args:
+            psd_before (PSD)
+            psd_after (PSD)
+        """
         header_before = psd_before.get_psd_header()
         header_after = psd_after.get_psd_header()
         for field in header_before:
@@ -16,6 +22,15 @@ class PSD_DIFF():
             self.header[field]["after"] = header_after[field]
 
     def diff_layer_pixel(self, layer_image_before, layer_image_after):
+        """diff psd layer pixel
+
+        args:
+            layer_image_before (PIL.Image)
+            layer_image_after (PIL.Image)
+
+        returns:
+            pixel_diff (dict)
+        """
         layer_image_data_before = layer_image_before.load()
         layer_image_data_after = layer_image_after.load()
         pixel_index = 1
@@ -31,6 +46,15 @@ class PSD_DIFF():
         return pixel_diff
 
     def diff_layer_parameters(self, layer_parameter_before, layer_parameter_after):
+        """diff psd layer parameters
+
+        args:
+            layer_parameter_before (dict)
+            layer_parameter_after (dict)
+        
+        returns:
+            parameter_diff (dict)
+        """
         parameter_diff = {}
         for parameter in layer_parameter_before.keys():
             parameter_diff[parameter] = {}
@@ -39,6 +63,12 @@ class PSD_DIFF():
         return parameter_diff
 
     def diff_layers(self, psd_before, psd_after):
+        """diff psd layers
+
+        args:
+            psd_before (PSD)
+            psd_after (PSD)
+        """
         layers_parameter_before = psd_before.get_psd_layers()
         layers_parameter_after = psd_after.get_psd_layers()
         layer_ids = set(layers_parameter_before.keys() + layers_parameter_after.keys())
@@ -56,6 +86,12 @@ class PSD_DIFF():
                 self.layer[layer_id]["pixel"] = "Empty Layer."
 
     def diff(self, psd_before, psd_after):
+        """diff psd header and layers
+
+        args:
+            psd_before (PSD)
+            psd_after (PSD)
+        """
         self.diff_header(psd_before, psd_after)
         self.diff_layers(psd_before, psd_after)
     
