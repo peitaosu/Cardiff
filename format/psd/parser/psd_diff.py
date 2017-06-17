@@ -2,6 +2,9 @@ class PSD_DIFF():
     def __init__(self):
         self.header = {}
         self.layer = {}
+        self.header_descriptions = {"number_of_channels": "Number of Channels", "height": "Height", "width": "Width", "depth": "Depth", "color_mode": "Color Mode"}
+        self.layer_descriptions = {"name": "Layer Name", "blend_mode": "Blend Mode", "opacity": "Opacity", "visible": "Visible", "bbox": "BBox"}
+        self.bbox_descriptions = {"height": "BBox Height", "width": "BBox Width", "x1": "Position x1", "x2": "Position x2", "y1": "Position y1", "y2": "Position y2"}
 
     def diff_header(self, psd_before, psd_after):
         header_before = psd_before.get_psd_header()
