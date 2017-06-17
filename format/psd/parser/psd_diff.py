@@ -50,4 +50,7 @@ class PSD_DIFF():
                 self.layer[layer_id]["pixel"] = self.diff_layer_pixel(layer_image_before, layer_image_after)
             except:
                 self.layer[layer_id]["pixel"] = "Empty Layer."
-       
+
+    def diff(self, psd_before, psd_after):
+        self.diff_header(psd_before, psd_after)
+        self.diff_layers(psd_before, psd_after)
