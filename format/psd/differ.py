@@ -4,6 +4,15 @@ from parser.psd import PSD
 from parser.psd_diff import PSD_DIFF
 
 def diff(file_before, file_after):
+    """diff psd file
+
+    args:
+        file_before (str)
+        file_after (str)
+
+    returns:
+        psd_diff (PSD_DIFF)
+    """
     psd_before = PSD()
     psd_after = PSD()
     psd_before.load_psd_from_file(file_before)
@@ -13,6 +22,13 @@ def diff(file_before, file_after):
     return psd_diff
 
 def make_diff(file_before, file_after, file_output_name):
+    """diff psd file and save as file
+
+    args:
+        file_before (str)
+        file_after (str)
+        file_output_name (str)
+    """
     os.mkdir(file_output_name)
     psd_diff = diff(file_before, file_after)
     diff_content = {}
