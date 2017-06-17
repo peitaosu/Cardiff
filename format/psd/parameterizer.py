@@ -2,6 +2,11 @@ import os, sys
 from parser.psd_diff import PSD_DIFF
 
 def parameterize(file_diff):
+    """print formatted diff data
+
+    args:
+        file_diff (PSD_DIFF)
+    """
     print "{:>48} : {} ----> {}".format("============ Header ============", "before", "after")
     for field in file_diff.header.keys():
         print "{:>48} : {} ----> {}".format(file_diff.header_descriptions[field], file_diff.header[field]["before"], file_diff.header[field]["after"])
