@@ -5,6 +5,7 @@ class PSD_DIFF():
         self.header_descriptions = {"number_of_channels": "Number of Channels", "height": "Height", "width": "Width", "depth": "Depth", "color_mode": "Color Mode"}
         self.layer_descriptions = {"name": "Layer Name", "blend_mode": "Blend Mode", "opacity": "Opacity", "visible": "Visible", "bbox": "BBox"}
         self.bbox_descriptions = {"height": "BBox Height", "width": "BBox Width", "x1": "Position x1", "x2": "Position x2", "y1": "Position y1", "y2": "Position y2"}
+        self.layer_image = {}
 
     def diff_header(self, psd_before, psd_after):
         header_before = psd_before.get_psd_header()
@@ -43,10 +44,13 @@ class PSD_DIFF():
         layer_ids = set(layers_parameter_before.keys() + layers_parameter_after.keys())
         for layer_id in layer_ids:
             self.layer[layer_id] = {}
+            self.layer_image[layer_id] = {}
             self.layer[layer_id]["parameter"] = self.diff_layer_parameters(layers_parameter_before[layer_id], layers_parameter_after[layer_id])
             try:
                 layer_image_before = psd_before.get_single_layer_image(int(layer_id))
                 layer_image_after = psd_after.get_single_layer_image(int(layer_id))
+                self.layer_image[layer_id]["before"] = layer_image_before
+                self.layer_image[layer_id]["after"] = layer_image_after
                 self.layer[layer_id]["pixel"] = self.diff_layer_pixel(layer_image_before, layer_image_after)
             except:
                 self.layer[layer_id]["pixel"] = "Empty Layer."
@@ -54,3 +58,4 @@ class PSD_DIFF():
     def diff(self, psd_before, psd_after):
         self.diff_header(psd_before, psd_after)
         self.diff_layers(psd_before, psd_after)
+    
