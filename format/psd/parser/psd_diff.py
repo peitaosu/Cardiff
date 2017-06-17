@@ -29,9 +29,9 @@ class PSD_DIFF():
     def diff_layer_parameters(self, layer_parameter_before, layer_parameter_after):
         parameter_diff = {}
         for parameter in layer_parameter_before.keys():
-            if layer_parameter_before[parameter] != layer_parameter_after[parameter]:
-                parameter_diff["before"] = layer_parameter_before[parameter]
-                parameter_diff["after"] = layer_parameter_after[parameter]
+            parameter_diff[parameter] = {}
+            parameter_diff[parameter]["before"] = layer_parameter_before[parameter]
+            parameter_diff[parameter]["after"] = layer_parameter_after[parameter]
         return parameter_diff
 
     def diff_layers(self, psd_before, psd_after):
