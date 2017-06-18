@@ -19,12 +19,13 @@ This tool can be used to diff difference between file versions, to check what ha
 * Composite Data Format
     - .WAV
     - .AIF
+* Complex Document/Project Format
+    - .PSD (WIP)
 
 ## Plan to Support
 * Complex Document/Project Format
     - .PDF
     - .DWG
-    - .PSD
     - ....
 * Composite Data Format
     - ....
