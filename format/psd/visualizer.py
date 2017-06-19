@@ -11,14 +11,21 @@ def visualize_as_window(file_list_to_show):
         file_list_to_show (list)
     """
     for image in file_list_to_show:
-        for file_ext in [".before.png", ".before.diff.png", ".after.diff.png", ".after.png"]:
-            window = Tkinter.Tk()
-            window.wm_title(image + file_ext)
-            image_to_show = Image.open(image + file_ext)
-            image_tk = ImageTk.PhotoImage(image_to_show)
-            image_label = Tkinter.Label(window, image=image_tk)
-            image_label.pack(side = "bottom", fill = "both", expand = "yes")
-            window.mainloop()
+        window = Tkinter.Tk()
+        window.wm_title("PSD DIFF")
+        image_tk_before = ImageTk.PhotoImage(Image.open(image + ".before.png"))
+        image_tk_before_diff = ImageTk.PhotoImage(Image.open(image + ".before.diff.png"))
+        image_tk_after_diff = ImageTk.PhotoImage(Image.open(image + ".after.diff.png"))
+        image_tk_after = ImageTk.PhotoImage(Image.open(image + ".after.png"))
+        image_label = Tkinter.Label(window, image=image_tk_before)
+        image_label.pack(side = "left", fill = "both", expand = "yes")
+        image_label = Tkinter.Label(window, image=image_tk_before_diff)
+        image_label.pack(side = "left", fill = "both", expand = "yes")
+        image_label = Tkinter.Label(window, image=image_tk_after_diff)
+        image_label.pack(side = "left", fill = "both", expand = "yes")
+        image_label = Tkinter.Label(window, image=image_tk_after)
+        image_label.pack(side = "left", fill = "both", expand = "yes")
+        window.mainloop()
 
 def visualize_as_png(file_diff, file_after, file_output_name = None):
     """visualize the psd diff, open as psd file with alpha channel
