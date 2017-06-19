@@ -3,6 +3,7 @@ from differ import diff
 from parser.psd_diff import *
 from PIL import Image, ImageTk
 import Tkinter
+import shutil
 
 def visualize_as_window(file_list_to_show):
     """visualize the psd diff, open with Tkinter window
@@ -38,6 +39,8 @@ def visualize_as_png(file_diff, file_after, file_output_name = None):
     returns:
         png_file (list)
     """
+    if os.path.exists(file_output_name):
+        shutil.rmtree(file_output_name)
     os.mkdir(file_output_name)
     diff_content = {}
     png_file_list = []
