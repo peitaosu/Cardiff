@@ -14,10 +14,14 @@ def visualize_as_window(file_list_to_show):
     for image in file_list_to_show:
         window = Tkinter.Tk()
         window.wm_title("PSD DIFF")
-        image_tk_before = ImageTk.PhotoImage(Image.open(image + ".before.png"))
-        image_tk_before_diff = ImageTk.PhotoImage(Image.open(image + ".before.diff.png"))
-        image_tk_after_diff = ImageTk.PhotoImage(Image.open(image + ".after.diff.png"))
-        image_tk_after = ImageTk.PhotoImage(Image.open(image + ".after.png"))
+        width, height = Image.open(image + ".before.png").size
+        ratio = width/height
+        width = 256
+        height = width/ratio
+        image_tk_before = ImageTk.PhotoImage(Image.open(image + ".before.png").convert('RGBA').resize((width, height)))
+        image_tk_before_diff = ImageTk.PhotoImage(Image.open(image + ".before.diff.png").convert('RGBA').resize((width, height)))
+        image_tk_after_diff = ImageTk.PhotoImage(Image.open(image + ".after.diff.png").convert('RGBA').resize((width, height)))
+        image_tk_after = ImageTk.PhotoImage(Image.open(image + ".after.png").convert('RGBA').resize((width, height)))
         image_label = Tkinter.Label(window, image=image_tk_before)
         image_label.pack(side = "left", fill = "both", expand = "yes")
         image_label = Tkinter.Label(window, image=image_tk_before_diff)
