@@ -1,9 +1,9 @@
-import sys
+import os, sys
 from parser.bmp import BMP
 from parser.bmp_diff import BMP_DIFF
 
 
-def merge(file_before, file_after, default_option="0", default_accept="0"):
+def merge(file_before, file_after):
     """merge bmp diff
 
     args:
@@ -24,10 +24,10 @@ def merge(file_before, file_after, default_option="0", default_accept="0"):
             print "Parameter - " + attr + " not the same: " + getattr(bmp_diff, attr)[2]
             print "Cannot be merged."
             return -1
-    if default_option == "0":
+    if "AUTO_MERGE" not in os.environ:
         option = raw_input("Choose your merge option: 1-All, 2-Pixel By Pixel: ")
     else:
-        option = default_option
+        option = os.getenv("AUTO_MERGE")
     pixel_merged = {}
     if option == "2":
         for pixel_index, pixel_info in bmp_diff.pixel_diff.iteritems():
@@ -35,21 +35,21 @@ def merge(file_before, file_after, default_option="0", default_accept="0"):
             print "Pixel: " + pixel_index
             print "Before: " + ", ".join([str(p) for p in pixel_info["before"]])
             print "After: " + ", ".join([str(p) for p in pixel_info["after"]])
-            if default_accept == "0":
+            if "AUTO_ACCEPT" not in os.environ:
                 accept = raw_input(
                     "Choose your merge option: 1-Accept After, 2-Accept Before: ")
             else:
-                accept = default_accept
+                accept = os.getenv("AUTO_ACCEPT")
             if accept == "1":
                 pixel_merged[pixel_index] = pixel_info["after"]
             elif accept == "2":
                 pixel_merged[pixel_index] = pixel_info["before"]
     elif option == "1":
-        if default_accept == "0":
+        if "AUTO_ACCEPT" not in os.environ:
             accept = raw_input(
                 "Choose your merge option: 1-Accept After, 2-Accept Before: ")
         else:
-            accept = default_accept
+            accept = os.getenv("AUTO_ACCEPT")
         if accept == "1":
             for pixel_index, pixel_info in bmp_diff.pixel_diff.iteritems():
                 pixel_merged[pixel_index] = pixel_info["after"]
