@@ -1,9 +1,9 @@
-import sys
+import os, sys
 import numpy
 from parser.wav import WAV
 from parser.wav_diff import WAV_DIFF
 
-def merge(file_before, file_after, default_option="0", default_accept="0"):
+def merge(file_before, file_after):
     """merge wav diff
 
     args:
@@ -32,31 +32,31 @@ def merge(file_before, file_after, default_option="0", default_accept="0"):
             continue
         print "Merging channel: " + str(channel + 1)
         frame_merged[str(channel)] = {}
-        if default_option == "0":
+        if "AUTO_MERGE" not in os.environ:
             option = raw_input("Choose your merge option: 1-All, 2-Frame By Frame: ")
         else:
-            option = default_option
+            option = os.getenv("AUTO_MERGE")
         if option == "2":
             for frame_index, frame_info in wav_diff.frame_diff[str(channel)].iteritems():
                 frame_merged[str(channel)][frame_index] = {}
                 print "Frame: " + frame_index
                 print "Before: " + frame_info["before"]
                 print "After: " + frame_info["after"]
-                if default_accept == "0":
+                if "AUTO_ACCEPT" not in os.environ:
                     accept = raw_input(
                         "Choose your merge option: 1-Accept After, 2-Accept Before: ")
                 else:
-                    accept = default_accept
+                    accept = os.getenv("AUTO_ACCEPT")
                 if accept == "1":
                     frame_merged[str(channel)][frame_index] = frame_info["after"]
                 elif accept == "2":
                     frame_merged[str(channel)][frame_index] = frame_info["before"]
         elif option == "1":
-            if default_accept == "0":
+            if "AUTO_ACCEPT" not in os.environ:
                 accept = raw_input(
                     "Choose your merge option: 1-Accept After, 2-Accept Before: ")
             else:
-                accept = default_accept
+                accept = os.getenv("AUTO_ACCEPT")
             if accept == "1":
                 for frame_index, frame_info in wav_diff.frame_diff[str(channel)].iteritems():
                     frame_merged[str(channel)][frame_index] = frame_info["after"]
