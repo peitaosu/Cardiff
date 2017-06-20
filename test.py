@@ -5,21 +5,28 @@ from PIL import Image
 import json
 import pprint
 import time
+import os
 
 pp = pprint.PrettyPrinter(indent=4)
+settings_path = "./settings.json"
+
+def print_settings():
+    print "Current Settings"
+    with open(settings_path) as settings_file:
+        current_settings = json.load(settings_file)
+    pp.pprint(current_settings)
 
 def test_load_settings():
     print "[TEST] Load settings.json from Cardiff root path..."
-    settings_path = "./settings.json"
+
     with open(settings_path) as settings_file:
         settings = json.load(settings_file)
     settings["user.name"] = "test"
     settings["user.email"] = "test@@cardiff"
-
-    print "Settings Detail:"
-    pp.pprint(settings)
     with open(settings_path, "w") as settings_file:
         json.dump(settings, settings_file, indent=4)
+
+    print_settings()
     cardiff.load_settings(settings_path)
 
 def test_cmd_help():
@@ -29,6 +36,7 @@ def test_cmd_help():
 def test_cmd_init():
     print "[TEST] Command - init"
     cardiff.exec_cmd(["init", "./test"])
+    print_settings()
 
 def test_cmd_commit():
     print "[TEST] Command - commit"
