@@ -44,6 +44,8 @@ def test_cmd_commit():
     create_dummy_bmp()
     cardiff.exec_cmd(["commit", "file.bmp", "commit msg " + str(time.time())])
     cardiff.exec_cmd(["log"])
+    cardiff.exec_cmd(["commit", "file.bmp", "commit msg " + str(time.time())])
+    cardiff.exec_cmd(["log"])
 
 def test_cmd_diff():
     print "[TEST] Command - diff"
@@ -51,6 +53,8 @@ def test_cmd_diff():
 
 def test_cmd_merge():
     print "[TEST] Command - merge"
+    os.environ["AUTO_MERGE"] = "1"
+    os.environ["AUTO_ACCEPT"] = "1"
     cardiff.exec_cmd(["merge", "file.bmp", "1", "2"])
 
 def test_cmd_log():
@@ -106,6 +110,8 @@ if __name__ == "__main__":
     test_cmd_branch()
 
     test_cmd_commit()
+
+    test_cmd_merge()
 
     test_cmd_log()
 
