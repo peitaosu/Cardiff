@@ -18,10 +18,30 @@ def visualize_as_window(file_list_to_show):
         ratio = width/height
         width = 256
         height = width/ratio
-        image_tk_before = ImageTk.PhotoImage(Image.open(image + ".before.png").convert('RGBA').resize((width, height)))
-        image_tk_before_diff = ImageTk.PhotoImage(Image.open(image + ".before.diff.png").convert('RGBA').resize((width, height)))
-        image_tk_after_diff = ImageTk.PhotoImage(Image.open(image + ".after.diff.png").convert('RGBA').resize((width, height)))
-        image_tk_after = ImageTk.PhotoImage(Image.open(image + ".after.png").convert('RGBA').resize((width, height)))
+        image_before = Image.new("RGB", (width, height))
+        image_before_diff = Image.new("RGB", (width, height))
+        image_after_diff = Image.new("RGB",(width, height))
+        image_after = Image.new("RGB",(width, height))
+        for x in range(width):
+            for y in range(height):
+                if x/16%2 == y/16%2:
+                    image_before.load()[x, y] = (192, 192, 192)
+                    image_before_diff.load()[x, y] = (192, 192, 192)
+                    image_after_diff.load()[x, y] = (192, 192, 192)
+                    image_after.load()[x, y] = (192, 192, 192)
+                else:
+                    image_before.load()[x, y] = (255, 255, 255)
+                    image_before_diff.load()[x, y] = (255, 255, 255)
+                    image_after_diff.load()[x, y] = (255, 255, 255)
+                    image_after.load()[x, y] = (255, 255, 255)
+        image_before.paste(Image.open(image + ".before.png").resize((width, height)), (0, 0), Image.open(image + ".before.png").convert('RGBA').resize((width, height)))
+        image_before_diff.paste(Image.open(image + ".before.diff.png").resize((width, height)), (0, 0), Image.open(image + ".before.diff.png").convert('RGBA').resize((width, height)))
+        image_after_diff.paste(Image.open(image + ".after.diff.png").resize((width, height)), (0, 0), Image.open(image + ".after.diff.png").convert('RGBA').resize((width, height)))
+        image_after.paste(Image.open(image + ".after.png").resize((width, height)), (0, 0), Image.open(image + ".after.png").convert('RGBA').resize((width, height)))
+        image_tk_before = ImageTk.PhotoImage(image_before)
+        image_tk_before_diff = ImageTk.PhotoImage(image_before_diff)
+        image_tk_after_diff = ImageTk.PhotoImage(image_after_diff)
+        image_tk_after = ImageTk.PhotoImage(image_after)
         image_label = Tkinter.Label(window, image=image_tk_before)
         image_label.pack(side = "left", fill = "both", expand = "yes")
         image_label = Tkinter.Label(window, image=image_tk_before_diff)
