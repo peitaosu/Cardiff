@@ -19,7 +19,7 @@ def visualize_as_window(file_list_to_show):
         window.wm_title("PSD DIFF")
         width, height = Image.open(image + ".before.png").size
         ratio = width / height
-        width = 256
+        width = int(window.winfo_screenwidth() * 0.96 / 4)
         height = width / ratio
         image_before = Image.new("RGB", (width, height))
         image_before_diff = Image.new("RGB", (width, height))
