@@ -97,6 +97,35 @@ def create_dummy_image(format):
                 img.load()[x, y] = (x, y, 180, 180)
         img.save("./test/file." + format)
 
+
+def create_dummy_audio(format):
+    import aifc
+    import wave
+    import math
+    import struct
+    freq = 440.0
+    data_size = 40000
+    frate = 1000.0
+    amp = 64000.0
+    nchannels = 2
+    sampwidth = 2
+    framerate = int(frate)
+    nframes = data_size
+    comptype = "NONE"
+    compname = "not compressed"
+    data = [(math.sin(2 * math.pi * freq * (x / frate)),
+             math.cos(2 * math.pi * freq * (x / frate))) for x in range(data_size)]
+
+    if format == "aif":
+        audio_file = aifc.open("./test/file." + format, 'w')
+    elif format == "wav":
+        audio_file = wave.open("./test/file." + format, 'w')
+    audio_file.setparams(
+        (nchannels, sampwidth, framerate, nframes, comptype, compname))
+    for values in data:
+        for v in values:
+            audio_file.writeframes(struct.pack('h', int(v * amp / 2)))
+
 def create_dummy_file(ext, content):
     file_module = importlib.import_module("format." + ext + ".parser." + ext)
     file_class = getattr(file_module, ext.upper())
