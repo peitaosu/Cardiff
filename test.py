@@ -40,11 +40,19 @@ def test_cmd_init():
 
 def test_cmd_commit():
     print "[TEST] Command - commit"
-    print "Create Dummy File: file.bmp"
-    create_dummy_image("bmp")
-    cardiff.exec_cmd(["commit", "file.bmp", "commit msg " + str(time.time())])
-    cardiff.exec_cmd(["log"])
-    cardiff.exec_cmd(["commit", "file.bmp", "commit msg " + str(time.time())])
+    print "Create Dummy Files"
+    for image_format in ["bmp", "jpg", "png", "gif"]:
+        time.sleep(1)
+        create_dummy_image(image_format)
+        cardiff.exec_cmd(["commit", "file." + image_format, "commit msg " + str(time.time())])
+        time.sleep(1)
+        cardiff.exec_cmd(["commit", "file." + image_format, "commit msg " + str(time.time())])
+    for audio_format in ["wav", "aif"]:
+        time.sleep(1)
+        create_dummy_audio(audio_format)
+        cardiff.exec_cmd(["commit", "file." + audio_format, "commit msg " + str(time.time())])
+        time.sleep(1)
+        cardiff.exec_cmd(["commit", "file." + audio_format, "commit msg " + str(time.time())])
     cardiff.exec_cmd(["log"])
 
 def test_cmd_diff():
@@ -56,6 +64,11 @@ def test_cmd_merge():
     os.environ["AUTO_MERGE"] = "1"
     os.environ["AUTO_ACCEPT"] = "1"
     cardiff.exec_cmd(["merge", "file.bmp", "1", "2"])
+    cardiff.exec_cmd(["merge", "file.jpg", "3", "4"])
+    cardiff.exec_cmd(["merge", "file.png", "5", "6"])
+    cardiff.exec_cmd(["merge", "file.gif", "7", "8"])
+    cardiff.exec_cmd(["merge", "file.wav", "9", "10"])
+    cardiff.exec_cmd(["merge", "file.aif", "11", "12"])
 
 def test_cmd_log():
     print "[TEST] Command - log"
