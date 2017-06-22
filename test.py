@@ -41,7 +41,7 @@ def test_cmd_init():
 def test_cmd_commit():
     print "[TEST] Command - commit"
     print "Create Dummy File: file.bmp"
-    create_dummy_bmp()
+    create_dummy_image("bmp")
     cardiff.exec_cmd(["commit", "file.bmp", "commit msg " + str(time.time())])
     cardiff.exec_cmd(["log"])
     cardiff.exec_cmd(["commit", "file.bmp", "commit msg " + str(time.time())])
@@ -67,7 +67,7 @@ def test_cmd_branch():
     cardiff.exec_cmd(["help", "branch"])
     cardiff.exec_cmd(["branch"])
     print "Commit to branch: file.bmp"
-    create_dummy_bmp()
+    create_dummy_image("bmp")
     cardiff.exec_cmd(["commit", "file.bmp", "commit msg " + str(time.time())])
     cardiff.exec_cmd(["log"])
     print "Create New Branch: new_branch"
@@ -83,13 +83,19 @@ def test_rollback():
     print "Rollback Changes"
     shutil.rmtree("./test")
 
-def create_dummy_bmp():
-    img = Image.new('RGB', (256, 256))
-    pixels = img.load()
-    for x in range(img.size[0]):
-        for y in range(img.size[1]):
-            pixels[x, y] = (0, 0, 0)
-    img.save("./test/file.bmp")
+def create_dummy_image(format):
+    if format in ["bmp", "jpg"]:
+        img = Image.new("RGB", (256, 256))
+        for x in range(256):
+            for y in range(256):
+                img.load()[x, y] = (x, y, 180)
+        img.save("./test/file." + format)
+    elif format in ["png", "gif"]:
+        img = Image.new("RGBA", (256, 256))
+        for x in range(256):
+            for y in range(256):
+                img.load()[x, y] = (x, y, 180, 180)
+        img.save("./test/file." + format)
 
 def create_dummy_file(ext, content):
     file_module = importlib.import_module("format." + ext + ".parser." + ext)
