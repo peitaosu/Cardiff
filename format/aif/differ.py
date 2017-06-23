@@ -40,6 +40,6 @@ def make_diff(file_before, file_after, file_output_name):
         if diff_content[attr]["before"] != diff_content[attr]["after"]:
             diff_content[attr]["diff"] = True
     diff_content["frame"] = aif_diff.frame_diff
-    with open(file_output_name + "diff.json", "w") as diff_file:
+    with open(file_output_name + ".diff.json", "w") as diff_file:
         json.dump(diff_content, diff_file, indent=4)
     return file_output_name + ".diff.json"

@@ -17,6 +17,6 @@ def create_diff_image(image_mode, image_size, pixel_changes, output_file):
             else:
                 diff_image_before.load()[x, y] = diff_image_after.load()[x, y] = (0, 0, 0, 0)
             pixel_index += 1
-    diff_image_before.save(output_file + "before.diff.png", "PNG")
-    diff_image_after.save(output_file + "after.diff.png", "PNG")
+    diff_image_before.save(output_file + ".before.diff.png", "PNG")
+    diff_image_after.save(output_file + ".after.diff.png", "PNG")
     return [output_file + ".before.diff.png", output_file + ".after.diff.png"]

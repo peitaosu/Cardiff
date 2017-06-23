@@ -34,7 +34,7 @@ def make_diff(file_before, file_after, file_output_name):
     diff_content = {}
     for attr in ["header", "layer"]:
         diff_content[attr] = getattr(psd_diff, attr)
-    with open(os.path.join(file_output_name, "diff.json"), "w") as diff_file:
+    with open(os.path.join(file_output_name, ".diff.json"), "w") as diff_file:
         json.dump(diff_content, diff_file, indent=4)
     for layer_id in psd_diff.layer.keys():
         if len(psd_diff.layer_image[layer_id]) > 1:
