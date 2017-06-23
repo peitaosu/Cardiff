@@ -2,7 +2,7 @@ import sys
 import json
 from parser.bmp import BMP
 from parser.bmp_diff import BMP_DIFF
-from format.differ import create_diff_image
+from format.util import create_diff_image
 
 def diff(file_before, file_after):
     """diff bmp file

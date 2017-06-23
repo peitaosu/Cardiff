@@ -1,4 +1,4 @@
-from format.visualizer import *
+from format.util import *
 
 def visualize(file_before, file_diff_before, file_diff_after, file_after, file_output_name = None):
     """visualize the gif diff, open with Tk window or save as file

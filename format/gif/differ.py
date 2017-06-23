@@ -1,7 +1,7 @@
 import sys, json
 from PIL import Image
 from parser.gif_diff import GIF_DIFF
-from format.differ import create_diff_image
+from format.util import create_diff_image
 
 def diff(file_before, file_after):
     """diff gif file

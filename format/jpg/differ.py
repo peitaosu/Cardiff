@@ -1,7 +1,7 @@
 import sys, json
 from PIL import Image
 from parser.jpg_diff import JPG_DIFF
-from format.differ import create_diff_image
+from format.util import create_diff_image
 
 def diff(file_before, file_after):
     """diff jpg file
