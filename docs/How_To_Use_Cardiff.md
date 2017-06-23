@@ -28,6 +28,9 @@ OK. Now you finished all preparations and configurations.
 Initial your repository. This repository will store all your versioned files, committed versions, logs, branches and other information:
 ```
 python Cardiff.py init <repo_path>
+
+# for example
+python Cardiff.py init ./work
 ```
 
 Create your file in repository folder or copy files from other locations directly. Only files which in this folder can be versioned.
@@ -35,6 +38,9 @@ Create your file in repository folder or copy files from other locations directl
 Commit your file to VCS:
 ```
 python Cardiff.py commit <file> <message>
+
+# for example
+python Cardiff.py commit my_work.psd "commit first psd file"
 ```
 
 Check commits and logs:
@@ -45,11 +51,17 @@ python Cardiff.py log
 Diff between commits, please make sure these 2 commits have same file.
 ```
 python Cardiff.py diff <file> <version_1> [<version_2>]
+
+# for example
+python Cardiff.py diff my_work.psd 1 2
 ```
 
 Merge between commits, please make sure these 2 commits have same file.
 ```
-python Cardiff.py merge<file> <version_1> [<version_2>]
+python Cardiff.py merge <file> <version_1> [<version_2>]
+
+# for example
+python Cardiff.py merge my_work.psd 1 2
 ```
 
 # Robustness of Code
