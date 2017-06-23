@@ -1,67 +1,17 @@
-import os, sys, time
-from differ import diff
-from parser.gif_diff import *
-from PIL import Image, ImageTk
-import Tkinter
+from format.visualizer import *
 
-def visualize_as_window(file_to_show):
-    """visualize the gif diff, open with Tkinter window
+def visualize(file_before, file_diff_before, file_diff_after, file_after, file_output_name = None):
+    """visualize the gif diff, open with Tk window or save as file
 
     args:
-        file_to_show (str)
-    """
-    window = Tkinter.Tk()
-    window.wm_title(file_to_show)
-    image_to_show = Image.open(file_to_show)
-    image_tk = ImageTk.PhotoImage(image_to_show)
-    image_label = Tkinter.Label(window, image=image_tk)
-    image_label.pack(side = "bottom", fill = "both", expand = "yes")
-    window.mainloop()
-
-
-def visualize_as_png(file_diff, file_after, file_output_name = None):
-    """visualize the gif diff, open as png file with alpha channel
-
-    args:
-        file_diff (GIF_DIFF)
-        file_after (str)
-        file_output_name (str)
-    
-    returns:
-        png_file (str)
-    """
-    for attr in file_diff.attributes:
-        if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
-            return
-    image = Image.open(file_after)
-    image = image.convert("RGBA")
-    pixel_data = image.load()
-    pixel_index = 1
-    width, height = image.size
-    for y in xrange(height):
-        for x in xrange(width):
-            if str(pixel_index) in file_diff.pixel_diff:
-                pixel_index += 1
-                continue
-            else:
-                pixel_index += 1
-                pixel_data[x, y] = (pixel_data[x, y][0], pixel_data[x, y][1], pixel_data[x, y][2], 0)
-    if file_output_name == None:
-        file_output_name = str(time.time())
-    image.save(file_output_name + ".diff.png", "PNG")
-    return file_output_name + ".diff.png"
-
-
-def visualize(file_diff, file_after, file_output_name = None):
-    """visualize the gif diff, open with Tk window
-
-    args:
-        file_diff (GIF_DIFF)
+        file_before (str)
+        file_diff_before (str)
+        file_diff_after (str)
         file_after (str)
         file_output_name (str)
     """
     if file_output_name == None:
-        file_output_name = str(time.time())
-    saved_file = visualize_as_png(file_diff, file_after, file_output_name)
-    visualize_as_window(saved_file)
+        visualize_image_as_window([file_before, file_diff_before, file_diff_after, file_after])
+    else:
+        visualize_image_as_png(file_diff_before, file_diff_after, file_output_name)
 

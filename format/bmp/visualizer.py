@@ -1,110 +1,16 @@
-import os, sys, time
-from differ import diff
-from parser.bmp import BMP
-from parser.bmp_diff import *
-from PIL import Image, ImageTk
-import Tkinter
+from format.visualizer import *
 
-def visualize_as_window(file_to_show):
-    """visualize the bmp diff, open with Tkinter window
+def visualize(file_before, file_diff_before, file_diff_after, file_after, file_output_name = None):
+    """visualize the bmp diff, open with Tk window or save as file
 
     args:
-        file_to_show (str)
-    """
-    window = Tkinter.Tk()
-    window.wm_title(file_to_show)
-    image_to_show = Image.open(file_to_show)
-    image_tk = ImageTk.PhotoImage(image_to_show)
-    image_label = Tkinter.Label(window, image=image_tk)
-    image_label.pack(side = "bottom", fill = "both", expand = "yes")
-    window.mainloop()
-
-def visualize_as_bmp(file_diff, file_output_name = None):
-    """visualize the bmp diff, open as bmp file
-
-    args:
-        file_diff (BMP_DIFF)
-        file_output_name (str)
-    
-    returns:
-        bmp_file (str)
-    """
-    for attr in file_diff.attributes:
-        if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
-            return
-    bmp_data = []
-    bmp_data += chr(66) + chr(77)
-    bmp_data += int_to_bytes(file_diff.bfSize[0], 4)
-    bmp_data += chr(0) * 4
-    bmp_data += int_to_bytes(file_diff.bfOffBits[0], 4)
-    bmp_data += int_to_bytes(file_diff.biSize[0], 4)
-    bmp_data += int_to_bytes(file_diff.biWidth[0], 4)
-    bmp_data += int_to_bytes(file_diff.biHeight[0], 4)
-    bmp_data += chr(1) + chr(0)
-    bmp_data += int_to_bytes(file_diff.biBitCount[0], 2)
-    bmp_data += int_to_bytes(file_diff.biCompression[0], 4)
-    bmp_data += int_to_bytes(file_diff.biSizeImage[0], 4)
-    bmp_data += int_to_bytes(file_diff.biXPelsPerMeter[0], 4)
-    bmp_data += int_to_bytes(file_diff.biYPelsPerMeter[0], 4)
-    bmp_data += int_to_bytes(file_diff.biClrUsed[0], 4)
-    bmp_data += int_to_bytes(file_diff.biClrImportant[0], 4)
-    bmp_data += "BGRs"
-    bmp_data += chr(0) * (file_diff.bfOffBits[0] - 58)
-    for i in range(file_diff.biSizeImage[0]):
-        if str(i + 1) in file_diff.pixel_diff:
-            bmp_data += chr(255) * 3
-        else:
-            bmp_data += chr(0) * 3
-    if file_output_name == None:
-        file_output_name = str(time.time())
-    with open(file_output_name + ".diff.bmp", "wb") as diff_file:
-        diff_file.write(bytearray(bmp_data))
-    return file_output_name + ".diff.bmp"
-
-
-def visualize_as_png(file_diff, file_after, file_output_name = None):
-    """visualize the bmp diff, open as png file with alpha channel
-
-    args:
-        file_diff (BMP_DIFF)
-        file_after (str)
-        file_output_name (str)
-    
-    returns:
-        png_file (str)
-    """
-    for attr in file_diff.attributes:
-        if getattr(file_diff, attr)[0] != getattr(file_diff, attr)[1]:
-            return
-    image = Image.open(file_after)
-    image = image.convert("RGBA")
-    pixel_data = image.load()
-    pixel_index = 1
-    width, height = image.size
-    for y in xrange(height):
-        for x in xrange(width):
-            h = height - y - 1
-            if str(pixel_index) in file_diff.pixel_diff:
-                pixel_index += 1
-                continue
-            else:
-                pixel_index += 1
-                pixel_data[x, h] = (pixel_data[x, h][0], pixel_data[x, h][1], pixel_data[x, h][2], 0)
-    if file_output_name == None:
-        file_output_name = str(time.time())
-    image.save(file_output_name + ".diff.png", "PNG")
-    return file_output_name + ".diff.png"
-
-def visualize(file_diff, file_after, file_output_name = None):
-    """visualize the bmp diff, open with Tk window
-
-    args:
-        file_diff (BMP_DIFF)
+        file_before (str)
+        file_diff_before (str)
+        file_diff_after (str)
         file_after (str)
         file_output_name (str)
     """
     if file_output_name == None:
-        file_output_name = str(time.time())
-    saved_file = visualize_as_png(file_diff, file_after, file_output_name)
-    visualize_as_window(saved_file)
-
+        visualize_image_as_window([file_before, file_diff_before, file_diff_after, file_after])
+    else:
+        visualize_image_as_png(file_diff_before, file_diff_after, file_output_name)

@@ -1,7 +1,7 @@
 import os, sys, json, time
 from common import *
 from init import *
-from diff import diff
+from diff import *
 from visualize import visualize_diff
 from parameterize import parameterize_diff
 from merge import merge_file
@@ -92,7 +92,8 @@ class Cardiff():
         diff_result = diff(os.path.join(self.temp, new_file_1), os.path.join(self.temp, new_file_2))
         print "diff " + file_path + " " + ver_1 + " " + ver_2
         parameterize_diff(diff_result, file_path.split(".")[-1])
-        visualize_diff(diff_result, os.path.join(self.temp, new_file_2), file_path.split(".")[-1], os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6]))
+        image_diff = diff_file(os.path.join(self.temp, new_file_1), os.path.join(self.temp, new_file_2), os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6]))
+        visualize_diff(os.path.join(self.temp, new_file_1), image_diff[0], image_diff[1], os.path.join(self.temp, new_file_2), file_path.split(".")[-1], os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6]))
 
     def cmd_merge(self, file_ver):
         self.setup_vcs()
