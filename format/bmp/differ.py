@@ -2,6 +2,7 @@ import sys
 import json
 from parser.bmp import BMP
 from parser.bmp_diff import BMP_DIFF
+from format.differ import create_diff_image
 
 def diff(file_before, file_after):
     """diff bmp file
@@ -44,19 +45,5 @@ def make_diff(file_before, file_after, file_output_name):
     diff_content["pixel"] = bmp_diff.pixel_diff
     with open(file_output_name + ".diff.json", "w") as diff_file:
         json.dump(diff_content, diff_file, indent=4)
-    diff_bmp_out = BMP()
-    diff_bmp_out.load_bmp_from_file(file_before)
-    diff_bmp_out.get_bmp_pixel_data()
-    pixel_start = diff_bmp_out.FORMAT_PIXEL_DATA[0]
-    pixel_length = diff_bmp_out.FORMAT_PIXEL_DATA[1]
-    diff_bmp_out_data = diff_bmp_out.bmp_data[:pixel_start]
-    for i in range(pixel_length / 3):
-        if str(i + 1) in bmp_diff.pixel_diff:
-            diff_bmp_out_data = diff_bmp_out_data + \
-                chr(255) + chr(255) + chr(255)
-        else:
-            diff_bmp_out_data = diff_bmp_out_data + chr(0) + chr(0) + chr(0)
-    with open(file_output_name + ".diff.bmp", "wb") as diff_file:
-        diff_file.write(diff_bmp_out_data)
-    return file_output_name + ".diff.bmp"
+    return create_diff_image("RGB", (int(diff_content["biWidth"]["before"]), int(diff_content["biHeight"]["before"])), diff_content["pixel"], file_output_name)
 

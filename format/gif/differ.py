@@ -1,6 +1,7 @@
 import sys, json
 from PIL import Image
 from parser.gif_diff import GIF_DIFF
+from format.differ import create_diff_image
 
 def diff(file_before, file_after):
     """diff gif file
@@ -40,17 +41,4 @@ def make_diff(file_before, file_after, file_output_name):
     diff_content["pixel"] = gif_diff.pixel_diff
     with open(file_output_name + "diff.json", "w") as diff_file:
         json.dump(diff_content, diff_file, indent=4)
-    diff_gif_out = Image.new("RGBA", diff_content["size"]["after"])
-    diff_gif_out = diff_gif_out.convert("RGBA")
-    diff_gif_out_data = diff_gif_out.load()
-    width, height = diff_gif_out.size
-    pixel_index = 1
-    for y in xrange(height):
-        for x in xrange(width):
-            if str(pixel_index) in diff_content["pixel"]:
-                diff_gif_out_data[x, y] = (0, 0, 0, 0)
-            else:
-                diff_gif_out_data[x, y] = (0, 0, 0, 255)
-            pixel_index += 1
-    diff_gif_out.save(file_output_name + ".diff.gif", "GIF")
-    return file_output_name + ".diff.gif"
+    return create_diff_image("RGBA", diff_content["size"]["before"], diff_content["pixel"], file_output_name)
