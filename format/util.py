@@ -73,13 +73,21 @@ def visualize_image_as_png(file_diff_before, file_diff_after, file_output_name):
     return file_output_list
 
 
-def create_diff_image(image_mode, image_size, pixel_changes, output_file):
+def create_diff_image(image_mode, image_size, pixel_changes, output_file, coord_reversed = None):
     diff_image_before = Image.new("RGBA", image_size)
     diff_image_after = Image.new("RGBA", image_size)
     width, height = image_size
     pixel_index = 1
-    for y in xrange(height):
-        for x in xrange(width):
+    if coord_reversed == "y":
+        y_range = reversed(xrange(height))
+    else:
+        y_range = xrange(height)
+    if coord_reversed == "x":
+        x_range = reversed(xrange(width))
+    else:
+        x_range = xrange(width)
+    for y in y_range:
+        for x in x_range:
             if str(pixel_index) in pixel_changes:
                 if image_mode == "RGB":
                     diff_image_before.load()[x, y] = tuple(

@@ -2,7 +2,7 @@ import sys
 import json
 from parser.bmp import BMP
 from parser.bmp_diff import BMP_DIFF
-from PIL import Image
+from format.util import create_diff_image
 
 def diff(file_before, file_after):
     """diff bmp file
@@ -45,23 +45,5 @@ def make_diff(file_before, file_after, file_output_name):
     diff_content["pixel"] = bmp_diff.pixel_diff
     with open(file_output_name + ".diff.json", "w") as diff_file:
         json.dump(diff_content, diff_file, indent=4)
-    image_size = (int(diff_content["biWidth"]["before"]), int(diff_content["biHeight"]["before"]))
-    pixel_changes = diff_content["pixel"]
-    diff_image_before = Image.new("RGBA", image_size)
-    diff_image_after = Image.new("RGBA", image_size)
-    width, height = image_size
-    pixel_index = 1
-    for y in reversed(xrange(height)):
-        for x in xrange(width):
-            if str(pixel_index) in pixel_changes:
-                diff_image_before.load()[x, y] = tuple(
-                    pixel_changes[str(pixel_index)]["before"]) + (255,)
-                diff_image_after.load()[x, y] = tuple(
-                    pixel_changes[str(pixel_index)]["after"]) + (255,)
-            else:
-                diff_image_before.load()[x, y] = diff_image_after.load()[
-                    x, y] = (0, 0, 0, 0)
-            pixel_index += 1
-    diff_image_before.save(file_output_name + ".before.diff.png", "PNG")
-    diff_image_after.save(file_output_name + ".after.diff.png", "PNG")
-    return [file_output_name + ".before.diff.png", file_output_name + ".after.diff.png"]
+    return create_diff_image("RGB", (int(diff_content["biWidth"]["before"]), int(diff_content["biHeight"]["before"])), diff_content["pixel"], file_output_name, "y")
+
