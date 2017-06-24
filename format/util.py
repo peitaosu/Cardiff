@@ -74,6 +74,18 @@ def visualize_image_as_png(file_diff_before, file_diff_after, file_output_name):
 
 
 def create_diff_image(image_mode, image_size, pixel_changes, output_file, coord_reversed = None):
+    """create diff images
+
+    args:
+        image_mode (str)
+        image_size (tuple)
+        pixel_changes (dict)
+        output_file (str)
+        coord_reversed (str)
+
+    returns:
+        file_output_list (list)
+    """
     diff_image_before = Image.new("RGBA", image_size)
     diff_image_after = Image.new("RGBA", image_size)
     width, height = image_size
@@ -108,6 +120,11 @@ def create_diff_image(image_mode, image_size, pixel_changes, output_file, coord_
     return [output_file + ".before.diff.png", output_file + ".after.diff.png"]
 
 def parameterize_image_diff(image_diff):
+    """print formatted image diff data
+
+    args:
+        image_diff (DIFFOBJ)
+    """
     print "{:>48} : {:>8} <---> {:<8}".format("============ Parameters ============", "before", "after")
     for i in range(len(image_diff.attributes)):
         print "{:>48} : {:>8} <---> {:<8}".format(image_diff.description[i], getattr(image_diff, image_diff.attributes[i])[0], getattr(image_diff, image_diff.attributes[i])[1])
