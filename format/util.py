@@ -106,3 +106,9 @@ def create_diff_image(image_mode, image_size, pixel_changes, output_file, coord_
     diff_image_before.save(output_file + ".before.diff.png", "PNG")
     diff_image_after.save(output_file + ".after.diff.png", "PNG")
     return [output_file + ".before.diff.png", output_file + ".after.diff.png"]
+
+def parameterize_image_diff(image_diff):
+    print "{:>48} : {:>8} <---> {:<8}".format("============ Parameters ============", "before", "after")
+    for i in range(len(image_diff.attributes)):
+        print "{:>48} : {:>8} <---> {:<8}".format(image_diff.description[i], getattr(image_diff, image_diff.attributes[i])[0], getattr(image_diff, image_diff.attributes[i])[1])
+    print "{:>48} : {:>12}".format("Pixel Changed", str(len(image_diff.pixel_diff)))
