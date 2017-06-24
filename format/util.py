@@ -1,4 +1,5 @@
 import os
+import json
 import shutil
 import Tkinter
 from PIL import Image, ImageTk
@@ -118,6 +119,28 @@ def create_diff_image(image_mode, image_size, pixel_changes, output_file, coord_
     diff_image_before.save(output_file + ".before.diff.png", "PNG")
     diff_image_after.save(output_file + ".after.diff.png", "PNG")
     return [output_file + ".before.diff.png", output_file + ".after.diff.png"]
+
+def create_diff_json(image_diff, file_output_name):
+    """diff image file and save as file
+
+    args:
+        image_diff (DIFFOBJ)
+        file_output_name (str)
+
+    returns:
+        saved_file (str)
+    """
+    diff_content = {}
+    for attr in image_diff.attributes:
+        diff_content[attr] = {}
+        diff_content[attr]["before"] = getattr(image_diff, attr)[0]
+        diff_content[attr]["after"] = getattr(image_diff, attr)[1]
+        if diff_content[attr]["before"] != diff_content[attr]["after"]:
+            diff_content[attr]["diff"] = True
+    diff_content["pixel"] = image_diff.pixel_diff
+    with open(file_output_name + ".diff.json", "w") as diff_file:
+        json.dump(diff_content, diff_file, indent=4)
+    return file_output_name + ".diff.json"
 
 def parameterize_image_diff(image_diff):
     """print formatted image diff data

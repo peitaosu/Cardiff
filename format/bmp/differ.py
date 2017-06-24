@@ -2,7 +2,7 @@ import sys
 import json
 from parser.bmp import BMP
 from parser.bmp_diff import BMP_DIFF
-from format.util import create_diff_image
+from format.util import *
 
 def diff(file_before, file_after):
     """diff bmp file
@@ -32,18 +32,11 @@ def make_diff(file_before, file_after, file_output_name):
         file_output_name (str)
 
     returns:
-        saved_file (str)
+        saved_files (list)
     """
     bmp_diff = diff(file_before, file_after)
-    diff_content = {}
-    for attr in bmp_diff.attributes:
-        diff_content[attr] = {}
-        diff_content[attr]["before"] = getattr(bmp_diff, attr)[0]
-        diff_content[attr]["after"] = getattr(bmp_diff, attr)[1]
-        if diff_content[attr]["before"] != diff_content[attr]["after"]:
-            diff_content[attr]["diff"] = True
-    diff_content["pixel"] = bmp_diff.pixel_diff
-    with open(file_output_name + ".diff.json", "w") as diff_file:
-        json.dump(diff_content, diff_file, indent=4)
-    return create_diff_image("RGB", (int(diff_content["biWidth"]["before"]), int(diff_content["biHeight"]["before"])), diff_content["pixel"], file_output_name, "y")
-
+    saved_diff_images = create_diff_image("RGB", (bmp_diff.biWidth[0], bmp_diff.biHeight[0]), bmp_diff.pixel_diff, file_output_name, "y")
+    saved_diff_json = create_diff_json(bmp_diff, file_output_name)
+    saved_files = saved_diff_images
+    saved_files.append(saved_diff_json)
+    return saved_files

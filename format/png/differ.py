@@ -1,7 +1,7 @@
 import sys, json
 from PIL import Image
 from parser.png_diff import PNG_DIFF
-from format.util import create_diff_image
+from format.util import *
 
 def diff(file_before, file_after):
     """diff png file
@@ -28,17 +28,11 @@ def make_diff(file_before, file_after, file_output_name):
         file_output_name (str)
 
     returns:
-        saved_file (str)
+        saved_files (list)
     """
     png_diff = diff(file_before, file_after)
-    diff_content = {}
-    for attr in png_diff.attributes:
-        diff_content[attr] = {}
-        diff_content[attr]["before"] = getattr(png_diff, attr)[0]
-        diff_content[attr]["after"] = getattr(png_diff, attr)[1]
-        if diff_content[attr]["before"] != diff_content[attr]["after"]:
-            diff_content[attr]["diff"] = True
-    diff_content["pixel"] = png_diff.pixel_diff
-    with open(file_output_name + ".diff.json", "w") as diff_file:
-        json.dump(diff_content, diff_file, indent=4)
-    return create_diff_image("RGBA", diff_content["size"]["before"], diff_content["pixel"], file_output_name)
+    saved_diff_images = create_diff_image("RGBA", tuple(png_diff.size[0]), png_diff.pixel_diff, file_output_name)
+    saved_diff_json = create_diff_json(png_diff, file_output_name)
+    saved_files = saved_diff_images
+    saved_files.append(saved_diff_json)
+    return saved_files
