@@ -1,6 +1,3 @@
-import os, sys
-from PIL import Image
-from parser.png_diff import PNG_DIFF
 from format.util import parameterize_image_diff
 
 def parameterize(file_diff):
