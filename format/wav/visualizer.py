@@ -2,6 +2,8 @@ import matplotlib.pyplot
 import numpy
 import wave
 import time
+from parser.wav import WAV
+from parser.wav_diff import WAV_DIFF
 
 def visualize_wave_file(file_path):
     """visualize the wave file, show as plot
@@ -59,19 +61,27 @@ def visualize_as_png(file_path, file_output_name = None):
     matplotlib.pyplot.savefig(file_output_name + ".png")
     return file_output_name + ".png"
 
-def visualize_file_diff(file_diff, file_base):
+def visualize_file_diff(file_before, file_diff, file_after):
     """visualize the wave diff, open with plot
 
     args:
+        file_before (str)
         file_diff (str)
-        file_base (str)
+        file_after (str)
     """
-    wav_file = wave.open(file_base, "r")
+    wav_file = wave.open(file_after, "r")
     signal = wav_file.readframes(-1)
     signal = numpy.fromstring(signal, "Int16")
-    channel_count = len(file_diff.frame_diff)
+
+    wav_before = WAV()
+    wav_before.load_from_file(file_before)
+    wav_after = WAV()
+    wav_after.load_from_file(file_after)
+    wav_diff = WAV_DIFF()
+    wav_diff.diff(wav_before, wav_after)
+    channel_count = len(wav_diff.frame_diff)
     for index in range(len(signal)):
-        if str(index / channel_count) in file_diff.frame_diff[str(index % channel_count)].keys():
+        if str(index / channel_count) in wav_diff.frame_diff[str(index % channel_count)].keys():
             continue
         else:
             signal[index] = 0
@@ -90,15 +100,16 @@ def visualize_file_diff(file_diff, file_base):
     matplotlib.pyplot.show()
 
 
-def visualize(file_diff, file_after, file_output_name = None):
+def visualize(file_before, file_diff, file_after, file_output_name = None):
     """visualize the wave diff, open with plot window
 
     args:
-        file_diff (WAV_DIFF)
+        file_before (str)
+        file_diff (str)
         file_after (str)
         file_output_name (str)
     """
     if file_output_name == None:
         file_output_name = str(time.time())
-    visualize_file_diff(file_diff, file_after)
+    visualize_file_diff(file_before, file_diff, file_after)
     
