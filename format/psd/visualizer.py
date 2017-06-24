@@ -2,6 +2,7 @@ import os
 import sys
 import time
 from differ import diff
+from parser.psd import *
 from parser.psd_diff import *
 from PIL import Image, ImageTk
 import Tkinter
@@ -14,10 +15,15 @@ def visualize_as_window(file_list_to_show):
     args:
         file_list_to_show (list)
     """
-    for image in file_list_to_show:
+    layer_count = int(len(file_list_to_show)/4)
+    for index in range(layer_count):
+        image_before_path = file_list_to_show[index*4 + 0]
+        image_before_diff_path = file_list_to_show[index*4 + 1]
+        image_after_diff_path = file_list_to_show[index*4 + 2]
+        image_after_path = file_list_to_show[index*4 + 3]
         window = Tkinter.Tk()
         window.wm_title("PSD DIFF")
-        width, height = Image.open(image + ".before.png").size
+        width, height = Image.open(image_before_path).size
         ratio = width / height
         width = int(window.winfo_screenwidth() * 0.96 / 4)
         height = width / ratio
@@ -33,14 +39,14 @@ def visualize_as_window(file_list_to_show):
                 else:
                     image_before.load()[x, y] = image_before_diff.load()[x, y] = image_after_diff.load()[
                         x, y] = image_after.load()[x, y] = (255, 255, 255)
-        image_before.paste(Image.open(image + ".before.png").resize((width, height), Image.ANTIALIAS), (0, 0),
-                           Image.open(image + ".before.png").convert('RGBA').resize((width, height), Image.ANTIALIAS))
-        image_before_diff.paste(Image.open(image + ".before.diff.png").resize((width, height), Image.ANTIALIAS),
-                                (0, 0), Image.open(image + ".before.diff.png").convert('RGBA').resize((width, height), Image.ANTIALIAS))
-        image_after_diff.paste(Image.open(image + ".after.diff.png").resize((width, height), Image.ANTIALIAS),
-                               (0, 0), Image.open(image + ".after.diff.png").convert('RGBA').resize((width, height), Image.ANTIALIAS))
-        image_after.paste(Image.open(image + ".after.png").resize((width, height), Image.ANTIALIAS), (0, 0),
-                          Image.open(image + ".after.png").convert('RGBA').resize((width, height), Image.ANTIALIAS))
+        image_before.paste(Image.open(image_before_path).resize((width, height), Image.ANTIALIAS), (0, 0),
+                           Image.open(image_before_path).convert('RGBA').resize((width, height), Image.ANTIALIAS))
+        image_before_diff.paste(Image.open(image_before_diff_path).resize((width, height), Image.ANTIALIAS),
+                                (0, 0), Image.open(image_before_diff_path).convert('RGBA').resize((width, height), Image.ANTIALIAS))
+        image_after_diff.paste(Image.open(image_after_diff_path).resize((width, height), Image.ANTIALIAS),
+                               (0, 0), Image.open(image_after_diff_path).convert('RGBA').resize((width, height), Image.ANTIALIAS))
+        image_after.paste(Image.open(image_after_path).resize((width, height), Image.ANTIALIAS), (0, 0),
+                          Image.open(image_after_path).convert('RGBA').resize((width, height), Image.ANTIALIAS))
         image_tk_before = ImageTk.PhotoImage(image_before)
         image_tk_before_diff = ImageTk.PhotoImage(image_before_diff)
         image_tk_after_diff = ImageTk.PhotoImage(image_after_diff)
@@ -56,65 +62,39 @@ def visualize_as_window(file_list_to_show):
         window.mainloop()
 
 
-def visualize_as_png(file_diff, file_after, file_output_name=None):
+def visualize_as_png(file_diffs, file_output_name=None):
     """visualize the psd diff, open as psd file with alpha channel
 
     args:
-        file_diff (PSD_DIFF)
-        file_after (str)
+        file_diffs (list)
         file_output_name (str)
 
     returns:
-        png_file (list)
+        saved_file_list (list)
     """
-    if os.path.exists(file_output_name):
-        shutil.rmtree(file_output_name)
-    os.mkdir(file_output_name)
-    diff_content = {}
-    png_file_list = []
-    for attr in ["header", "layer"]:
-        diff_content[attr] = getattr(file_diff, attr)
-    for layer_id in file_diff.layer.keys():
-        if len(file_diff.layer_image[layer_id]) > 1:
-            output_image = os.path.join(file_output_name, layer_id)
-            file_diff.layer_image[layer_id]["before"].save(
-                output_image + ".before.png")
-            file_diff.layer_image[layer_id]["after"].save(
-                output_image + ".after.png")
-            diff_image_before = Image.new(
-                "RGBA", file_diff.layer_image[layer_id]["before"].size)
-            diff_image_before_data = diff_image_before.load()
-            diff_image_after = Image.new(
-                "RGBA", file_diff.layer_image[layer_id]["after"].size)
-            diff_image_after_data = diff_image_after.load()
-            width, height = diff_image_before.size
-            pixel_index = 1
-            for y in xrange(height):
-                for x in xrange(width):
-                    if str(pixel_index) in diff_content["layer"][layer_id]["pixel"]:
-                        diff_image_before_data[x, y] = tuple(
-                            diff_content["layer"][layer_id]["pixel"][str(pixel_index)]["before"])
-                        diff_image_after_data[x, y] = tuple(
-                            diff_content["layer"][layer_id]["pixel"][str(pixel_index)]["after"])
-                    else:
-                        diff_image_before_data[x, y] = (0, 0, 0, 0)
-                        diff_image_after_data[x, y] = (0, 0, 0, 0)
-                    pixel_index += 1
-            diff_image_before.save(output_image + ".before.diff.png", "PNG")
-            diff_image_after.save(output_image + ".after.diff.png", "PNG")
-            png_file_list.append(output_image)
-    return png_file_list
+    saved_file_list = []
+    file_path = os.path.dirname(file_diffs[0])
+    if file_path != file_output_name:
+        for file_exist in file_diffs:
+            dest_path = os.path.join(file_output_name, os.path.basename(file_exist))
+            if os.path.exists(dest_path):
+                os.remove(dest_path)
+            shutil.copy(file_exist, os.path.join(dest_path))
+            saved_file_list.append(dest_path)
+    return saved_file_list
 
 
-def visualize(file_diff, file_after, file_output_name=None):
+def visualize(file_before, file_diffs, file_after, file_output_name=None):
     """visualize the psd diff, open with Tk window
 
     args:
-        file_diff (PSD_DIFF)
+        file_before (str)
+        file_diffs (list)
         file_after (str)
         file_output_name (str)
     """
     if file_output_name == None:
-        file_output_name = str(time.time())
-    saved_file = visualize_as_png(file_diff, file_after, file_output_name)
-    visualize_as_window(saved_file)
+        visualize_as_window(file_diffs)
+    else:
+        visualize_as_png(file_diffs, file_output_name)
+

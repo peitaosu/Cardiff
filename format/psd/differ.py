@@ -1,4 +1,4 @@
-import sys, json, os
+import sys, json, os, shutil
 from PIL import Image
 from parser.psd import PSD
 from parser.psd_diff import PSD_DIFF
@@ -29,13 +29,16 @@ def make_diff(file_before, file_after, file_output_name):
         file_after (str)
         file_output_name (str)
     """
+    if os.path.exists(file_output_name):
+        shutil.rmtree(file_output_name)
     os.mkdir(file_output_name)
     psd_diff = diff(file_before, file_after)
     diff_content = {}
     for attr in ["header", "layer"]:
         diff_content[attr] = getattr(psd_diff, attr)
-    with open(os.path.join(file_output_name, ".diff.json"), "w") as diff_file:
+    with open(os.path.join(file_output_name, "diff.json"), "w") as diff_file:
         json.dump(diff_content, diff_file, indent=4)
+    saved_files = []
     for layer_id in psd_diff.layer.keys():
         if len(psd_diff.layer_image[layer_id]) > 1:
             output_image = os.path.join(file_output_name, layer_id)
@@ -58,3 +61,10 @@ def make_diff(file_before, file_after, file_output_name):
                     pixel_index += 1
             diff_image_before.save(output_image + ".before.diff.png", "PNG")
             diff_image_after.save(output_image + ".after.diff.png", "PNG")
+            saved_files.append(output_image + ".before.png")
+            saved_files.append(output_image + ".before.diff.png")
+            saved_files.append(output_image + ".after.diff.png")
+            saved_files.append(output_image + ".after.png")
+    saved_files.append(file_output_name + "/diff.json")
+    return saved_files
+
