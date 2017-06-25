@@ -16,7 +16,7 @@ def visualize_image(file_image):
     image_label.pack(side = "bottom", fill = "both", expand = "yes")
     window.mainloop()
 
-def visualize_diff(file_before, file_diffs, file_after, file_ext, file_output_name = None):
+def visualize_diff(file_before, file_after, file_diffs, file_ext, file_output_name = None):
     """visualize the file diff
 
     args:
@@ -30,5 +30,5 @@ def visualize_diff(file_before, file_diffs, file_after, file_ext, file_output_na
         saved_file (list)
     """
     file_visualizer = importlib.import_module("format." + file_ext + ".visualizer")
-    saved_file = file_visualizer.visualize(file_before, file_diffs, file_after)
+    saved_file = file_visualizer.visualize(file_before, file_after, file_diffs)
     return saved_file

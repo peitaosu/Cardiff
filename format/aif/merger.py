@@ -73,6 +73,9 @@ def make_merged(file_before, file_after, file_output_name):
         file_before (str)
         file_after (str)
         file_output_name (str)
+
+    returns:
+        merged_file (str)
     """
     merged_aif_out = AIF()
     merged_aif_out.load_from_file(file_after)

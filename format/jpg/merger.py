@@ -64,6 +64,9 @@ def make_merged(file_before, file_after, file_output_name):
         file_before (str)
         file_after (str)
         file_output_name (str)
+
+    returns:
+        merged_file (str)
     """
     merged_jpg_out = Image.open(file_after)
     merged_jpg_out_data = merged_jpg_out.load()

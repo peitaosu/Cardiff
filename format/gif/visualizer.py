@@ -1,12 +1,12 @@
 from format.util import *
 
-def visualize(file_before, file_diffs, file_after, file_output_name = None):
+def visualize(file_before, file_after, file_diffs, file_output_name = None):
     """visualize the gif diff, open with Tk window or save as file
 
     args:
         file_before (str)
-        file_diffs (list)
         file_after (str)
+        file_diffs (list)
         file_output_name (str)
     """
     if file_output_name == None:

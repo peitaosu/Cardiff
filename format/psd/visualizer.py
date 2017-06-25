@@ -84,13 +84,13 @@ def visualize_as_png(file_diffs, file_output_name=None):
     return saved_file_list
 
 
-def visualize(file_before, file_diffs, file_after, file_output_name=None):
+def visualize(file_before, file_after, file_diffs, file_output_name=None):
     """visualize the psd diff, open with Tk window
 
     args:
         file_before (str)
-        file_diffs (list)
         file_after (str)
+        file_diffs (list)
         file_output_name (str)
     """
     if file_output_name == None:

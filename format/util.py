@@ -124,7 +124,7 @@ def create_diff_json(image_diff, file_output_name):
     """diff image file and save as file
 
     args:
-        image_diff (DIFFOBJ)
+        image_diff (object)
         file_output_name (str)
 
     returns:
@@ -146,7 +146,7 @@ def parameterize_image_diff(image_diff):
     """print formatted image diff data
 
     args:
-        image_diff (DIFFOBJ)
+        image_diff (object)
     """
     print "{:>48} : {:>8} <---> {:<8}".format("============ Parameters ============", "before", "after")
     for i in range(len(image_diff.attributes)):

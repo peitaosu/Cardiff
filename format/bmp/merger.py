@@ -66,6 +66,9 @@ def make_merged(file_before, file_after, file_output_name):
         file_before (str)
         file_after (str)
         file_output_name (str)
+
+    returns:
+        merged_file (str)
     """
     merged_bmp_out = BMP()
     merged_bmp_out.load_bmp_from_file(file_after)
@@ -83,4 +86,5 @@ def make_merged(file_before, file_after, file_output_name):
                 merged_bmp_out.bmp_data[pixel_start + i * 3 + 0 : pixel_start + i * 3 + 3]
     with open(file_output_name + ".merged.bmp", "wb") as merged_file:
         merged_file.write(merged_bmp_out_data)
+    return file_output_name + ".merged.bmp"
 

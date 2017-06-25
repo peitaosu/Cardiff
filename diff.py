@@ -25,7 +25,6 @@ def diff(file_before, file_after):
     args:
         file_before (str)
         file_after (str)
-        file_output_name (str)
 
     returns:
         file_diff (object)

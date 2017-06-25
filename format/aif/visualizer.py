@@ -65,7 +65,7 @@ def visualize_as_png(file_path, file_output_name = None):
     matplotlib.pyplot.savefig(file_output_name + ".png")
     return file_output_name + ".png"
 
-def visualize_file_diff(file_before, file_diff, file_after):
+def visualize_file_diff(file_before, file_after, file_diff):
     """visualize the aifc diff, open with plot
 
     args:
@@ -105,16 +105,16 @@ def visualize_file_diff(file_before, file_diff, file_after):
     matplotlib.pyplot.show()
 
 
-def visualize(file_before, file_diff, file_after, file_output_name = None):
+def visualize(file_before, file_after, file_diff, file_output_name = None):
     """visualize the aifc diff, open with plot window
 
     args:
         file_before (str)
-        file_diff (str)
         file_after (str)
+        file_diff (str)
         file_output_name (str)
     """
     if file_output_name == None:
         file_output_name = str(time.time())
-    visualize_file_diff(file_before, file_diff, file_after)
+    visualize_file_diff(file_before, file_after, file_diff)
     

@@ -28,6 +28,9 @@ def make_diff(file_before, file_after, file_output_name):
         file_before (str)
         file_after (str)
         file_output_name (str)
+
+    returns:
+        saved_files (list)
     """
     if os.path.exists(file_output_name):
         shutil.rmtree(file_output_name)
