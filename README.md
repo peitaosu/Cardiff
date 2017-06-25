@@ -26,6 +26,9 @@ This tool can be used to diff difference between file versions, to check what ha
 * Complex Document/Project Format
     - .PDF
     - .DWG
+    - .DOCX
+    - .PPTX
+    - .XLSX
     - ....
 * Composite Data Format
     - ....
