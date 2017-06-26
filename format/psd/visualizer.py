@@ -10,7 +10,7 @@ import shutil
 
 
 def visualize_as_window(file_list_to_show):
-    """visualize the psd diff, open with Tkinter window
+    """visualize the psd diff, open with 2 Tkinter windows
 
     args:
         file_list_to_show (list)
@@ -22,7 +22,9 @@ def visualize_as_window(file_list_to_show):
         image_after_diff_path = file_list_to_show[index*4 + 2]
         image_after_path = file_list_to_show[index*4 + 3]
         window = Tkinter.Tk()
-        window.wm_title("PSD DIFF")
+        window.wm_title("PSD LAYER ORIGIN")
+        window_diff = Tkinter.Toplevel()
+        window_diff.wm_title("PSD LAYER DIFF")
         width, height = Image.open(image_before_path).size
         ratio = width / height
         width = int(window.winfo_screenwidth() * 0.96 / 4)
@@ -53,9 +55,9 @@ def visualize_as_window(file_list_to_show):
         image_tk_after = ImageTk.PhotoImage(image_after)
         image_label = Tkinter.Label(window, image=image_tk_before)
         image_label.pack(side="left", fill="both", expand="yes")
-        image_label = Tkinter.Label(window, image=image_tk_before_diff)
+        image_label = Tkinter.Label(window_diff, image=image_tk_before_diff)
         image_label.pack(side="left", fill="both", expand="yes")
-        image_label = Tkinter.Label(window, image=image_tk_after_diff)
+        image_label = Tkinter.Label(window_diff, image=image_tk_after_diff)
         image_label.pack(side="left", fill="both", expand="yes")
         image_label = Tkinter.Label(window, image=image_tk_after)
         image_label.pack(side="left", fill="both", expand="yes")
