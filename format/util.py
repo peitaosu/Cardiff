@@ -6,16 +6,18 @@ from PIL import Image, ImageTk
 
 
 def visualize_image_as_window(file_to_show):
-    """visualize the image diff, open with Tkinter window
+    """visualize the image diff, open with Tkinter 2 windows
 
     args:
         file_to_show (list)
     """
-    window = Tkinter.Tk()
-    window.wm_title("IMAGE DIFF")
+    window_origin = Tkinter.Tk()
+    window_origin.wm_title("IMAGE ORIGIN")
+    window_diff = Tkinter.Toplevel()
+    window_diff.wm_title("IMAGE DIFF")
     width, height = Image.open(file_to_show[0]).size
     ratio = width / height
-    width = int(window.winfo_screenwidth() * 0.96 / 4)
+    width = int(window_origin.winfo_screenwidth() * 0.96 / 4)
     height = width / ratio
     image_before = Image.new("RGB", (width, height))
     image_before_diff = Image.new("RGB", (width, height))
@@ -41,15 +43,15 @@ def visualize_image_as_window(file_to_show):
     image_tk_before_diff = ImageTk.PhotoImage(image_before_diff)
     image_tk_after_diff = ImageTk.PhotoImage(image_after_diff)
     image_tk_after = ImageTk.PhotoImage(image_after)
-    image_label = Tkinter.Label(window, image=image_tk_before)
+    image_label = Tkinter.Label(window_origin, image=image_tk_before)
     image_label.pack(side="left", fill="both", expand="yes")
-    image_label = Tkinter.Label(window, image=image_tk_before_diff)
+    image_label = Tkinter.Label(window_diff, image=image_tk_before_diff)
     image_label.pack(side="left", fill="both", expand="yes")
-    image_label = Tkinter.Label(window, image=image_tk_after_diff)
+    image_label = Tkinter.Label(window_diff, image=image_tk_after_diff)
     image_label.pack(side="left", fill="both", expand="yes")
-    image_label = Tkinter.Label(window, image=image_tk_after)
+    image_label = Tkinter.Label(window_origin, image=image_tk_after)
     image_label.pack(side="left", fill="both", expand="yes")
-    window.mainloop()
+    window_origin.mainloop()
 
 
 def visualize_image_as_png(file_diff_before, file_diff_after, file_output_name):
