@@ -86,14 +86,17 @@ class Cardiff():
             ver_2 = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[1]]["hash"]
         file_ext = os.path.splitext(file_path)[1]
         new_file_1 = str(time.time()) + file_ext
-        self.vcs.checkout_as_new(file_path, ver_1, os.path.join(self.temp, new_file_1))
+        new_file_1_path = os.path.join(self.temp, new_file_1)
+        self.vcs.checkout_as_new(file_path, ver_1, new_file_1_path)
         new_file_2 = str(time.time()) + file_ext
-        self.vcs.checkout_as_new(file_path, ver_2, os.path.join(self.temp, new_file_2))
-        diff_result = diff(os.path.join(self.temp, new_file_1), os.path.join(self.temp, new_file_2))
+        new_file_2_path = os.path.join(self.temp, new_file_2)
+        self.vcs.checkout_as_new(file_path, ver_2, new_file_2_path)
+        diff_result = diff(new_file_1_path, new_file_2_path)
         print "diff " + file_path + " " + ver_1 + " " + ver_2
         parameterize_diff(diff_result, file_path.split(".")[-1])
-        file_diffs = diff_file(os.path.join(self.temp, new_file_1), os.path.join(self.temp, new_file_2), os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6]))
-        visualize_diff(os.path.join(self.temp, new_file_1), os.path.join(self.temp, new_file_2), file_diffs, file_path.split(".")[-1], os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6]))
+        file_output_name = os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6])
+        file_diffs = diff_file(new_file_1_path, new_file_2_path, file_output_name)
+        visualize_diff(new_file_1_path, new_file_2_path, file_diffs, file_path.split(".")[-1], file_output_name)
 
     def cmd_merge(self, file_ver):
         self.setup_vcs()
@@ -106,10 +109,12 @@ class Cardiff():
             ver_2 = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[1]]["hash"]
         file_ext = os.path.splitext(file_path)[1]
         new_file_1 = str(time.time()) + file_ext
-        self.vcs.checkout_as_new(file_path, ver_1, os.path.join(self.temp, new_file_1))
+        new_file_1_path = os.path.join(self.temp, new_file_1)
+        self.vcs.checkout_as_new(file_path, ver_1, new_file_1_path)
         new_file_2 = str(time.time()) + file_ext
-        self.vcs.checkout_as_new(file_path, ver_2, os.path.join(self.temp, new_file_2))
-        merged_file = merge_file(os.path.join(self.temp, new_file_1), os.path.join(self.temp, new_file_2), os.path.join(self.vcs.repo_path, file_path))
+        new_file_2_path = os.path.join(self.temp, new_file_2)
+        self.vcs.checkout_as_new(file_path, ver_2, new_file_2_path)
+        merged_file = merge_file(new_file_1_path, new_file_2_path, os.path.join(self.vcs.repo_path, file_path))
         print "merge " + file_path + " " + ver_1 + " " + ver_2
 
     def cmd_commit(self, commit):
