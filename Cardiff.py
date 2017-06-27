@@ -37,11 +37,16 @@ class Cardiff():
                 sys.exit(-1)
         if self.settings["repo"].startswith("<") and self.settings["repo"].endswith(">"):
             print "You need to init a repo first time."
+        if self.settings["verbose"] == "1":
+            os.environ["VERBOSE_MODE"] = "1"
         self.temp = os.path.join(cardiff_path, self.settings["temp"])
         self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
+        vprint("Setting Temp Foloder: " + self.temp)
         make_path_exist(self.temp)
+        vprint("Setting VCS DB: " + self.vcs_db_path)
         make_path_exist(self.vcs_db_path)
         self.vcs = init_vcs(self.settings["vcs"])
+        vprint("Current VCS: " + self.settings["vcs"])
 
     def setup_vcs(self):
         if self.settings["repo"] != "":
@@ -49,8 +54,10 @@ class Cardiff():
                 print "You need to init a repo first time."
                 sys.exit(-1)
             self.vcs.set_repo(self.settings["repo"])
+            vprint("Current Repository: " + self.settings["repo"])
             self.vcs_branches = self.vcs.get_branches()
             self.vcs_current_branch = self.vcs_branches["current"]
+            vprint("Current Branch: " + self.vcs_branches["current"])
             self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]), "log.json")
             with open(self.vcs_db_log) as log_file:
                 self.vcs_logs = json.load(log_file)
