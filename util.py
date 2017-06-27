@@ -25,3 +25,13 @@ def clean_path(path, pattern=None):
                     continue
             os.remove(os.path.join(root, file_item))
             print os.path.join(root, file_item) + " deleted."
+
+def vprint(verbose_log):
+    """print verbose log while environment variable VERBOSE_LOG set
+
+    args:
+        verbose_log (str)
+    """
+    if "VERBOSE_MODE" in os.environ:
+        if os.getenv("VERBOSE_MODE") == "1":
+            print verbose_log
