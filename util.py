@@ -1,4 +1,4 @@
-import os, re
+import os, re, time
 
 def make_path_exist(path):
     """check the path if any folder not exists then create it
@@ -34,4 +34,4 @@ def vprint(verbose_log):
     """
     if "VERBOSE_MODE" in os.environ:
         if os.getenv("VERBOSE_MODE") == "1":
-            print verbose_log
+            print "[VERBOSE LOG]: {} - {}".format(time.strftime("%m-%d-%Y %H:%M:%S", time.localtime()), verbose_log)
