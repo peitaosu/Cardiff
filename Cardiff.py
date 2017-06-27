@@ -1,5 +1,5 @@
 import os, sys, json, time
-from common import *
+from util import *
 from init import *
 from diff import *
 from visualize import visualize_diff
