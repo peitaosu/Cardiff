@@ -117,12 +117,15 @@ class Cardiff():
         file_ext = os.path.splitext(file_path)[1]
         new_file_1 = str(time.time()) + file_ext
         new_file_1_path = os.path.join(self.temp, new_file_1)
+        vprint("Checkout Out File: " + file_path + " (Version: " + ver_1 + ") To " + new_file_1_path)
         self.vcs.checkout_as_new(file_path, ver_1, new_file_1_path)
         new_file_2 = str(time.time()) + file_ext
         new_file_2_path = os.path.join(self.temp, new_file_2)
+        vprint("Checkout Out File: " + file_path + " (Version: " + ver_2 + ") To " + new_file_2_path)
         self.vcs.checkout_as_new(file_path, ver_2, new_file_2_path)
-        merged_file = merge_file(new_file_1_path, new_file_2_path, os.path.join(self.vcs.repo_path, file_path))
         print "merge " + file_path + " " + ver_1 + " " + ver_2
+        merged_file = merge_file(new_file_1_path, new_file_2_path, os.path.join(self.vcs.repo_path, file_path))
+        print "Merged file: " + merged_file 
 
     def cmd_commit(self, commit):
         self.setup_vcs()
@@ -174,15 +177,19 @@ class Cardiff():
                     print "  " + branch
         else:
             if command[0] not in self.vcs_logs:
+                vprint("Create Branch: " + command[0])
                 self.vcs.create_branch(command[0])
                 self.vcs_logs[command[0]] = {"HEAD": "#0"}
                 with open(self.vcs_db_log, "w") as log_file:
                     json.dump(self.vcs_logs, log_file, indent=4)
+            vprint("Checkout to Branch: " + command[0])
             self.vcs.switch_branch(command[0])
 
     def cmd_clean(self, command):
         if len(command) == 0:
+            vprint("Clean Temporary Folder: " + self.temp)
             clean_path(self.temp)
+            vprint("Clean All .pyc Files")
             clean_path(cardiff_path, "\.pyc")
         else:
             for filter in command:
