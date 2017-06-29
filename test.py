@@ -28,6 +28,7 @@ def test_load_settings():
 
     print_settings()
     cardiff.load_settings(settings_path)
+    os.environ["VERBOSE_MODE"] = "1"
 
 def test_cmd_help():
     print "[TEST] Command - help"
@@ -57,7 +58,13 @@ def test_cmd_commit():
 
 def test_cmd_diff():
     print "[TEST] Command - diff"
+    os.environ["SILENT_MODE"] = "1"
     cardiff.exec_cmd(["diff", "file.bmp", "1", "2"])
+    cardiff.exec_cmd(["diff", "file.jpg", "3", "4"])
+    cardiff.exec_cmd(["diff", "file.png", "5", "6"])
+    cardiff.exec_cmd(["diff", "file.gif", "7", "8"])
+    cardiff.exec_cmd(["diff", "file.wav", "9", "10"])
+    cardiff.exec_cmd(["diff", "file.aif", "11", "12"])
 
 def test_cmd_merge():
     print "[TEST] Command - merge"
@@ -158,6 +165,8 @@ if __name__ == "__main__":
     test_cmd_branch()
 
     test_cmd_commit()
+
+    test_cmd_diff()
 
     test_cmd_merge()
 
