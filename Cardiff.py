@@ -106,8 +106,11 @@ class Cardiff():
         file_output_name = os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6])
         file_diffs = diff_file(new_file_1_path, new_file_2_path, file_output_name)
         if os.getenv("SILENT_MODE") == "1":
-            for item in file_diffs:
-                print "diff result: " + item
+            if hasattr(file_diffs, 'lower'):
+                print "diff result: " + file_diffs
+            else:
+                for item in file_diffs:
+                    print "diff result: " + item
         else:
             visualize_diff(new_file_1_path, new_file_2_path, file_diffs, file_path.split(".")[-1], file_output_name)
 
