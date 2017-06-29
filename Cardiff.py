@@ -39,6 +39,8 @@ class Cardiff():
             print "You need to init a repo first time."
         if self.settings["verbose"] == "1":
             os.environ["VERBOSE_MODE"] = "1"
+        if self.settings["silent"] == "1":
+            os.environ["SILENT_MODE"] = "1"
         self.temp = os.path.join(cardiff_path, self.settings["temp"])
         self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
         vprint("Setting Temp Foloder: " + self.temp)
@@ -103,7 +105,11 @@ class Cardiff():
         parameterize_diff(diff_result, file_path.split(".")[-1])
         file_output_name = os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6])
         file_diffs = diff_file(new_file_1_path, new_file_2_path, file_output_name)
-        visualize_diff(new_file_1_path, new_file_2_path, file_diffs, file_path.split(".")[-1], file_output_name)
+        if os.getenv("SILENT_MODE") == "1":
+            for item in file_diffs:
+                print "diff result: " + item
+        else:
+            visualize_diff(new_file_1_path, new_file_2_path, file_diffs, file_path.split(".")[-1], file_output_name)
 
     def cmd_merge(self, file_ver):
         self.setup_vcs()

@@ -5,6 +5,7 @@
     "user.name": "<your_name>", 
     "user.email": "<your_email>",
     "verbose": "0",
+    "silent": "0",
     "information": {
         "contributor": "Tony Su", 
         "version": "0.0.8"
