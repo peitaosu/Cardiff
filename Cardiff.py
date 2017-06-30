@@ -258,5 +258,6 @@ class Cardiff():
 if __name__ == "__main__":
     cardiff = Cardiff()
     settings_path = os.path.join(cardiff_path, "settings.json")
-    cardiff.load_settings(settings_path)
+    if sys.argv[1] not in ["cdiff"]:
+        cardiff.load_settings(settings_path)
     cardiff.exec_cmd(sys.argv[1:])
