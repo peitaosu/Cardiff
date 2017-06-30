@@ -56,13 +56,23 @@ def test_cmd_commit():
         cardiff.exec_cmd(["commit", "file." + audio_format, "commit msg " + str(time.time())])
     cardiff.exec_cmd(["log"])
 
+def print_file_content(file_path):
+    print "File: " + file_path
+    with open(file_path, "r") as in_file:
+        for line in in_file.readlines():
+            print line.split("\n")[0]
+
 def test_cmd_diff():
     print "[TEST] Command - diff"
     os.environ["SILENT_MODE"] = "1"
-    cardiff.exec_cmd(["diff", "file.bmp", "1", "2"])
-    cardiff.exec_cmd(["diff", "file.jpg", "3", "4"])
-    cardiff.exec_cmd(["diff", "file.png", "5", "6"])
-    cardiff.exec_cmd(["diff", "file.gif", "7", "8"])
+    result = cardiff.exec_cmd(["diff", "file.bmp", "1", "2"])
+    print_file_content(result[2])
+    result = cardiff.exec_cmd(["diff", "file.jpg", "3", "4"])
+    print_file_content(result[2])
+    result = cardiff.exec_cmd(["diff", "file.png", "5", "6"])
+    print_file_content(result[2])
+    result = cardiff.exec_cmd(["diff", "file.gif", "7", "8"])
+    print_file_content(result[2])
     cardiff.exec_cmd(["diff", "file.wav", "9", "10"])
     cardiff.exec_cmd(["diff", "file.aif", "11", "12"])
 
