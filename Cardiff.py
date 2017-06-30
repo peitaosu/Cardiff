@@ -113,6 +113,7 @@ class Cardiff():
                     print "diff result: " + item
         else:
             visualize_diff(new_file_1_path, new_file_2_path, file_diffs, file_path.split(".")[-1], file_output_name)
+        return file_diffs
 
     def cmd_merge(self, file_ver):
         self.setup_vcs()
@@ -134,7 +135,8 @@ class Cardiff():
         self.vcs.checkout_as_new(file_path, ver_2, new_file_2_path)
         print "merge " + file_path + " " + ver_1 + " " + ver_2
         merged_file = merge_file(new_file_1_path, new_file_2_path, os.path.join(self.vcs.repo_path, file_path))
-        print "Merged file: " + merged_file 
+        print "Merged file: " + merged_file
+        return merge_file
 
     def cmd_commit(self, commit):
         self.setup_vcs()
