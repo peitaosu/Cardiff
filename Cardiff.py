@@ -15,6 +15,7 @@ class Cardiff():
         self.commands = {
             "init": self.cmd_init,
             "diff": self.cmd_diff,
+            "cdiff": self.cmd_cdiff,
             "merge": self.cmd_merge,
             "commit": self.cmd_commit,
             "checkout": self.cmd_checkout,
@@ -115,6 +116,31 @@ class Cardiff():
             visualize_diff(new_file_1_path, new_file_2_path, file_diffs, file_path.split(".")[-1], file_output_name)
         return file_diffs
 
+    def cmd_cdiff(self, files):
+        file_before = files[0]
+        file_after = files[1]
+        if len(files) > 2:
+            file_output_name = files[2]
+        else:
+            file_output_name = os.path.join("./", os.path.splitext(os.path.basename(file_before))[0] + os.path.splitext(os.path.basename(file_after))[0])
+        file_ext = os.path.splitext(file_before)[1]
+        if file_ext != os.path.splitext(file_after)[1]:
+            print file_before + " and " + file_after + " format different, can not be diffed."
+            sys.exit(-1)
+        diff_result = diff(file_before, file_after)
+        print "diff " + file_before + " " + file_after
+        parameterize_diff(diff_result, file_before.split(".")[-1])
+        file_diffs = diff_file(file_before, file_after, file_output_name)
+        if os.getenv("SILENT_MODE") == "1":
+            if hasattr(file_diffs, 'lower'):
+                print "diff result: " + file_diffs
+            else:
+                for item in file_diffs:
+                    print "diff result: " + item
+        else:
+            visualize_diff(file_before, file_after, file_diffs, file_before.split(".")[-1], file_output_name)
+        return file_diffs
+
     def cmd_merge(self, file_ver):
         self.setup_vcs()
         file_path = file_ver[0]
@@ -210,6 +236,7 @@ class Cardiff():
         commands = {
             "init": "init <repo_path>",
             "diff": "diff <file> <version_1> [<version_2>]",
+            "cdiff": "cdiff <file1> <file2> [output]",
             "merge": "merge <file> <version_1> [<version_2>]",
             "commit": "commit <file> <message>",
             "checkout": "checkout <file> <version>",
