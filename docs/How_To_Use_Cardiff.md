@@ -5,7 +5,7 @@ Cardiff is a version control tool for binary format files. This tool can be used
 
 # Preparations
 
-Cardiff is written in Python and request some python modules. All required modules were listed in ```./requirement.txt```.
+Cardiff is written in Python and request some python modules. All required modules were listed in ```./requirements.txt```.
 
 Before to use it, please make sure it has been able to meet your needs:
 1. Currently, Cardiff use git as the VCS. You can add other VCS (such as SVN, TFS) support by yourself. 
