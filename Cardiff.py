@@ -253,7 +253,7 @@ class Cardiff():
                 print "  Cardiff.py " + value
 
     def exec_cmd(self, command):
-        self.commands[command[0]](command[1:])
+        return self.commands[command[0]](command[1:])
 
 if __name__ == "__main__":
     cardiff = Cardiff()
