@@ -236,14 +236,14 @@ class Cardiff():
         commands = {
             "init": "init <repo_path>",
             "diff": "diff <file> <version_1> [<version_2>]",
-            "cdiff": "cdiff <file1> <file2> [output]",
+            "cdiff": "cdiff <file1> <file2> [<output>]",
             "merge": "merge <file> <version_1> [<version_2>]",
             "commit": "commit <file> <message>",
             "checkout": "checkout <file> <version>",
-            "log": "log [filter]",
+            "log": "log [<filter>]",
             "branch": "branch <branch>",
-            "clean": "clean [filter]",
-            "help": "help [command]"
+            "clean": "clean [<filter>]",
+            "help": "help [<command>]"
         }
         print "Usage:"
         if len(command) == 1:
