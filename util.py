@@ -35,3 +35,15 @@ def vprint(verbose_log):
     if "VERBOSE_MODE" in os.environ:
         if os.getenv("VERBOSE_MODE") == "1":
             print "[VERBOSE LOG]: {} - {}".format(time.strftime("%m-%d-%Y %H:%M:%S", time.localtime()), verbose_log)
+
+def print_str_or_list(str_list):
+    """if input is a string, print the string; if is a string list, print the string one by one
+
+    args:
+        str_list (list)
+    """
+    if hasattr(str_list, 'lower'):
+        print str_list
+    else:
+        for item in str_list:
+            print item

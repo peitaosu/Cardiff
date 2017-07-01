@@ -38,10 +38,8 @@ class Cardiff():
                 sys.exit(-1)
         if self.settings["repo"].startswith("<") and self.settings["repo"].endswith(">"):
             print "You need to init a repo first time."
-        if self.settings["verbose"] == "1":
-            os.environ["VERBOSE_MODE"] = "1"
-        if self.settings["silent"] == "1":
-            os.environ["SILENT_MODE"] = "1"
+        os.environ["VERBOSE_MODE"] = self.settings["verbose"]
+        os.environ["SILENT_MODE"] = self.settings["silent"]
         self.temp = os.path.join(cardiff_path, self.settings["temp"])
         self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
         vprint("Setting Temp Foloder: " + self.temp)
@@ -107,11 +105,8 @@ class Cardiff():
         file_output_name = os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6])
         file_diffs = diff_file(new_file_1_path, new_file_2_path, file_output_name)
         if os.getenv("SILENT_MODE") == "1":
-            if hasattr(file_diffs, 'lower'):
-                print "diff result: " + file_diffs
-            else:
-                for item in file_diffs:
-                    print "diff result: " + item
+            print "diff result: "
+            print_str_or_list(file_diffs)
         else:
             visualize_diff(new_file_1_path, new_file_2_path, file_diffs, file_path.split(".")[-1], file_output_name)
         return file_diffs
@@ -132,11 +127,8 @@ class Cardiff():
         parameterize_diff(diff_result, file_before.split(".")[-1])
         file_diffs = diff_file(file_before, file_after, file_output_name)
         if os.getenv("SILENT_MODE") == "1":
-            if hasattr(file_diffs, 'lower'):
-                print "diff result: " + file_diffs
-            else:
-                for item in file_diffs:
-                    print "diff result: " + item
+            print "diff result: "
+            print_str_or_list(file_diffs)
         else:
             visualize_diff(file_before, file_after, file_diffs, file_before.split(".")[-1], file_output_name)
         return file_diffs
