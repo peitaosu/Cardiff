@@ -64,6 +64,19 @@ python Cardiff.py merge <file> <version_1> [<version_2>]
 python Cardiff.py merge my_work.psd 1 2
 ```
 
+# Separate Tool without VCS
+
+You can use Cardiff as separate tool without any VCS and please pay attention only diff supported.
+
+```cdiff``` is the command which accept 2 separate files to diff.
+
+```
+python Cardiff.py cdiff <file1> <file2> [<output>]
+
+# for example
+python Cardiff.py cdiff my_work.psd others_work.psd ./diff_result
+```
+
 # Robustness of Code
 After you made some changes for Cardiff, we suggest you to add some check points into ```test.py``` and run it to avoid some issues and make Cardiff more robust.
 
