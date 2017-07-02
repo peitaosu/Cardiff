@@ -49,6 +49,11 @@ def print_str_or_list(str_list):
             print item
 
 def print_file_content(file_path):
+    """print text file content
+
+    args:
+        file_path (str)
+    """
     print "File: " + file_path
     with open(file_path, "r") as in_file:
         for line in in_file.readlines():
