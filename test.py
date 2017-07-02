@@ -6,6 +6,7 @@ import json
 import pprint
 import time
 import os
+from util import *
 
 pp = pprint.PrettyPrinter(indent=4)
 settings_path = "./settings.json"
@@ -55,12 +56,6 @@ def test_cmd_commit():
         time.sleep(1)
         cardiff.exec_cmd(["commit", "file." + audio_format, "commit msg " + str(time.time())])
     cardiff.exec_cmd(["log"])
-
-def print_file_content(file_path):
-    print "File: " + file_path
-    with open(file_path, "r") as in_file:
-        for line in in_file.readlines():
-            print line.split("\n")[0]
 
 def test_cmd_diff():
     print "[TEST] Command - diff"
