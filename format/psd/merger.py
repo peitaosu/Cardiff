@@ -63,16 +63,16 @@ def make_merged(file_before, file_after, file_output_name):
     psd_after = PSD()
     psd_before.load_psd_from_file(file_before)
     psd_after.load_psd_from_file(file_after)
-
+    merged_files_list = []
     for layer_id in layer_merged:
         layer_image = psd_before.get_single_layer_image(int(layer_id))
-        layer_image_data = layer_image.load()
-        width, height = layer_image_data.size
+        width, height = layer_image.size
         pixel_index = 1
         for y in xrange(height):
             for x in xrange(width):
                 if str(pixel_index) in layer_merged[layer_id]:
-                    layer_image_data[x, y] = tuple(layer_merged[layer_id][str(pixel_index)])
+                    layer_image.load()[x, y] = tuple(layer_merged[layer_id][str(pixel_index)])
                 pixel_index += 1
-        layer_image_data.save(file_output_name + "." + layer_id + ".merged.png", "PNG")
-        return file_output_name + "." + layer_id + ".merged.png"
+        layer_image.save(file_output_name + "." + layer_id + ".merged.png", "PNG")
+        merged_files_list.append(file_output_name + "." + layer_id + ".merged.png")
+    return merged_files_list
