@@ -5,6 +5,15 @@ from parser.psd_diff import PSD_DIFF
 
 
 def merge(file_before, file_after):
+    """merge psd diff
+
+    args:
+        file_before (str)
+        file_after (str)
+
+    returns:
+        layer_merged (dict)
+    """
     psd_before = PSD()
     psd_after = PSD()
     psd_before.load_psd_from_file(file_before)
@@ -58,6 +67,16 @@ def merge(file_before, file_after):
     return layer_merged
 
 def make_merged(file_before, file_after, file_output_name):
+    """merge psd diff and save as file
+
+    args:
+        file_before (str)
+        file_after (str)
+        file_output_name (str)
+
+    returns:
+        merged_files_list (list)
+    """
     layer_merged = merge(file_before, file_after)
     psd_before = PSD()
     psd_after = PSD()
