@@ -3,3 +3,7 @@
 
 # Python
 *.pyc
+
+# Generated Files
+*.diff.*
+*.merged.*
