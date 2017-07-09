@@ -22,8 +22,6 @@ def merge(file_before, file_after):
     for attr in wav_diff.attributes:
         if getattr(wav_diff, attr)[0] != getattr(wav_diff, attr)[1]:
             print "Parameter - " + attr + " not the same: " + getattr(wav_diff, attr)[2]
-            print "Cannot be merged."
-            return -1
 
     frame_merged = {}
     for channel in range(len(wav_diff.frame_diff)):

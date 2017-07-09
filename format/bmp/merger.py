@@ -22,8 +22,6 @@ def merge(file_before, file_after):
     for attr in bmp_diff.attributes:
         if getattr(bmp_diff, attr)[0] != getattr(bmp_diff, attr)[1]:
             print "Parameter - " + attr + " not the same: " + getattr(bmp_diff, attr)[2]
-            print "Cannot be merged."
-            return -1
     if "AUTO_MERGE" not in os.environ:
         option = raw_input("Choose your merge option: 1-All, 2-Pixel By Pixel: ")
     else:

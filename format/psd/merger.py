@@ -23,8 +23,6 @@ def merge(file_before, file_after):
     for param in psd_diff.header:
         if psd_diff.header[param]["before"] != psd_diff.header[param]["after"]:
             print "Header - {} not the same. Before: {} After: {}".format(param, psd_diff.header[param]["before"], psd_diff.header[param]["after"])
-            print "Cannot be merged."
-            return -1
     if "AUTO_MERGE" not in os.environ:
         option = raw_input("Choose your merge option: 1-All, 2-Pixel By Pixel: ")
     else:
@@ -34,8 +32,6 @@ def merge(file_before, file_after):
         for param in psd_diff.layer[layer_id]["parameter"]:
             if psd_diff.layer[layer_id]["parameter"][param]["before"] != psd_diff.layer[layer_id]["parameter"][param]["after"]:
                 print "Layer {} Parameter - {} not the same. Before: {} After: {}".format(layer_id, param, psd_diff.layer[layer_id]["parameter"][param]["before"], psd_diff.layer[layer_id]["parameter"][param]["after"])
-                print "Cannot be merged."
-                return -1
         if psd_diff.layer[layer_id]["pixel"] != "Empty Layer." and len(psd_diff.layer[layer_id]["pixel"]) > 0:
             layer_merged[layer_id] = {}
             print "Layer " + layer_id + " changed. Need merge."
@@ -78,6 +74,8 @@ def make_merged(file_before, file_after, file_output_name):
         merged_files_list (list)
     """
     layer_merged = merge(file_before, file_after)
+    if layer_merged == -1:
+        return -1
     psd_before = PSD()
     psd_after = PSD()
     psd_before.load_psd_from_file(file_before)

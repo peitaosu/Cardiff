@@ -22,8 +22,6 @@ def merge(file_before, file_after):
     for attr in aif_diff.attributes:
         if getattr(aif_diff, attr)[0] != getattr(aif_diff, attr)[1]:
             print "Parameter - " + attr + " not the same: " + getattr(aif_diff, attr)[2]
-            print "Cannot be merged."
-            return -1
 
     frame_merged = {}
     for channel in range(len(aif_diff.frame_diff)):
