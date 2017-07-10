@@ -22,7 +22,8 @@ class Cardiff():
             "log": self.cmd_log,
             "branch": self.cmd_branch,
             "clean": self.cmd_clean,
-            "help": self.cmd_help
+            "help": self.cmd_help,
+            "info": self.cmd_info
         }
 
     def load_settings(self, settings_path = None):
@@ -236,7 +237,8 @@ class Cardiff():
             "log": "log [<filter>]",
             "branch": "branch <branch>",
             "clean": "clean [<filter>]",
-            "help": "help [<command>]"
+            "help": "help [<command>]",
+            "info": "info [<information>]"
         }
         print "Usage:"
         if len(command) == 1:
@@ -244,6 +246,14 @@ class Cardiff():
         else:
             for key, value in commands.iteritems():
                 print "  Cardiff.py " + value
+
+    def cmd_info(self, command):
+        information = self.settings["information"]
+        if len(command) == 1:
+            print "{:>12}: {:<8}".format(command[0], information[command[0]])
+        else:
+            for key, value in information.iteritems():
+                print "{:>12}: {:<8}".format(key, value)
 
     def exec_cmd(self, command):
         return self.commands[command[0]](command[1:])
