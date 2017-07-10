@@ -35,6 +35,12 @@ def test_cmd_help():
     print "[TEST] Command - help"
     cardiff.exec_cmd(["help"])
 
+def test_cmd_info():
+    print "[TEST] Command - info"
+    cardiff.exec_cmd(["info"])
+    cardiff.exec_cmd(["info", "version"])
+    cardiff.exec_cmd(["info", "contributor"])
+
 def test_cmd_init():
     print "[TEST] Command - init"
     cardiff.exec_cmd(["init", "./test"])
@@ -164,6 +170,8 @@ if __name__ == "__main__":
     test_load_settings()
 
     test_cmd_help()
+
+    test_cmd_info()
 
     test_cmd_init()
 
