@@ -27,6 +27,7 @@ class Cardiff():
         }
 
     def load_settings(self, settings_path = None):
+        """load settings from file"""
         if settings_path == None:
             self.settings_path = os.path.join(cardiff_path, "settings.json")
         else:
@@ -51,6 +52,7 @@ class Cardiff():
         vprint("Current VCS: " + self.settings["vcs"])
 
     def setup_vcs(self):
+        """setup VCS"""
         if self.settings["repo"] != "":
             if self.settings["repo"].startswith("<") and self.settings["repo"].endswith(">"):
                 print "You need to init a repo first time."
@@ -65,6 +67,7 @@ class Cardiff():
                 self.vcs_logs = json.load(log_file)
 
     def cmd_init(self, init_path):
+        """initial new repository"""
         if len(init_path) > 0:
             init_path = init_path[0]
             if os.path.isdir(init_path):
@@ -85,6 +88,7 @@ class Cardiff():
             print "You need to provide a path for repository initialing."
 
     def cmd_diff(self, file_ver):
+        """diff different versions of file"""
         self.setup_vcs()
         file_path = file_ver[0]
         if len(file_ver) > 2:
@@ -113,6 +117,7 @@ class Cardiff():
         return file_diffs
 
     def cmd_cdiff(self, files):
+        """diff different versions of file without VCS"""
         file_before = files[0]
         file_after = files[1]
         if len(files) > 2:
@@ -135,6 +140,7 @@ class Cardiff():
         return file_diffs
 
     def cmd_merge(self, file_ver):
+        """merge different versions of file"""
         self.setup_vcs()
         file_path = file_ver[0]
         if len(file_ver) > 2:
@@ -159,6 +165,7 @@ class Cardiff():
         return merge_file
 
     def cmd_commit(self, commit):
+        """commit version of file to VCS"""
         self.setup_vcs()
         file_path = commit[0]
         commit_message = commit[1]
@@ -175,6 +182,7 @@ class Cardiff():
         print file_path + " - " + commit_message
 
     def cmd_checkout(self, file_ver):
+        """checkout specific version of file from VCS"""
         self.setup_vcs()
         file_path = file_ver[0]
         ver = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[1]]["hash"]
@@ -182,6 +190,7 @@ class Cardiff():
         print "checkout " + file_path + " from " + ver
 
     def cmd_log(self, log_filter):
+        """print all logs of VCS"""
         self.setup_vcs()
         logs = self.vcs.log()
         print "[Commit History]:"
@@ -199,6 +208,7 @@ class Cardiff():
                         break
 
     def cmd_branch(self, command):
+        """create new branche, switch to branch or print branches information"""
         self.setup_vcs()
         if len(command) == 0:
             print "[Local Branches]:"
@@ -217,6 +227,7 @@ class Cardiff():
             self.vcs.switch_branch(command[0])
 
     def cmd_clean(self, command):
+        """clean all temporary files"""
         if len(command) == 0:
             vprint("Clean Temporary Folder: " + self.temp)
             clean_path(self.temp)
@@ -227,6 +238,7 @@ class Cardiff():
                 clean_path(self.temp, filter)
 
     def cmd_help(self, command):
+        """print usage"""
         commands = {
             "init": "init <repo_path>",
             "diff": "diff <file> <version_1> [<version_2>]",
@@ -248,6 +260,7 @@ class Cardiff():
                 print "  Cardiff.py " + value
 
     def cmd_info(self, command):
+        """print information of Cardiff"""
         information = self.settings["information"]
         if len(command) == 1:
             print "{:>12}: {:<8}".format(command[0], information[command[0]])
@@ -256,6 +269,7 @@ class Cardiff():
                 print "{:>12}: {:<8}".format(key, value)
 
     def exec_cmd(self, command):
+        """execute command"""
         return self.commands[command[0]](command[1:])
 
 if __name__ == "__main__":
