@@ -157,11 +157,6 @@ def create_dummy_audio(format):
         for v in values:
             audio_file.writeframes(struct.pack('h', int(v * amp / 2)))
 
-def create_dummy_file(ext, content):
-    file_module = importlib.import_module("format." + ext + ".parser." + ext)
-    file_class = getattr(file_module, ext.upper())
-    #TODO: create file with method of class
-
 if __name__ == "__main__":
 
     print "[TEST] Testing for Cardiff..."
