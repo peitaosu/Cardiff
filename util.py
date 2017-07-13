@@ -54,7 +54,7 @@ def print_file_content(file_path):
     args:
         file_path (str)
     """
-    print "File: " + file_path
+    print "File: {}".format(file_path)
     with open(file_path, "r") as in_file:
         for line in in_file.readlines():
             print line.split("\n")[0]

@@ -21,14 +21,14 @@ def merge(file_before, file_after):
     wav_diff.diff(wav_before, wav_after)
     for attr in wav_diff.attributes:
         if getattr(wav_diff, attr)[0] != getattr(wav_diff, attr)[1]:
-            print "Parameter - " + attr + " not the same: " + getattr(wav_diff, attr)[2]
+            print "Parameter - {} not the same: {}".format(attr, getattr(wav_diff, attr)[2])
 
     frame_merged = {}
     for channel in range(len(wav_diff.frame_diff)):
         if len(wav_diff.frame_diff[str(channel)]) == 0:
-            print "Channel " + str(channel) + " nothing to merge."
+            print "Channel {} nothing to merge.".format(str(channel))
             continue
-        print "Merging channel: " + str(channel + 1)
+        print "Merging channel: {}".format(str(channel + 1))
         frame_merged[str(channel)] = {}
         if "AUTO_MERGE" not in os.environ:
             option = raw_input("Choose your merge option: 1-All, 2-Frame By Frame: ")
@@ -37,9 +37,9 @@ def merge(file_before, file_after):
         if option == "2":
             for frame_index, frame_info in wav_diff.frame_diff[str(channel)].iteritems():
                 frame_merged[str(channel)][frame_index] = {}
-                print "Frame: " + frame_index
-                print "Before: " + frame_info["before"]
-                print "After: " + frame_info["after"]
+                print "Frame: {}".format(frame_index)
+                print "Before: {}".format(frame_info["before"])
+                print "After: {}".format(frame_info["after"])
                 if "AUTO_ACCEPT" not in os.environ:
                     accept = raw_input(
                         "Choose your merge option: 1-Accept After, 2-Accept Before: ")

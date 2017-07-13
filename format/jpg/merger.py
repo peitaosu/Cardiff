@@ -19,7 +19,7 @@ def merge(file_before, file_after):
     jpg_diff.diff(jpg_before, jpg_after)
     for attr in jpg_diff.attributes:
         if getattr(jpg_diff, attr)[0] != getattr(jpg_diff, attr)[1]:
-            print "Parameter - " + attr + " not the same: " + getattr(jpg_diff, attr)[2]
+            print "Parameter - {} not the same: {}".format(attr, getattr(jpg_diff, attr)[2])
     if "AUTO_MERGE" not in os.environ:
         option = raw_input("Choose your merge option: 1-All, 2-Pixel By Pixel: ")
     else:
@@ -28,9 +28,9 @@ def merge(file_before, file_after):
     if option == "2":
         for pixel_index, pixel_info in jpg_diff.pixel_diff.iteritems():
             pixel_merged[pixel_index] = {}
-            print "Pixel: " + pixel_index
-            print "Before: " + ", ".join([str(p) for p in pixel_info["before"]])
-            print "After: " + ", ".join([str(p) for p in pixel_info["after"]])
+            print "Pixel: {}".format(pixel_index)
+            print "Before: {}".format(", ".join([str(p) for p in pixel_info["before"]]))
+            print "After: {}".format(", ".join([str(p) for p in pixel_info["after"]]))
             if "AUTO_ACCEPT" not in os.environ:
                 accept = raw_input(
                     "Choose your merge option: 1-Accept After, 2-Accept Before: ")
