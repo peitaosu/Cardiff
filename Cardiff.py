@@ -50,10 +50,12 @@ class Cardiff():
         make_path_exist(self.vcs_db_path)
         self.vcs = init_vcs(self.settings["vcs"])
         vprint("Current VCS: {}".format(self.settings["vcs"]))
-        if "log" in self.settings:
-            self.log_config = self.settings["log"]
-        else:
+        log_config_path = os.path.join(cardiff_path, "log_config.json")
+        if not os.path.isfile(log_config_path):
             self.log_config = None
+        else:
+            with open(log_config_path, "r") as log_config_file:
+                self.log_config = json.load(log_config_file)
         self.setup_logging()
 
     def setup_logging(self, default_level=logging.INFO):
