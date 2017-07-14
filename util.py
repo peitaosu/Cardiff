@@ -1,4 +1,4 @@
-import os, re, time
+import os, re, time, logging
 
 def make_path_exist(path):
     """check the path if any folder not exists then create it
@@ -34,7 +34,8 @@ def vprint(verbose_log):
     """
     if "VERBOSE_MODE" in os.environ:
         if os.getenv("VERBOSE_MODE") == "1":
-            print "[VERBOSE LOG]: {} - {}".format(time.strftime("%m-%d-%Y %H:%M:%S", time.localtime()), verbose_log)
+            logger = logging.getLogger(__name__)
+            logger.info(verbose_log)
 
 def print_str_or_list(str_list):
     """if input is a string, print the string; if is a string list, print the string one by one
@@ -58,3 +59,4 @@ def print_file_content(file_path):
     with open(file_path, "r") as in_file:
         for line in in_file.readlines():
             print line.split("\n")[0]
+

@@ -1,4 +1,4 @@
-import os, sys, json, time
+import os, sys, json, time, logging, logging.config
 from util import *
 from init import *
 from diff import *
@@ -50,6 +50,17 @@ class Cardiff():
         make_path_exist(self.vcs_db_path)
         self.vcs = init_vcs(self.settings["vcs"])
         vprint("Current VCS: {}".format(self.settings["vcs"]))
+        if "log" in self.settings:
+            self.log_config = self.settings["log"]
+        else:
+            self.log_config = None
+        self.setup_logging()
+
+    def setup_logging(self, default_level=logging.INFO):
+        if self.log_config is not None:
+            logging.config.dictConfig(self.log_config)
+        else:
+            logging.basicConfig(filename="logger.log", level=default_level)
 
     def setup_vcs(self):
         """setup VCS"""
