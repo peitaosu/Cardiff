@@ -60,9 +60,18 @@ class Cardiff():
 
     def setup_logging(self, default_level=logging.INFO):
         if self.log_config is not None:
+            info_file_folder = os.path.dirname(self.log_config["handlers"]["info_file_handler"]["filename"])
+            error_file_folder = os.path.dirname(self.log_config["handlers"]["error_file_handler"]["filename"])
+            if not os.path.isdir(info_file_folder):
+                os.mkdir(info_file_folder)
+            if not os.path.isdir(error_file_folder):
+                os.mkdir(error_file_folder)
             logging.config.dictConfig(self.log_config)
         else:
-            logging.basicConfig(filename="logger.log", level=default_level)
+            log_folder = os.path.join(cardiff_path, "log")
+            if not os.path.isdir(log_folder):
+                os.mkdir(log_folder)
+            logging.basicConfig(filename="log/info.log", level=default_level)
 
     def setup_vcs(self):
         """setup VCS"""
