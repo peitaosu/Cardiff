@@ -6,6 +6,7 @@
     "user.email": "<your_email>",
     "verbose": "0",
     "silent": "0",
+    "log": "log",
     "information": {
         "contributor": "Tony Su", 
         "version": "0.0.10"
