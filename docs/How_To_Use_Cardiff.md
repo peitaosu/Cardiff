@@ -16,10 +16,17 @@ Well, let me assume the supported VCS and formats have met your request.
 # Configurations
 
 You need to configure ```./settings.json``` when you use Cardiff first time:
+
 1. ```user.name``` and ```user.email``` must be set and will be used in your commit logs.
 2. ```temp``` is the relative path of temp folder which store temporary files.
 3. ```repo``` is the relative path of repository folder, not necessary to be set manually because it will be set after you initial your repository.
 4. ```vcs``` is current VCS. If you want to switch to your VCS please change this setting.
+
+These configurations are optional:
+
+5. ```silent``` silent mode, if set "1", all diff operation won't display diff result with window, but saved as file.
+6. ```verbose``` verbose mode, if set "1", will output verbose information into log and console.
+7. ```log``` is the relative path of log folder, default is ```./log```, you can customize it here or in ```./log_config.json```.
 
 OK. Now you finished all preparations and configurations.
 
