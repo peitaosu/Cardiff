@@ -111,8 +111,10 @@ class Cardiff():
                     json.dump(self.settings, settings_file, indent=4)
                 print "Initialized Repository:"
                 print init_path
+                return init_path
         else:
             print "You need to provide a path for repository initialing."
+            return False
 
     def cmd_diff(self, file_ver):
         """diff different versions of file"""
@@ -207,6 +209,7 @@ class Cardiff():
             json.dump(self.vcs_logs, log_file, indent=4)
         print "New Commit:"
         print "{} - {}".format(file_path, commit_message)
+        return (file_path, commit_message)
 
     def cmd_checkout(self, file_ver):
         """checkout specific version of file from VCS"""
@@ -215,34 +218,40 @@ class Cardiff():
         ver = self.vcs_logs[self.vcs_current_branch]["#" + file_ver[1]]["hash"]
         self.vcs.checkout(file_path, ver)
         print "Checked Out: {} - {}".format(file_path, ver)
+        return (file_path, ver)
 
     def cmd_log(self, log_filter):
         """print all logs of VCS"""
         self.setup_vcs()
         logs = self.vcs.log()
-        print "Commit History:"
+        log_str = "Commit History:"
         for log in logs:
             if len(log_filter) > 0:
                 if log_filter[0] in log[1] or log_filter[0] in log[4]:
                     for key, value in self.vcs_logs[self.vcs_current_branch].iteritems():
                         if key != "HEAD" and value["hash"] == log[1]:
-                            print "{} - {} - {}".format(key, log[1], log[4])
+                            log_str = log_str + "{} - {} - {}".format(key, log[1], log[4]) + "\n"
                             break
             else:
                 for key, value in self.vcs_logs[self.vcs_current_branch].iteritems():
                     if key != "HEAD" and value["hash"] == log[1]:
-                        print "{} - {} - {}".format(key, log[1], log[4])
+                        log_str = log_str + "{} - {} - {}".format(key, log[1], log[4]) + "\n"
                         break
+        print log_str
+        return log_str
 
     def cmd_branch(self, command):
         """create new branche, switch to branch or print branches information"""
         self.setup_vcs()
+        branch_str = ""
         if len(command) == 0:
-            print "Local Branches:"
-            print "* {}".format(self.vcs_branches["current"])
+            branch_str = "Local Branches:" + "\n"
+            branch_str = branch_str + "* {}".format(self.vcs_branches["current"]) + "\n"
             if len(self.vcs_branches["other"]) > 0:
                 for branch in self.vcs_branches["other"]:
-                    print "  {}".format(branch)
+                    branch_str = branch_str + "  {}".format(branch) + "\n"
+            print branch_str
+            return branch_str
         else:
             if command[0] not in self.vcs_logs:
                 self.vcs.create_branch(command[0])
@@ -252,6 +261,7 @@ class Cardiff():
                     json.dump(self.vcs_logs, log_file, indent=4)
             self.vcs.switch_branch(command[0])
             vprint("Checked Out to Branch: {}".format(command[0]))
+            return command[0]
 
     def cmd_clean(self, command):
         """clean all temporary files"""
@@ -279,21 +289,26 @@ class Cardiff():
             "help": "help [<command>]",
             "info": "info [<information>]"
         }
-        print "Usage:"
+        help_str = "Usage:" + "\n"
         if len(command) == 1:
-            print "  Cardiff.py {}".format(commands[command[0]])
+            help_str = help_str + "  Cardiff.py {}".format(commands[command[0]]) + "\n"
         else:
             for key, value in commands.iteritems():
-                print "  Cardiff.py ".format(value)
+                help_str = help_str + "  Cardiff.py ".format(value) + "\n"
+        print help_str
+        return help_str
 
     def cmd_info(self, command):
         """print information of Cardiff"""
         information = self.settings["information"]
+        info_str = ""
         if len(command) == 1:
-            print "{:>12}: {:<8}".format(command[0], information[command[0]])
+            info_str = info_str + "{:>12}: {:<8}".format(command[0], information[command[0]]) + "\n"
         else:
             for key, value in information.iteritems():
-                print "{:>12}: {:<8}".format(key, value)
+                info_str = info_str + "{:>12}: {:<8}".format(key, value) + "\n"
+        print info_str
+        return info_str
 
     def exec_cmd(self, command):
         """execute command"""
