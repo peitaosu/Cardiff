@@ -294,7 +294,7 @@ class Cardiff():
             help_str = help_str + "  Cardiff.py {}".format(commands[command[0]]) + "\n"
         else:
             for key, value in commands.iteritems():
-                help_str = help_str + "  Cardiff.py ".format(value) + "\n"
+                help_str = help_str + "  Cardiff.py {}".format(value) + "\n"
         print help_str
         return help_str
 
