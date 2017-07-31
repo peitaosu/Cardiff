@@ -38,7 +38,7 @@ class Cardiff():
             if self.settings[key].startswith("<") and self.settings[key].endswith(">"):
                 print "Please set the {} in settings file.".format(key)
                 sys.exit(-1)
-        if self.settings["repo"].startswith("<") and self.settings["repo"].endswith(">"):
+        if self.settings["repo"]["current"].startswith("<") and self.settings["repo"]["current"].endswith(">"):
             print "You need to init a repo first time."
         os.environ["VERBOSE_MODE"] = self.settings["verbose"]
         os.environ["SILENT_MODE"] = self.settings["silent"]
@@ -80,16 +80,16 @@ class Cardiff():
 
     def setup_vcs(self):
         """setup VCS"""
-        if self.settings["repo"] != "":
-            if self.settings["repo"].startswith("<") and self.settings["repo"].endswith(">"):
+        if self.settings["repo"]["current"] != "":
+            if self.settings["repo"]["current"].startswith("<") and self.settings["repo"]["current"].endswith(">"):
                 print "You need to init a repo first time."
                 sys.exit(-1)
-            self.vcs.set_repo(self.settings["repo"])
-            vprint("Current Repository: {}".format(self.settings["repo"]))
+            self.vcs.set_repo(self.settings["repo"]["current"])
+            vprint("Current Repository: {}".format(self.settings["repo"]["current"]))
             self.vcs_branches = self.vcs.get_branches()
             self.vcs_current_branch = self.vcs_branches["current"]
             vprint("Current Branch: {}".format(self.vcs_branches["current"]))
-            self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]), "log.json")
+            self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]["current"]), "log.json")
             with open(self.vcs_db_log) as log_file:
                 self.vcs_logs = json.load(log_file)
 
@@ -106,7 +106,10 @@ class Cardiff():
                 user_name = self.settings["user.name"]
                 user_email = self.settings["user.email"]
                 self.vcs.init(init_path, user_name, user_email)
-                self.settings["repo"] = init_path
+                if not self.settings["repo"]["current"].startswith("<") and not self.settings["repo"]["current"].endswith(">"):
+                    if self.settings["repo"]["current"] not in self.settings["repo"]["others"]:
+                        self.settings["repo"]["others"].append(self.settings["repo"]["current"])
+                self.settings["repo"]["current"] = init_path
                 with open(self.settings_path, "w") as settings_file:
                     json.dump(self.settings, settings_file, indent=4)
                 print "Initialized Repository:"

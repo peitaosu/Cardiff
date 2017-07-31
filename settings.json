@@ -1,5 +1,8 @@
 {
-    "repo": "<your_repo_if_have>", 
+    "repo": {
+        "current": "<your_repo_if_have>",
+        "others": []
+    }, 
     "temp": "temp", 
     "vcs": "git", 
     "user.name": "<your_name>", 
