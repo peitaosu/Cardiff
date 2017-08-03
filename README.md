@@ -1,6 +1,7 @@
 # Project Cardiff
 
 [![Build Status](https://travis-ci.org/peitaosu/Cardiff.svg?branch=master)](https://travis-ci.org/peitaosu/Cardiff)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/peitaosu/Cardiff/master/LICENSE)
 
 ## What is Project Cardiff ?
 
