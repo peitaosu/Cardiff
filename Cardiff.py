@@ -57,6 +57,13 @@ class Cardiff():
             with open(log_config_path, "r") as log_config_file:
                 self.log_config = json.load(log_config_file)
         self.setup_logging()
+    
+    def save_settings(self, settings_path = None):
+        """save settings to file"""
+        if settings_path == None:
+            settings_path = self.settings_path
+        with open(settings_path, "w") as settings_file:
+            json.dump(self.settings, settings_file, indent=4)
 
     def setup_logging(self, default_level=logging.INFO):
         if self.log_config is not None:
