@@ -330,3 +330,4 @@ if __name__ == "__main__":
     if sys.argv[1] not in ["cdiff"]:
         cardiff.load_settings(settings_path)
     cardiff.exec_cmd(sys.argv[1:])
+    cardiff.save_settings()
