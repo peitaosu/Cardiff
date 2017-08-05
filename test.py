@@ -45,6 +45,7 @@ def test_cmd_init():
     print "[TEST] Command - init"
     cardiff.exec_cmd(["init", "./test"])
     print_settings()
+    cardiff.save_settings()
 
 def test_cmd_commit():
     print "[TEST] Command - commit"
