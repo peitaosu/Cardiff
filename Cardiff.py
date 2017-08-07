@@ -37,7 +37,6 @@ class Cardiff():
         for key in ["user.name", "user.email"]:
             if self.settings[key].startswith("<") and self.settings[key].endswith(">"):
                 print "Please set the {} in settings file.".format(key)
-                sys.exit(-1)
         if self.settings["repo"]["current"].startswith("<") and self.settings["repo"]["current"].endswith(">"):
             print "You need to init a repo first time."
         os.environ["VERBOSE_MODE"] = self.settings["verbose"]
