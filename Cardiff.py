@@ -21,6 +21,7 @@ class Cardiff():
             "checkout": self.cmd_checkout,
             "log": self.cmd_log,
             "branch": self.cmd_branch,
+            "repo": self.cmd_repo,
             "clean": self.cmd_clean,
             "help": self.cmd_help,
             "info": self.cmd_info
@@ -271,6 +272,25 @@ class Cardiff():
             self.vcs.switch_branch(command[0])
             vprint("Checked Out to Branch: {}".format(command[0]))
             return command[0]
+
+    def cmd_repo(self, command):
+        """switch to repository or print repositories information"""
+        if len(command) == 0:
+            repo_str = "Local Repositories:" + "\n"
+            repo_str = repo_str + "* {}".format(self.settings["repo"]["current"]) + "\n"
+            if len(self.settings["repo"]["others"]) > 0:
+                for repo in self.settings["repo"]["others"]:
+                    repo_str = repo_str + "  {}".format(repo) + "\n"
+            print repo_str
+            return repo_str
+        else:
+            if command[0] in self.settings["repo"]["others"]:
+                self.settings["repo"]["others"].remove(command[0])
+                self.settings["repo"]["others"].append(self.settings["repo"]["current"])
+                self.settings["repo"]["current"] = command[0]
+                vprint("Switch to Repository: {}".format(command[0]))
+                self.save_settings()
+                return command[0]
 
     def cmd_clean(self, command):
         """clean all temporary files"""
