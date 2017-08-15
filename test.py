@@ -106,6 +106,15 @@ def test_cmd_branch():
     cardiff.exec_cmd(["branch", "new_branch"])
     cardiff.exec_cmd(["branch"])
 
+def test_cmd_repo():
+    print "[TEST] Command - repo"
+    cardiff.exec_cmd(["help", "repo"])
+    cardiff.exec_cmd(["repo"])
+    cardiff.exec_cmd(["init", "./test_1"])
+    cardiff.exec_cmd(["repo"])
+    cardiff.exec_cmd(["repo", "./test"])
+    cardiff.exec_cmd(["repo"])
+
 def test_cmd_clean():
     print "[TEST] Command - clean"
     cardiff.exec_cmd(["help", "clean"])
@@ -170,6 +179,8 @@ if __name__ == "__main__":
     test_cmd_info()
 
     test_cmd_init()
+
+    test_cmd_repo()
 
     test_cmd_branch()
 
