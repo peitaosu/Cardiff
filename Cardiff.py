@@ -314,6 +314,7 @@ class Cardiff():
             "checkout": "checkout <file> <version>",
             "log": "log [<filter>]",
             "branch": "branch <branch>",
+            "repo": "repo <repo>",
             "clean": "clean [<filter>]",
             "help": "help [<command>]",
             "info": "info [<information>]"
