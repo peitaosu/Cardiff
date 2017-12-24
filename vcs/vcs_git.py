@@ -67,6 +67,18 @@ class VCS():
         os.rename(os.path.join(self.repo_path, file_path), os.path.join(self.repo_path, new_file_path))
         os.rename(os.path.join(self.repo_path, "saved." + file_path), os.path.join(self.repo_path, file_path))
 
+    def get_commits(self):
+        """get formatted commits list in current ref
+
+        returns:
+            formatted_commit_list (list)
+        """
+        commit_list = list(self.repo.iter_commits())
+        formatted_commit_list = []
+        for commit in commit_list:
+            formatted_commit_list.append((commit.hexsha, commit.summary, commit.committed_datetime, commit.author.name, commit.author.email, commit.stats.files))
+        return formatted_commit_list
+
     def log(self):
         """return default branch logs
         """
