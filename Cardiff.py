@@ -209,11 +209,11 @@ class Cardiff():
         self.setup_vcs()
         file_path = commit[0]
         commit_message = commit[1]
-        log_content = self.vcs.commit(file_path, commit_message)
-        log_flag = "#" + str(int(self.vcs_logs[self.vcs_current_branch]["HEAD"][1:]) + 1)
+        commit_content = self.vcs.commit(file_path, commit_message)
+        log_flag = "#" + str(len(self.vcs_logs[self.vcs_current_branch].keys()))
         log = {}
-        log["hash"] = log_content[1]
-        log["message"] = log_content[4]
+        log["hash"] = commit_content[0]
+        log["message"] = commit_content[1]
         self.vcs_logs[self.vcs_current_branch][log_flag] = log
         self.vcs_logs[self.vcs_current_branch]["HEAD"] = log_flag
         with open(self.vcs_db_log, "w") as log_file:

@@ -37,11 +37,11 @@ class VCS():
             message (str)
 
         returns:
-            log (tuple)
+            commit (tuple)
         """
         self.repo.index.add([file_path])
         self.repo.index.commit(message)
-        return self.log()[-1]
+        return self.get_commits()[0]
 
     def checkout(self, file_path, version):
         """checkout file with specific version
