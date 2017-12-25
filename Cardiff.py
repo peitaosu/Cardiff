@@ -233,20 +233,16 @@ class Cardiff():
     def cmd_log(self, log_filter):
         """print all logs of VCS"""
         self.setup_vcs()
-        logs = self.vcs.log()
-        log_str = "Commit History:"
-        for log in logs:
+        commits = self.vcs.get_commits()
+        log_str = "Commit History:\n"
+        iter_start = 0
+        for commit in reversed(commits):
+            iter_start = iter_start + 1
             if len(log_filter) > 0:
-                if log_filter[0] in log[1] or log_filter[0] in log[4]:
-                    for key, value in self.vcs_logs[self.vcs_current_branch].iteritems():
-                        if key != "HEAD" and value["hash"] == log[1]:
-                            log_str = log_str + "{} - {} - {}".format(key, log[1], log[4]) + "\n"
-                            break
+                if log_filter[0] in commit[0] or log_filter[0] in commit[1]:
+                    log_str = log_str + "#{} - {} - {}".format(iter_start, commit[0], commit[1]) + "\n"
             else:
-                for key, value in self.vcs_logs[self.vcs_current_branch].iteritems():
-                    if key != "HEAD" and value["hash"] == log[1]:
-                        log_str = log_str + "{} - {} - {}".format(key, log[1], log[4]) + "\n"
-                        break
+                log_str = log_str + "#{} - {} - {}".format(iter_start, commit[0], commit[1]) + "\n"
         print log_str
         return log_str
 
