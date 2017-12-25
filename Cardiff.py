@@ -96,6 +96,7 @@ class Cardiff():
             self.vcs_branches = self.vcs.get_branches()
             self.vcs_current_branch = self.vcs_branches["current"]
             vprint("Current Branch: {}".format(self.vcs_branches["current"]))
+            self.vcs_commits = self.vcs.get_commits()
             self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]["current"]), "log.json")
             with open(self.vcs_db_log) as log_file:
                 self.vcs_logs = json.load(log_file)
@@ -233,16 +234,15 @@ class Cardiff():
     def cmd_log(self, log_filter):
         """print all logs of VCS"""
         self.setup_vcs()
-        commits = self.vcs.get_commits()
         log_str = "Commit History:\n"
-        iter_start = 0
-        for commit in reversed(commits):
-            iter_start = iter_start + 1
+        iter_count = 0
+        for commit in reversed(self.vcs_commits):
+            iter_count = iter_count + 1
             if len(log_filter) > 0:
                 if log_filter[0] in commit[0] or log_filter[0] in commit[1]:
-                    log_str = log_str + "#{} - {} - {}".format(iter_start, commit[0], commit[1]) + "\n"
+                    log_str = log_str + "#{} - {} - {}".format(iter_count, commit[0], commit[1]) + "\n"
             else:
-                log_str = log_str + "#{} - {} - {}".format(iter_start, commit[0], commit[1]) + "\n"
+                log_str = log_str + "#{} - {} - {}".format(iter_count, commit[0], commit[1]) + "\n"
         print log_str
         return log_str
 
