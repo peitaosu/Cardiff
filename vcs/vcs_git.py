@@ -73,19 +73,14 @@ class VCS():
         returns:
             formatted_commit_list (list)
         """
-        commit_list = list(self.repo.iter_commits())
-        formatted_commit_list = []
-        for commit in commit_list:
-            formatted_commit_list.append((commit.hexsha, commit.summary, commit.committed_datetime, commit.author.name, commit.author.email, commit.stats.files))
-        return formatted_commit_list
-
-    def log(self):
-        """return default branch logs
-        """
-        head = self.repo.head
-        master = head.reference
-        log = master.log()
-        return log
+        try:
+            commit_list = list(self.repo.iter_commits())
+            formatted_commit_list = []
+            for commit in commit_list:
+                formatted_commit_list.append((commit.hexsha, commit.summary, commit.committed_datetime, commit.author.name, commit.author.email, commit.stats.files))
+            return formatted_commit_list
+        except ValueError:
+            return None
     
     def create_branch(self, branch_name):
         """create new branch
