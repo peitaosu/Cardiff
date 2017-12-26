@@ -100,6 +100,17 @@ class Cardiff():
             self.vcs_db_log = os.path.join(self.vcs_db_path, os.path.basename(self.settings["repo"]["current"]), "log.json")
             with open(self.vcs_db_log) as log_file:
                 self.vcs_logs = json.load(log_file)
+            if self.vcs_current_branch not in self.vcs_logs:
+                self.vcs_logs[self.vcs_current_branch] = {"HEAD": "#0"}
+                for commit in self.vcs_commits:
+                    log_flag = "#" + str(len(self.vcs_logs[self.vcs_current_branch].keys()))
+                    log = {}
+                    log["hash"] = commit[0]
+                    log["message"] = commit[1]
+                    self.vcs_logs[self.vcs_current_branch][log_flag] = log
+                    self.vcs_logs[self.vcs_current_branch]["HEAD"] = log_flag
+                with open(self.vcs_db_log, "w") as log_file:
+                    json.dump(self.vcs_logs, log_file, indent=4)
 
     def cmd_init(self, init_path):
         """initial new repository"""
@@ -262,10 +273,8 @@ class Cardiff():
             if command[0] not in self.vcs_logs:
                 self.vcs.create_branch(command[0])
                 vprint("Created Branch: {}".format(command[0]))
-                self.vcs_logs[command[0]] = {"HEAD": "#0"}
-                with open(self.vcs_db_log, "w") as log_file:
-                    json.dump(self.vcs_logs, log_file, indent=4)
             self.vcs.switch_branch(command[0])
+            self.setup_vcs()
             vprint("Checked Out to Branch: {}".format(command[0]))
             return command[0]
 
