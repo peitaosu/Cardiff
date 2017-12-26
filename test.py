@@ -67,27 +67,27 @@ def test_cmd_commit():
 def test_cmd_diff():
     print "[TEST] Command - diff"
     os.environ["SILENT_MODE"] = "1"
-    result = cardiff.exec_cmd(["diff", "file.bmp", "1", "2"])
+    result = cardiff.exec_cmd(["diff", "file.bmp", "2", "3"])
     print_file_content(result[2])
-    result = cardiff.exec_cmd(["diff", "file.jpg", "3", "4"])
+    result = cardiff.exec_cmd(["diff", "file.jpg", "4", "5"])
     print_file_content(result[2])
-    result = cardiff.exec_cmd(["diff", "file.png", "5", "6"])
+    result = cardiff.exec_cmd(["diff", "file.png", "6", "7"])
     print_file_content(result[2])
-    result = cardiff.exec_cmd(["diff", "file.gif", "7", "8"])
+    result = cardiff.exec_cmd(["diff", "file.gif", "8", "9"])
     print_file_content(result[2])
-    cardiff.exec_cmd(["diff", "file.wav", "9", "10"])
-    cardiff.exec_cmd(["diff", "file.aif", "11", "12"])
+    cardiff.exec_cmd(["diff", "file.wav", "10", "11"])
+    cardiff.exec_cmd(["diff", "file.aif", "12", "13"])
 
 def test_cmd_merge():
     print "[TEST] Command - merge"
     os.environ["AUTO_MERGE"] = "1"
     os.environ["AUTO_ACCEPT"] = "1"
-    cardiff.exec_cmd(["merge", "file.bmp", "1", "2"])
-    cardiff.exec_cmd(["merge", "file.jpg", "3", "4"])
-    cardiff.exec_cmd(["merge", "file.png", "5", "6"])
-    cardiff.exec_cmd(["merge", "file.gif", "7", "8"])
-    cardiff.exec_cmd(["merge", "file.wav", "9", "10"])
-    cardiff.exec_cmd(["merge", "file.aif", "11", "12"])
+    cardiff.exec_cmd(["merge", "file.bmp", "2", "3"])
+    cardiff.exec_cmd(["merge", "file.jpg", "4", "5"])
+    cardiff.exec_cmd(["merge", "file.png", "6", "7"])
+    cardiff.exec_cmd(["merge", "file.gif", "8", "9"])
+    cardiff.exec_cmd(["merge", "file.wav", "10", "11"])
+    cardiff.exec_cmd(["merge", "file.aif", "12", "13"])
 
 def test_cmd_log():
     print "[TEST] Command - log"
@@ -123,6 +123,7 @@ def test_cmd_clean():
 def test_rollback():
     print "Rollback Changes"
     shutil.rmtree("./test")
+    shutil.rmtree("./vcs/vcs_db/git/test")
 
 def create_dummy_image(format):
     if format in ["bmp", "jpg"]:
