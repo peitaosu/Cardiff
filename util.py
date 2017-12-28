@@ -6,7 +6,7 @@ def make_path_exist(path):
     args:
         path (str)
     """
-    if path is not "":
+    if path != "":
         if not os.path.isdir(path):
             make_path_exist(os.path.dirname(path))
             os.mkdir(path)
