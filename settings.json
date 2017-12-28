@@ -2,7 +2,8 @@
     "repo": {
         "current": "<your_repo_if_have>",
         "others": []
-    }, 
+    },
+    "repos": "repos",
     "temp": "temp", 
     "vcs": "git", 
     "user.name": "<your_name>", 

@@ -76,8 +76,8 @@ class Cardiff():
             if not os.path.isdir(error_file_folder):
                 os.mkdir(error_file_folder)
             if "log" in self.settings:
-                self.log_config["handlers"]["info_file_handler"]["filename"] = os.path.join(self.settings["log"], "info.log")
-                self.log_config["handlers"]["error_file_handler"]["filename"] = os.path.join(self.settings["log"], "errors.log")
+                self.log_config["handlers"]["info_file_handler"]["filename"] = os.path.join(cardiff_path, self.settings["log"], "info.log")
+                self.log_config["handlers"]["error_file_handler"]["filename"] = os.path.join(cardiff_path, self.settings["log"], "errors.log")
             logging.config.dictConfig(self.log_config)
         else:
             log_folder = os.path.join(cardiff_path, "log")
@@ -115,7 +115,7 @@ class Cardiff():
     def cmd_init(self, init_path):
         """initial new repository"""
         if len(init_path) > 0:
-            init_path = init_path[0]
+            init_path = os.path.join(cardiff_path, self.settings["repos"], init_path[0])
             if os.path.isdir(init_path):
                 print "{} is exist.".format(init_path)
             else:
