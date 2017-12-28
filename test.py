@@ -43,7 +43,7 @@ def test_cmd_info():
 
 def test_cmd_init():
     print "[TEST] Command - init"
-    cardiff.exec_cmd(["init", "./test"])
+    cardiff.exec_cmd(["init", "test"])
     print_settings()
     cardiff.save_settings()
 
@@ -110,10 +110,7 @@ def test_cmd_repo():
     print "[TEST] Command - repo"
     cardiff.exec_cmd(["help", "repo"])
     cardiff.exec_cmd(["repo"])
-    cardiff.exec_cmd(["init", "./test_1"])
-    cardiff.exec_cmd(["repo"])
-    cardiff.exec_cmd(["repo", "./test"])
-    cardiff.exec_cmd(["repo"])
+    cardiff.exec_cmd(["repo", "test"])
 
 def test_cmd_clean():
     print "[TEST] Command - clean"
@@ -122,7 +119,7 @@ def test_cmd_clean():
 
 def test_rollback():
     print "Rollback Changes"
-    shutil.rmtree("./test")
+    shutil.rmtree("./repos/test")
     shutil.rmtree("./vcs/vcs_db/git/test")
 
 def create_dummy_image(format):
@@ -131,13 +128,13 @@ def create_dummy_image(format):
         for x in range(256):
             for y in range(256):
                 img.load()[x, y] = (x, y, 180)
-        img.save("./test/file." + format)
+        img.save("./repos/test/file." + format)
     elif format in ["png", "gif"]:
         img = Image.new("RGBA", (256, 256))
         for x in range(256):
             for y in range(256):
                 img.load()[x, y] = (x, y, 180, 180)
-        img.save("./test/file." + format)
+        img.save("./repos/test/file." + format)
 
 
 def create_dummy_audio(format):
@@ -159,9 +156,9 @@ def create_dummy_audio(format):
              math.cos(2 * math.pi * freq * (x / frate))) for x in range(data_size)]
 
     if format == "aif":
-        audio_file = aifc.open("./test/file." + format, 'w')
+        audio_file = aifc.open("./repos/test/file." + format, 'w')
     elif format == "wav":
-        audio_file = wave.open("./test/file." + format, 'w')
+        audio_file = wave.open("./repos/test/file." + format, 'w')
     audio_file.setparams(
         (nchannels, sampwidth, framerate, nframes, comptype, compname))
     for values in data:
