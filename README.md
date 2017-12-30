@@ -52,15 +52,19 @@ This tool can be used to diff difference between file versions, to check what ha
    > python Cardiff.py help
 
    Usage:
-     Cardiff.py merge <file> <version_1> [<version_2>]
      Cardiff.py init <repo_path>
-     Cardiff.py log [filter]
+     Cardiff.py repo <repo>
      Cardiff.py branch <branch>
      Cardiff.py commit <file> <message>
-     Cardiff.py diff <file> <version_1> [<version_2>]
-     Cardiff.py clean [filter]
      Cardiff.py checkout <file> <version>
-     Cardiff.py help [command]
+     Cardiff.py diff <file> <version_1> [<version_2>]
+     Cardiff.py cdiff <file1> <file2> [<output>]
+     Cardiff.py merge <file> <version_1> [<version_2>]
+     Cardiff.py log [<filter>]
+     Cardiff.py clean [<filter>]
+     Cardiff.py info [<information>]
+     Cardiff.py help [<command>]
+
    ```
 
 2. Python Module
