@@ -70,14 +70,11 @@ class Cardiff():
             info_file_folder = os.path.dirname(self.log_config["handlers"]["info_file_handler"]["filename"])
             error_file_folder = os.path.dirname(self.log_config["handlers"]["error_file_handler"]["filename"])
             if "log" in self.settings:
-                info_file_folder = error_file_folder = self.settings["log"]
-            if not os.path.isdir(info_file_folder):
-                os.mkdir(info_file_folder)
-            if not os.path.isdir(error_file_folder):
-                os.mkdir(error_file_folder)
-            if "log" in self.settings:
-                self.log_config["handlers"]["info_file_handler"]["filename"] = os.path.join(cardiff_path, self.settings["log"], "info.log")
-                self.log_config["handlers"]["error_file_handler"]["filename"] = os.path.join(cardiff_path, self.settings["log"], "errors.log")
+                info_file_folder = error_file_folder = os.path.join(cardiff_path, self.settings["log"])
+                self.log_config["handlers"]["info_file_handler"]["filename"] = os.path.join(info_file_folder, "info.log")
+                self.log_config["handlers"]["error_file_handler"]["filename"] = os.path.join(error_file_folder, "errors.log")
+            make_path_exist(info_file_folder)
+            make_path_exist(error_file_folder)
             logging.config.dictConfig(self.log_config)
         else:
             log_folder = os.path.join(cardiff_path, "log")
