@@ -26,7 +26,7 @@ These configurations are optional:
 
 5. ```silent``` silent mode, if set "1", all diff operation won't display diff result with window, but saved as file.
 6. ```verbose``` verbose mode, if set "1", will output verbose information into log and console.
-7. ```log``` is the relative path of log folder, default is ```./log```, you can customize it here or in ```./log_config.json```.
+7. ```log``` is the relative path of log folder, default is ```./log```, you can customize it here or in ```./logconf.json```.
 
 OK. Now you finished all preparations and configurations.
 

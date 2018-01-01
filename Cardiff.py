@@ -50,7 +50,7 @@ class Cardiff():
         make_path_exist(self.vcs_db_path)
         self.vcs = init_vcs(self.settings["vcs"])
         vprint("Current VCS: {}".format(self.settings["vcs"]))
-        log_config_path = os.path.join(cardiff_path, "log_config.json")
+        log_config_path = os.path.join(cardiff_path, "logconf.json")
         if not os.path.isfile(log_config_path):
             self.log_config = None
         else:
