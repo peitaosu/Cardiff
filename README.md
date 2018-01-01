@@ -52,7 +52,7 @@ This tool can be used to diff difference between file versions, to check what ha
    > python Cardiff.py help
 
    Usage:
-     Cardiff.py init <repo_path>
+     Cardiff.py init <repo_name>
      Cardiff.py repo <repo>
      Cardiff.py branch <branch>
      Cardiff.py commit <file> <message>

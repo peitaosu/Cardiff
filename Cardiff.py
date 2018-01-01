@@ -308,7 +308,7 @@ class Cardiff():
     def cmd_help(self, command):
         """print usage"""
         commands = {
-            "init": "init <repo_path>",
+            "init": "init <repo_name>",
             "diff": "diff <file> <version_1> [<version_2>]",
             "cdiff": "cdiff <file1> <file2> [<output>]",
             "merge": "merge <file> <version_1> [<version_2>]",

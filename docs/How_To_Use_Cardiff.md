@@ -34,10 +34,10 @@ OK. Now you finished all preparations and configurations.
 
 Initial your repository. This repository will store all your versioned files, committed versions, logs, branches and other information:
 ```
-python Cardiff.py init <repo_path>
+python Cardiff.py init <repo_name>
 
 # for example
-python Cardiff.py init ./work
+python Cardiff.py init work
 ```
 
 Create your file in repository folder or copy files from other locations directly. Only files which in this folder can be versioned.
