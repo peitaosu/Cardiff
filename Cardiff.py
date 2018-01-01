@@ -40,8 +40,8 @@ class Cardiff():
                 print "Please set the {} in settings file.".format(key)
         if self.settings["repo"]["current"].startswith("<") and self.settings["repo"]["current"].endswith(">"):
             print "You need to init a repo first time."
-        os.environ["VERBOSE_MODE"] = self.settings["verbose"]
-        os.environ["SILENT_MODE"] = self.settings["silent"]
+        os.environ["CARDIFF_VERBOSE_MODE"] = self.settings["verbose"]
+        os.environ["CARDIFF_SILENT_MODE"] = self.settings["silent"]
         self.temp = os.path.join(cardiff_path, self.settings["temp"])
         self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
         vprint("Setting Temp Foloder: {}".format(self.temp))
@@ -157,7 +157,7 @@ class Cardiff():
         parameterize_diff(diff_result, file_path.split(".")[-1])
         file_output_name = os.path.join(self.temp, file_path.split(".")[0] + "_" + ver_1[:6] + "_" + ver_2[:6])
         file_diffs = diff_file(new_file_1_path, new_file_2_path, file_output_name)
-        if os.getenv("SILENT_MODE") == "1":
+        if os.getenv("CARDIFF_SILENT_MODE") == "1":
             print "Diff Result:"
             print_str_or_list(file_diffs)
         else:
@@ -180,7 +180,7 @@ class Cardiff():
         print "diff " + file_before + " " + file_after
         parameterize_diff(diff_result, file_before.split(".")[-1])
         file_diffs = diff_file(file_before, file_after, file_output_name)
-        if os.getenv("SILENT_MODE") == "1":
+        if os.getenv("CARDIFF_SILENT_MODE") == "1":
             print "Diff Result:"
             print_str_or_list(file_diffs)
         else:

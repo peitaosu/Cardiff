@@ -32,8 +32,8 @@ def vprint(verbose_log):
     args:
         verbose_log (str)
     """
-    if "VERBOSE_MODE" in os.environ:
-        if os.getenv("VERBOSE_MODE") == "1":
+    if "CARDIFF_VERBOSE_MODE" in os.environ:
+        if os.getenv("CARDIFF_VERBOSE_MODE") == "1":
             logger = logging.getLogger(__name__)
             logger.info(verbose_log)
 

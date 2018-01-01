@@ -29,7 +29,7 @@ def test_load_settings():
 
     print_settings()
     cardiff.load_settings(settings_path)
-    os.environ["VERBOSE_MODE"] = "1"
+    os.environ["CARDIFF_VERBOSE_MODE"] = "1"
 
 def test_cmd_help():
     print "[TEST] Command - help"
@@ -66,7 +66,7 @@ def test_cmd_commit():
 
 def test_cmd_diff():
     print "[TEST] Command - diff"
-    os.environ["SILENT_MODE"] = "1"
+    os.environ["CARDIFF_SILENT_MODE"] = "1"
     result = cardiff.exec_cmd(["diff", "file.bmp", "2", "3"])
     print_file_content(result[2])
     result = cardiff.exec_cmd(["diff", "file.jpg", "4", "5"])
