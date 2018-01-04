@@ -7,3 +7,9 @@
 # Generated Files
 *.diff.*
 *.merged.*
+
+# VCS DB
+vcs/vcs_db
+
+# Log Folder
+log/
