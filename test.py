@@ -20,16 +20,16 @@ def print_settings():
 def test_load_settings():
     print "[TEST] Load settings.json from Cardiff root path..."
 
-    with open(settings_path) as settings_file:
-        settings = json.load(settings_file)
-    settings["user.name"] = "test"
-    settings["user.email"] = "test@@cardiff"
-    with open(settings_path, "w") as settings_file:
-        json.dump(settings, settings_file, indent=4)
-
     print_settings()
     cardiff.load_settings(settings_path)
-    os.environ["CARDIFF_VERBOSE_MODE"] = "1"
+
+def test_cmd_conf():
+    cardiff.exec_cmd(["conf", "user.name", "test"])
+    cardiff.exec_cmd(["conf", "user.email", "test@@cardiff"])
+    cardiff.exec_cmd(["conf", "verbose", "1"])
+    cardiff.exec_cmd(["conf", "silent", "1"])
+    print cardiff.settings
+    print_settings()
 
 def test_cmd_help():
     print "[TEST] Command - help"
@@ -66,7 +66,6 @@ def test_cmd_commit():
 
 def test_cmd_diff():
     print "[TEST] Command - diff"
-    os.environ["CARDIFF_SILENT_MODE"] = "1"
     result = cardiff.exec_cmd(["diff", "file.bmp", "2", "3"])
     print_file_content(result[2])
     result = cardiff.exec_cmd(["diff", "file.jpg", "4", "5"])
@@ -175,6 +174,8 @@ if __name__ == "__main__":
     test_cmd_help()
 
     test_cmd_info()
+
+    test_cmd_conf()
 
     test_cmd_init()
 
