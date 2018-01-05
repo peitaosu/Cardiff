@@ -62,6 +62,7 @@ This tool can be used to diff difference between file versions, to check what ha
      Cardiff.py merge <file> <version_1> [<version_2>]
      Cardiff.py log [<filter>]
      Cardiff.py clean [<filter>]
+     Cardiff.py conf <config_name> [<config_value>]
      Cardiff.py info [<information>]
      Cardiff.py help [<command>]
 
