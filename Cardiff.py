@@ -125,6 +125,7 @@ class Cardiff():
             new_value = command[1]
             self.settings[key] = new_value
             self.save_settings()
+            self.load_settings(self.settings_path)
             print "{} have been set to {}".format(key, new_value)
             return new_value
 
