@@ -13,6 +13,7 @@ class Cardiff():
         self.settings = {}
         self.vcs = None
         self.commands = {
+            "conf": self.cmd_conf,
             "init": self.cmd_init,
             "diff": self.cmd_diff,
             "cdiff": self.cmd_cdiff,
@@ -108,6 +109,24 @@ class Cardiff():
                     self.vcs_logs[self.vcs_current_branch]["HEAD"] = log_flag
                 with open(self.vcs_db_log, "w") as log_file:
                     json.dump(self.vcs_logs, log_file, indent=4)
+
+    def cmd_conf(self, command):
+        """show or change settings through command"""
+        if len(command) == 0:
+            return
+        key = command[0]
+        if key not in self.settings:
+            print "{} not in settings.json".format(key)
+            return
+        if len(command) == 1:
+            print "{} value is {}".format(key, self.settings[key])
+            return self.settings[key]
+        else:
+            new_value = command[1]
+            self.settings[key] = new_value
+            self.save_settings()
+            print "{} have been set to {}".format(key, new_value)
+            return new_value
 
     def cmd_init(self, init_path):
         """initial new repository"""
@@ -308,6 +327,7 @@ class Cardiff():
     def cmd_help(self, command):
         """print usage"""
         commands = {
+            "conf": "conf <config_name> [<config_value>]",
             "init": "init <repo_name>",
             "diff": "diff <file> <version_1> [<version_2>]",
             "cdiff": "cdiff <file1> <file2> [<output>]",
