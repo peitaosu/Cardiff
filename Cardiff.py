@@ -45,7 +45,7 @@ class Cardiff():
         os.environ["CARDIFF_SILENT_MODE"] = self.settings["silent"]
         self.temp = os.path.join(cardiff_path, self.settings["temp"])
         self.vcs_db_path = os.path.join(cardiff_path, "vcs", "vcs_db", self.settings["vcs"])
-        vprint("Setting Temp Foloder: {}".format(self.temp))
+        vprint("Setting Temporary Foloder: {}".format(self.temp))
         make_path_exist(self.temp)
         vprint("Setting VCS DB: {}".format(self.vcs_db_path))
         make_path_exist(self.vcs_db_path)
@@ -129,12 +129,12 @@ class Cardiff():
             print "{} have been set to {}".format(key, new_value)
             return new_value
 
-    def cmd_init(self, init_path):
+    def cmd_init(self, init_repo):
         """initial new repository"""
-        if len(init_path) > 0:
-            init_path = os.path.join(cardiff_path, self.settings["repos"], init_path[0])
+        if len(init_repo) > 0:
+            init_path = os.path.join(cardiff_path, self.settings["repos"], init_repo[0])
             if os.path.isdir(init_path):
-                print "{} is exist.".format(init_path)
+                print "Repository {} is exist.".format(init_repo[0])
             else:
                 make_path_exist(init_path)
                 make_path_exist(os.path.join(self.vcs_db_path, os.path.basename(init_path)))
@@ -152,7 +152,7 @@ class Cardiff():
                 print init_path
                 return init_path
         else:
-            print "You need to provide a path for repository initialing."
+            print "You need to provide a repository name for initialization."
             return False
 
     def cmd_diff(self, file_ver):
